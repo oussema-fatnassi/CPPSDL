@@ -1,0 +1,3 @@
+/Users/ousse/Desktop/LA_PLATEFORME/B2/C++/2048/CPPSDL/scr/build/CMakeFiles/Main.dir
+/Users/ousse/Desktop/LA_PLATEFORME/B2/C++/2048/CPPSDL/scr/build/CMakeFiles/edit_cache.dir
+/Users/ousse/Desktop/LA_PLATEFORME/B2/C++/2048/CPPSDL/scr/build/CMakeFiles/rebuild_cache.dir
