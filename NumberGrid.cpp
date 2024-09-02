@@ -86,6 +86,9 @@ void NumberGrid::printGrid()
 
 void NumberGrid::move(InputHandler::Direction dir)
 {
+    if (dir == InputHandler::Direction::LEFT) {
+        moveLeft();
+    }
     if (!addRandomNumber()) {
         cout << "Game Over" << endl;
         exit(0);
@@ -96,5 +99,32 @@ void NumberGrid::move(InputHandler::Direction dir)
     if (isGridFull()) {
         cout << "Game Over" << endl;
         exit(0);
+    }
+}
+
+
+void NumberGrid::moveLeft()
+{
+    int gridSize = getGridSize();
+
+    for (int i = 0; i < gridSize; ++i) {
+        vector<int> newRow;
+        
+        // Collect all non-zero elements
+        for (int j = 0; j < gridSize; ++j) {
+            if (grid[i][j] != 0) {
+                newRow.push_back(grid[i][j]);
+            }
+        }
+        
+        // Add zeros to the end of the newRow
+        while (newRow.size() < gridSize) {
+            newRow.push_back(0);
+        }
+        
+        // Copy newRow back to the grid
+        for (int j = 0; j < gridSize; ++j) {
+            grid[i][j] = newRow[j];
+        }
     }
 }
