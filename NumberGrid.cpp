@@ -88,6 +88,12 @@ void NumberGrid::move(InputHandler::Direction dir)
 {
     if (dir == InputHandler::Direction::LEFT) {
         moveLeft();
+    } else if (dir == InputHandler::Direction::RIGHT) {
+        moveRight();
+    } else if (dir == InputHandler::Direction::UP) {
+        moveUp();
+    } else if (dir == InputHandler::Direction::DOWN) {
+        moveDown();
     }
     if (!addRandomNumber()) {
         cout << "Game Over" << endl;
@@ -101,7 +107,6 @@ void NumberGrid::move(InputHandler::Direction dir)
         exit(0);
     }
 }
-
 
 void NumberGrid::moveLeft()
 {
@@ -125,6 +130,84 @@ void NumberGrid::moveLeft()
         // Copy newRow back to the grid
         for (int j = 0; j < gridSize; ++j) {
             grid[i][j] = newRow[j];
+        }
+    }
+}
+
+void NumberGrid::moveRight()
+{
+    int gridSize = getGridSize();
+
+    for (int i = 0; i < gridSize; ++i) {
+        vector<int> newRow;
+        
+        // Collect all non-zero elements
+        for (int j = 0; j < gridSize; ++j) {
+            if (grid[i][j] != 0) {
+                newRow.push_back(grid[i][j]);
+            }
+        }
+        
+        // Add zeros to the beginning of the newRow
+        while (newRow.size() < gridSize) {
+            newRow.insert(newRow.begin(), 0);
+        }
+        
+        // Copy newRow back to the grid
+        for (int j = 0; j < gridSize; ++j) {
+            grid[i][j] = newRow[j];
+        }
+    }
+}
+
+void NumberGrid::moveUp()
+{
+    int gridSize = getGridSize();
+
+    for (int j = 0; j < gridSize; ++j) { // Iterate over each column
+        vector<int> newColumn;
+
+        // Collect all non-zero elements in the column
+        for (int i = 0; i < gridSize; ++i) {
+            if (grid[i][j] != 0) {
+                newColumn.push_back(grid[i][j]);
+            }
+        }
+
+        // Add zeros to the end of the newColumn
+        while (newColumn.size() < gridSize) {
+            newColumn.push_back(0);
+        }
+
+        // Copy newColumn back to the grid
+        for (int i = 0; i < gridSize; ++i) {
+            grid[i][j] = newColumn[i];
+        }
+    }
+}
+
+void NumberGrid::moveDown()
+{
+    int gridSize = getGridSize();
+
+    for (int j = 0; j < gridSize; ++j) { // Iterate over each column
+        vector<int> newColumn;
+
+        // Collect all non-zero elements in the column
+        for (int i = 0; i < gridSize; ++i) {
+            if (grid[i][j] != 0) {
+                newColumn.push_back(grid[i][j]);
+            }
+        }
+
+        // Add zeros to the beginning of the newColumn
+        while (newColumn.size() < gridSize) {
+            newColumn.insert(newColumn.begin(), 0);
+        }
+
+        // Copy newColumn back to the grid
+        for (int i = 0; i < gridSize; ++i) {
+            grid[i][j] = newColumn[i];
         }
     }
 }

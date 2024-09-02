@@ -18,6 +18,9 @@ public:
     void printGrid();        // Override to print the current grid state
     void move(InputHandler::Direction dir);             // Simulate the user's move and add new number
     void moveLeft();         // Move all numbers to the left
+    void moveRight();        // Move all numbers to the right
+    void moveUp();           // Move all numbers up
+    void moveDown();         // Move all numbers down
 };
 
 #endif // NUMBERGRID_HPP
