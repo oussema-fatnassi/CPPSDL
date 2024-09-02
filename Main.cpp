@@ -1,8 +1,8 @@
-#include "Grid.cpp"
+#include "NumberGrid.hpp"
 
 int main()
 {
-    Grid grid(4);
-    grid.printGrid();
+    NumberGrid numberGrid(4);
+    numberGrid.fillWith2048();
     return 0;
 }

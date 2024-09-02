@@ -9,6 +9,7 @@ public:
     Grid(int gridSize);
     ~Grid();
     void printGrid();
+    int getGridSize();
 };
 
 

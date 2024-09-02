@@ -31,3 +31,8 @@ void Grid::printGrid()
         cout << endl;
     }
 }
+
+int Grid::getGridSize()
+{
+    return gridSize;
+}
