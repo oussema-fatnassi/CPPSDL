@@ -230,30 +230,43 @@ void NumberGrid::merge(vector<int>& row)
 {
     int gridSize = getGridSize();
 
-    for (int i = 0; i < gridSize - 1; ++i) {
-        // If the current number and the next one are the same, merge them
-        if (row[i] != 0 && row[i] == row[i + 1]) {
-            row[i] *= 2;            // Double the current cell value
-            row[i + 1] = 0;          // Empty the next cell
-            i++;                     // Skip the next cell to avoid double merging
-        }
-    }
-
-    // After merging, move all numbers to the left (shift non-zero elements)
+    // Step 1: Shift non-zero elements to the left (remove gaps)
     vector<int> newRow;
     for (int i = 0; i < gridSize; ++i) {
         if (row[i] != 0) {
             newRow.push_back(row[i]);
         }
     }
-    
-    // Add zeros to the end of the newRow
+
+    // Fill the remaining spaces with zeros
     while (newRow.size() < gridSize) {
         newRow.push_back(0);
     }
 
-    // Copy newRow back to the original row
+    // Step 2: Merge adjacent elements if they are the same
+    for (int i = 0; i < gridSize - 1; ++i) {
+        if (newRow[i] != 0 && newRow[i] == newRow[i + 1]) {
+            newRow[i] *= 2;         // Double the current cell value
+            newRow[i + 1] = 0;      // Empty the next cell
+            i++;                    // Skip the next cell to avoid double merging
+        }
+    }
+
+    // Step 3: Shift again to move non-zero elements to the left after merging
+    vector<int> finalRow;
     for (int i = 0; i < gridSize; ++i) {
-        row[i] = newRow[i];
+        if (newRow[i] != 0) {
+            finalRow.push_back(newRow[i]);
+        }
+    }
+
+    // Fill the remaining spaces with zeros
+    while (finalRow.size() < gridSize) {
+        finalRow.push_back(0);
+    }
+
+    // Copy the finalRow back to the original row
+    for (int i = 0; i < gridSize; ++i) {
+        row[i] = finalRow[i];
     }
 }
