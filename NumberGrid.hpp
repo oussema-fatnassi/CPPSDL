@@ -2,6 +2,7 @@
 #define NUMBERGRID_HPP
 
 #include "Grid.hpp"
+#include "InputHandler.hpp"
 #include <vector>
 using namespace std;
 
@@ -15,7 +16,7 @@ private:
 public:
     NumberGrid(int gridSize = 4);  
     void printGrid();        // Override to print the current grid state
-    void move();             // Simulate the user's move and add new number
+    void move(InputHandler::Direction dir);             // Simulate the user's move and add new number
 };
 
 #endif // NUMBERGRID_HPP

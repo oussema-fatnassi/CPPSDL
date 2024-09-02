@@ -84,7 +84,7 @@ void NumberGrid::printGrid()
     cout << endl;
 }
 
-void NumberGrid::move()
+void NumberGrid::move(InputHandler::Direction dir)
 {
     if (!addRandomNumber()) {
         cout << "Game Over" << endl;
