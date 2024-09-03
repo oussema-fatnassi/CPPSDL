@@ -21,29 +21,26 @@ file(GLOB_RECURSE SRC_FILES "${SRC_DIR}/*.cpp")
 # Create the executable from the source files
 add_executable(Main ${SRC_FILES})
 
-# Specify output directory for binaries
-set_target_properties(Main PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-)
-
 # Platform-specific settings
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     # macOS specific settings
-    find_package(SDL2 REQUIRED)
-    find_package(SDL2_image REQUIRED)
 
-    include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
+    # Add SDL2 include directories
+    include_directories(/opt/homebrew/opt/sdl2/include/SDL2 /opt/homebrew/opt/sdl2_image/include/SDL2)
 
-    target_link_libraries(Main ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+    # Link SDL2 and SDL2_image libraries
+    target_link_libraries(Main /opt/homebrew/opt/sdl2/lib/libSDL2.dylib /opt/homebrew/opt/sdl2_image/lib/libSDL2_image.dylib)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     # Windows specific settings
     find_package(SDL2 REQUIRED)
     find_package(SDL2_image REQUIRED)
-
     include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
-
-    # Add mingw32 for Windows (if using MinGW)
     target_link_libraries(Main ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} mingw32 SDL2main SDL2 SDL2_image)
 else()
     message(FATAL_ERROR "Unsupported platform")
 endif()
+
+# Specify output directory for binaries directly in the build folder
+set_target_properties(Main PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+)
