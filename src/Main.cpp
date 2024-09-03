@@ -1,34 +1,23 @@
-#include "NumberGrid.hpp"
-#include "InputHandler.hpp"
 #include <iostream>
+#include "Window.hpp"
 
-int main()
-{
-    NumberGrid numberGrid(4);
-    numberGrid.printGrid();
+int main() {
+    Window window("Testing", 600, 900);
 
-    while (true) {
-        InputHandler::Direction dir = InputHandler::getArrowKey();
-        switch (dir) {
-            case InputHandler::Direction::UP:
-                cout << "Up Arrow Pressed" << endl;
-                numberGrid.move(InputHandler::Direction::UP);
-                break;
-            case InputHandler::Direction::DOWN:
-                cout << "Down Arrow Pressed" << endl;
-                numberGrid.move(InputHandler::Direction::DOWN);
-                break;
-            case InputHandler::Direction::LEFT:
-                cout << "Left Arrow Pressed" << endl;
-                numberGrid.move(InputHandler::Direction::LEFT);
-                break;
-            case InputHandler::Direction::RIGHT:
-                cout << "Right Arrow Pressed" << endl;
-                numberGrid.move(InputHandler::Direction::RIGHT);
-                break;
-            default:
-                break;
-        }
+    int x = 75;
+    int y = 200;
+    int width = 450;
+    int height = 450;
+    window.renderImage("../assets/images/4x4_grid.svg", x, y, width, height);
+
+    while (!window.isClosed()) {
+        window.pollEvents();
+        window.clear();
+
+        window.renderImage("../assets/images/4x4_grid.svg", x, y, width, height);
+
+        SDL_Delay(10); 
     }
+
     return 0;
 }
