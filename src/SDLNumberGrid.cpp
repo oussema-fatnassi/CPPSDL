@@ -4,11 +4,13 @@
 #include <iostream>
 
 SDLNumberGrid::SDLNumberGrid(Window& window, int gridSize, int tileSize)
-    : window(window), gridSize(gridSize), tileSize(tileSize), grid(gridSize, std::vector<int>(gridSize, 0)) {
+    : window(window), gridSize(gridSize), tileSize(tileSize), grid(gridSize, std::vector<int>(gridSize, 0)),
+      xStart(75), yStart(200), offsetX(10), offsetY(8) {  // Set to match the background position
     srand(time(0)); // Seed for random number generation
     addRandomNumber(); // Start by adding a random 2 or 4
     addRandomNumber(); // Add a second random number
 }
+
 
 SDLNumberGrid::~SDLNumberGrid() {
     // Destructor
@@ -198,15 +200,19 @@ void SDLNumberGrid::merge(std::vector<int>& row) {
     row = finalRow;
 }
 
+const int TILE_GAP = 10;
+
 void SDLNumberGrid::render() {
     for (int i = 0; i < gridSize; ++i) {
         for (int j = 0; j < gridSize; ++j) {
-            int x = xStart + j * tileSize;
-            int y = yStart + i * tileSize;
+            // Calculate x and y with the tile gap
+            int x = xStart + j * (tileSize + TILE_GAP) + offsetX;
+            int y = yStart + i * (tileSize + TILE_GAP) + offsetY;
             renderTile(grid[i][j], x, y);
         }
     }
 }
+
 
 void SDLNumberGrid::renderTile(int value, int x, int y) {
     GameObject tile(window.getRenderer(), value, x, y, tileSize, tileSize);

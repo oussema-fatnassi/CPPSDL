@@ -5,7 +5,7 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
     Window window("2048 Game", 600, 900);
-    GameObject background = GameObject(window.getRenderer(), "../assets/images/4x4_grid.svg", 0, 0, 450, 450);
+    GameObject background = GameObject(window.getRenderer(), "../assets/images/4x4_grid.svg", 75, 200, 450, 450);
     TTF_Font* font = TTF_OpenFont("../assets/fonts/ClearSansBold.ttf", 24);
     if (!font) {
         cerr << "Failed to load font: " << TTF_GetError() << endl;

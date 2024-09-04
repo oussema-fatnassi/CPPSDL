@@ -33,6 +33,8 @@ private:
     int tileSize;
     int xStart;
     int yStart;
+    int offsetX;
+    int offsetY;
 
     TTF_Font* font;
     SDL_Color textColor;
