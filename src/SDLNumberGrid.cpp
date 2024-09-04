@@ -64,19 +64,29 @@ bool SDLNumberGrid::isGridFull() const {
 }
 
 void SDLNumberGrid::handleInput(SDL_Keycode key) {
+    bool moved = false;
+
     if (key == SDLK_LEFT) {
         moveLeft();
+        moved = true;
     } else if (key == SDLK_RIGHT) {
         moveRight();
+        moved = true;
     } else if (key == SDLK_UP) {
         moveUp();
+        moved = true;
     } else if (key == SDLK_DOWN) {
         moveDown();
+        moved = true;
     }
-    if (!addRandomNumber()) {
-        std::cout << "Game Over" << std::endl;
+
+    if (moved) {
+        if (!addRandomNumber()) {
+            std::cout << "Game Over" << std::endl;
+        }
     }
 }
+
 
 void SDLNumberGrid::moveLeft() {
     for (int i = 0; i < gridSize; ++i) {
