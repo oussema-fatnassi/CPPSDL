@@ -1,34 +1,24 @@
-#include "NumberGrid.hpp"
-#include "InputHandler.hpp"
-#include <iostream>
+#include <SFML/Graphics.hpp>
 
 int main()
 {
-    NumberGrid numberGrid(4);
-    numberGrid.printGrid();
+    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
 
-    while (true) {
-        InputHandler::Direction dir = InputHandler::getArrowKey();
-        switch (dir) {
-            case InputHandler::Direction::UP:
-                cout << "Up Arrow Pressed" << endl;
-                numberGrid.move(InputHandler::Direction::UP);
-                break;
-            case InputHandler::Direction::DOWN:
-                cout << "Down Arrow Pressed" << endl;
-                numberGrid.move(InputHandler::Direction::DOWN);
-                break;
-            case InputHandler::Direction::LEFT:
-                cout << "Left Arrow Pressed" << endl;
-                numberGrid.move(InputHandler::Direction::LEFT);
-                break;
-            case InputHandler::Direction::RIGHT:
-                cout << "Right Arrow Pressed" << endl;
-                numberGrid.move(InputHandler::Direction::RIGHT);
-                break;
-            default:
-                break;
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
         }
+
+        window.clear();
+        window.draw(shape);
+        window.display();
     }
+
     return 0;
 }
