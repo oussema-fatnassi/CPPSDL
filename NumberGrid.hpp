@@ -21,7 +21,11 @@ public:
     void moveRight();                                           // Move all numbers to the right
     void moveUp();                                              // Move all numbers up
     void moveDown();                                            // Move all numbers down
-    void merge(vector<int>& row);                               // Merge adjacent equal numbers
+    void merge(vector<int>& row);     
+    
+public:
+    const vector<vector<int>>& getGrid() const;
+                          // Merge adjacent equal numbers
 };
 
 #endif // NUMBERGRID_HPP

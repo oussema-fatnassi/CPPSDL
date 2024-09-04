@@ -49,6 +49,10 @@ bool NumberGrid::isGridFull()
     }
     return true;
 }
+const vector<vector<int>>& NumberGrid::getGrid() const {
+    return grid;
+}
+
 
 void NumberGrid::printGrid()
 {
