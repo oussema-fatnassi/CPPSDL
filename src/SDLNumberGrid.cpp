@@ -9,12 +9,22 @@ SDLNumberGrid::SDLNumberGrid(Window& window, int gridSize, int tileSize)
     srand(time(0)); // Seed for random number generation
     addRandomNumber(); // Start by adding a random 2 or 4
     addRandomNumber(); // Add a second random number
+
+    // Initialize font and text color
+    font = TTF_OpenFont("../assets/fonts/ClearSansBold.ttf", 40);
+    if (!font) {
+        std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
+    }
+    textColor = {0, 0, 0, 255}; // Black text
 }
 
 
 SDLNumberGrid::~SDLNumberGrid() {
-    // Destructor
+    if (font) {
+        TTF_CloseFont(font);
+    }
 }
+
 
 bool SDLNumberGrid::addRandomNumber() {
     std::vector<std::pair<int, int>> emptyCells;
@@ -215,9 +225,36 @@ void SDLNumberGrid::render() {
 
 
 void SDLNumberGrid::renderTile(int value, int x, int y) {
+    // Render the tile background
     GameObject tile(window.getRenderer(), value, x, y, tileSize, tileSize);
     tile.render(window.getRenderer());
+    
+    // Render the text in the center of the tile
+    if (value != 0) {
+        std::string text = std::to_string(value);
+        // Calculate the position to center the text
+        int textWidth, textHeight;
+        SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), textColor);
+        if (textSurface) {
+            SDL_Texture* textTexture = SDL_CreateTextureFromSurface(window.getRenderer(), textSurface);
+            SDL_FreeSurface(textSurface);
+            
+            if (textTexture) {
+                SDL_QueryTexture(textTexture, nullptr, nullptr, &textWidth, &textHeight);
+                
+                SDL_Rect textRect;
+                textRect.x = x + (tileSize - textWidth) / 2;
+                textRect.y = y + (tileSize - textHeight) / 2;
+                textRect.w = textWidth;
+                textRect.h = textHeight;
+                
+                SDL_RenderCopy(window.getRenderer(), textTexture, nullptr, &textRect);
+                SDL_DestroyTexture(textTexture);
+            }
+        }
+    }
 }
+
 
 bool SDLNumberGrid::isGameOver() const {
     return isGridFull();
