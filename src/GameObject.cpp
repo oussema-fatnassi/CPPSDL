@@ -42,6 +42,9 @@ void GameObject::render(SDL_Renderer* renderer) {
 }
 
 string GameObject::getImagePathToValue(int value) {
+    if(value > 2048) {
+        return "../assets/images/other.svg";
+    }
     return "../assets/images/" + to_string(value) + ".svg";
 }
 
