@@ -26,10 +26,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     # macOS specific settings
 
     # Add SDL2 include directories
-    include_directories(/opt/homebrew/opt/sdl2/include/SDL2 /opt/homebrew/opt/sdl2_image/include/SDL2)
+    include_directories(/opt/homebrew/opt/sdl2/include/SDL2 /opt/homebrew/opt/sdl2_image/include/SDL2 /opt/homebrew/opt/sdl2_ttf/include/SDL2)
 
     # Link SDL2 and SDL2_image libraries
-    target_link_libraries(Main /opt/homebrew/opt/sdl2/lib/libSDL2.dylib /opt/homebrew/opt/sdl2_image/lib/libSDL2_image.dylib)
+    target_link_libraries(Main /opt/homebrew/opt/sdl2/lib/libSDL2.dylib /opt/homebrew/opt/sdl2_image/lib/libSDL2_image.dylib /opt/homebrew/opt/sdl2_ttf/lib/libSDL2_ttf.dylib)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     # Windows specific settings
     find_package(SDL2 REQUIRED)
