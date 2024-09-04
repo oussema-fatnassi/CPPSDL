@@ -5,6 +5,8 @@
 #include "GameObject.hpp"
 #include <vector>
 #include <SDL.h>
+#include <SDL_ttf.h>
+
 
 class SDLNumberGrid {
 public:
@@ -14,6 +16,7 @@ public:
     void render();
     void handleInput(SDL_Keycode key);
     bool isGameOver() const;
+    void writeText(const string& text, TTF_Font* font, SDL_Color color, int x, int y);
 
 private:
     bool addRandomNumber();                      // Add a random 2 or 4 to an empty cell
@@ -31,6 +34,9 @@ private:
     int xStart;
     int yStart;
 
+    TTF_Font* font;
+    SDL_Color textColor;
+    
     void renderTile(int value, int x, int y);
 };
 

@@ -199,10 +199,6 @@ void SDLNumberGrid::merge(std::vector<int>& row) {
 }
 
 void SDLNumberGrid::render() {
-    // Clear the window first
-    window.clear();
-
-    // Loop through the grid and render each tile
     for (int i = 0; i < gridSize; ++i) {
         for (int j = 0; j < gridSize; ++j) {
             int x = xStart + j * tileSize;
@@ -210,9 +206,6 @@ void SDLNumberGrid::render() {
             renderTile(grid[i][j], x, y);
         }
     }
-
-    // Present the rendered frame
-    window.present();
 }
 
 void SDLNumberGrid::renderTile(int value, int x, int y) {
@@ -222,4 +215,26 @@ void SDLNumberGrid::renderTile(int value, int x, int y) {
 
 bool SDLNumberGrid::isGameOver() const {
     return isGridFull();
+}
+
+void SDLNumberGrid::writeText(const std::string& text, TTF_Font* font, SDL_Color color, int x, int y) {
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+    if (!textSurface) {
+        std::cerr << "Unable to render text surface! TTF_Error: " << TTF_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(window.getRenderer(), textSurface);
+    SDL_FreeSurface(textSurface);
+
+    if (!textTexture) {
+        std::cerr << "Unable to create texture from rendered text! SDL_Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Rect dstRect = {x, y, 0, 0};
+    SDL_QueryTexture(textTexture, nullptr, nullptr, &dstRect.w, &dstRect.h);
+
+    SDL_RenderCopy(window.getRenderer(), textTexture, nullptr, &dstRect);
+    SDL_DestroyTexture(textTexture);
 }
