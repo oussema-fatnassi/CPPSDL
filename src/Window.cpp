@@ -16,6 +16,7 @@ Window::~Window() {
     }
     SDL_Quit();
     IMG_Quit();
+    TTF_Quit();
 }
 
 bool Window::init() {
@@ -26,6 +27,11 @@ bool Window::init() {
 
     if (IMG_Init(IMG_INIT_PNG) == 0) {
         cerr << "IMG_Init Error: " << IMG_GetError() << endl;
+        return false;
+    }
+
+    if (TTF_Init() == -1) {
+        std::cerr << "TTF_Init Error: " << TTF_GetError() << std::endl;
         return false;
     }
 
