@@ -32,10 +32,22 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     target_link_libraries(Main /opt/homebrew/opt/sdl2/lib/libSDL2.dylib /opt/homebrew/opt/sdl2_image/lib/libSDL2_image.dylib)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     # Windows specific settings
-    find_package(SDL2 REQUIRED)
-    find_package(SDL2_image REQUIRED)
+    # find_package(SDL2 REQUIRED)
+    # find_package(SDL2_image REQUIRED)
+    # include_directories(C:/Program Files (x86)/SDL2/x86_64-w64-mingw32/include/SDL2 
+    # C:/Program Files (x86)/SDL2_image/x86_64-w64-mingw32/include/SDL2)
+    # target_link_libraries(Main C:/Program Files (x86)/SDL2/x86_64-w64-mingw32/lib/ 
+    # C:/Program Files (x86)/SDL2_image/x86_64-w64-mingw32/lib mingw32 SDL2main SDL2 SDL2_image)
+
+    # Manually specify SDL2 paths if find_package(SDL2) does not work
+    set(SDL2_INCLUDE_DIRS "C:/Program Files (x86)/SDL2/x86_64-w64-mingw32/include")
+    set(SDL2_IMAGE_INCLUDE_DIRS "C:/Program Files (x86)/SDL2_image/x86_64-w64-mingw32/include")
+    set(SDL2_LIBRARIES "C:/Program Files (x86)/SDL2/x86_64-w64-mingw32/bin/SDL2.dll" "C:/Program Files (x86)/SDL2/x86_64-w64-mingw32/lib/libSDL2.a")
+    set(SDL2_IMAGE_LIBRARIES "C:/Program Files (x86)/SDL2_image/x86_64-w64-mingw32/bin/SDL2_image.dll" "C:/Program Files (x86)/SDL2_image/x86_64-w64-mingw32/lib/libSDL2_image.a")
+
     include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
-    target_link_libraries(Main ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} mingw32 SDL2main SDL2 SDL2_image)
+    target_link_libraries(Main ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+
 else()
     message(FATAL_ERROR "Unsupported platform")
 endif()
