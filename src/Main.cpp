@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
         }
 
 
-        if (grid.isGameOver()) {
+        if (grid.isGameOver() && !grid.canMove()) {
             quit = true;
         }
 

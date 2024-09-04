@@ -16,6 +16,7 @@ public:
     void render();
     void handleInput(SDL_Keycode key);
     bool isGameOver() const;
+    bool canMove() const;
     void writeText(const string& text, TTF_Font* font, SDL_Color color, int x, int y);
 
 private:
@@ -38,6 +39,7 @@ private:
 
     TTF_Font* font;
     SDL_Color textColor;
+    SDL_Color textColor2;
     
     void renderTile(int value, int x, int y);
 };

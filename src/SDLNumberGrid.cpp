@@ -15,7 +15,8 @@ SDLNumberGrid::SDLNumberGrid(Window& window, int gridSize, int tileSize)
     if (!font) {
         std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
     }
-    textColor = {0, 0, 0, 255}; // Black text
+    textColor = {255, 255, 255}; //CHANGE THE CORRECT COLOR
+    textColor2 = { 113, 112, 107};
 }
 
 
@@ -228,26 +229,39 @@ void SDLNumberGrid::renderTile(int value, int x, int y) {
     // Render the tile background
     GameObject tile(window.getRenderer(), value, x, y, tileSize, tileSize);
     tile.render(window.getRenderer());
-    
+
     // Render the text in the center of the tile
     if (value != 0) {
         std::string text = std::to_string(value);
-        // Calculate the position to center the text
-        int textWidth, textHeight;
-        SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), textColor);
+        SDL_Color color;
+
+        // Choose the text color based on the value
+        if (value <= 8) {
+            color = textColor2;  // Use textColor2 for values less than or equal to 8
+        } else {
+            color = textColor;  // Use the default textColor for values greater than 8
+        }
+
+        // Create the text surface with the selected color
+        SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+        
         if (textSurface) {
+            // Create the texture from the surface
             SDL_Texture* textTexture = SDL_CreateTextureFromSurface(window.getRenderer(), textSurface);
             SDL_FreeSurface(textSurface);
-            
+
             if (textTexture) {
+                // Calculate the position to center the text
+                int textWidth, textHeight;
                 SDL_QueryTexture(textTexture, nullptr, nullptr, &textWidth, &textHeight);
-                
+
                 SDL_Rect textRect;
                 textRect.x = x + (tileSize - textWidth) / 2;
                 textRect.y = y + (tileSize - textHeight) / 2;
                 textRect.w = textWidth;
                 textRect.h = textHeight;
-                
+
+                // Render the text
                 SDL_RenderCopy(window.getRenderer(), textTexture, nullptr, &textRect);
                 SDL_DestroyTexture(textTexture);
             }
@@ -255,13 +269,35 @@ void SDLNumberGrid::renderTile(int value, int x, int y) {
     }
 }
 
-
 bool SDLNumberGrid::isGameOver() const {
     return isGridFull();
 }
 
+bool SDLNumberGrid::canMove() const {
+    for (int i = 0; i < gridSize; ++i) {
+        for (int j = 0; j < gridSize; ++j) {
+            if (grid[i][j] == 0) {
+                return true;
+            }
+            if (i > 0 && grid[i][j] == grid[i - 1][j]) {
+                return true;
+            }
+            if (i < gridSize - 1 && grid[i][j] == grid[i + 1][j]) {
+                return true;
+            }
+            if (j > 0 && grid[i][j] == grid[i][j - 1]) {
+                return true;
+            }
+            if (j < gridSize - 1 && grid[i][j] == grid[i][j + 1]) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void SDLNumberGrid::writeText(const std::string& text, TTF_Font* font, SDL_Color color, int x, int y) {
-    SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+    SDL_Surface* textSurface = TTF_RenderText_LCD(font, text.c_str(), color, {0, 0, 0, 255});
     if (!textSurface) {
         std::cerr << "Unable to render text surface! TTF_Error: " << TTF_GetError() << std::endl;
         return;
