@@ -1,27 +1,24 @@
 {
-    "version": "0.2.0",
-    "configurations": [
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": true,
+      "cwd": ".",
+      "program": "build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
         {
-            "name": "(gdb) Launch",          // Nom de la configuration
-            "type": "cppdbg",                // Type de débogueur
-            "request": "launch",             // Type de requête (lancement)
-            "program": "${workspaceFolder}/build/main.exe", // Chemin vers l'exécutable généré par CMake
-            "args": [],                      // Arguments de ligne de commande à passer à l'exécutable (laissez vide si vous n'en avez pas)
-            "stopAtEntry": false,            // Ne pas arrêter à l'entrée
-            "cwd": "${workspaceFolder}",     // Répertoire de travail (le dossier racine du projet)
-            "environment": [],               // Variables d'environnement
-            "externalConsole": false,        // Utilisation de la console externe pour l'exécution (true si vous souhaitez une console séparée)
-            "MIMode": "gdb",                 // Mode d'interface du débogueur (gdb pour MinGW)
-            "miDebuggerPath": "C:/msys64/ucrt64/bin/gdb.exe", // Chemin vers gdb (assurez-vous que ce chemin est correct pour votre installation)
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb", // Amélioration de l'affichage des objets C++ dans gdb
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "CMake: build", // Tâche à exécuter avant le lancement (ici, la tâche de compilation via CMake)
-            "internalConsoleOptions": "openOnSessionStart" // Ouvrir la console interne lors du démarrage de la session
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
         }
-    ]
+      ]
+    }
+  ]
 }
