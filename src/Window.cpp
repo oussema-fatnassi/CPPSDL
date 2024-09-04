@@ -97,3 +97,34 @@ void Window::renderImage(const std::string& imagePath, int x, int y, int width, 
     SDL_RenderCopy(_renderer, _texture, nullptr, &dstRect);
     SDL_RenderPresent(_renderer);
 }
+
+void Window::renderGameObject(GameObject* gameObjects) {
+    SDL_Surface* surface = IMG_Load(gameObjects->getImagePath().c_str());
+    if (!surface) {
+        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+        return;
+    }
+
+    if (_texture) {
+        SDL_DestroyTexture(_texture);
+    }
+    
+    _texture = SDL_CreateTextureFromSurface(_renderer, surface);
+    SDL_FreeSurface(surface);
+
+    if (!_texture) {
+        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Rect dstRect;
+    dstRect.x = gameObjects->getX();
+    dstRect.y = gameObjects->getY();
+    dstRect.w = gameObjects->getWidth();
+    dstRect.h = gameObjects->getHeight();
+
+    SDL_RenderClear(_renderer);
+    SDL_RenderCopy(_renderer, _texture, nullptr, &dstRect);
+    SDL_RenderPresent(_renderer);
+
+}

@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <string>
+#include "GameObject.hpp"
 
 class Window {
 public:
@@ -14,6 +15,7 @@ public:
 
     void clear() const;
     void renderImage(const std::string& imagePath, int x, int y, int width, int height);
+    void renderGameObject(GameObject* gameObjects);
 
 private:
     bool init();
