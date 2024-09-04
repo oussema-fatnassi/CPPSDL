@@ -4,7 +4,8 @@
 #include "Window.hpp"
 #include "GameObject.hpp"
 #include <vector>
-#include <SDL.h>
+#include <algorithm>
+#include <../sdl/SDL.h>
 
 class SDLNumberGrid {
 public:

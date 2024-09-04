@@ -1,5 +1,6 @@
 #include "SDLNumberGrid.hpp"
-#include <SDL.h>
+#include <../sdl/SDL.h>
+#include <../sdl/SDL_image.h>
 
 int main(int argc, char* argv[]) {
     Window window("2048 Game", 600, 600);

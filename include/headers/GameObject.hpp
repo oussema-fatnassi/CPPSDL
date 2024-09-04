@@ -1,7 +1,7 @@
 #ifndef GAMEOBJECT_HPP
 #define GAMEOBJECT_HPP
 
-#include <SDL_image.h>
+#include <../sdl/SDL_image.h>
 #include <string>
 using namespace std;
 

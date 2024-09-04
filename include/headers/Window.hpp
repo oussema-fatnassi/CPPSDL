@@ -1,7 +1,8 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include <SDL.h>
+#include <../sdl/SDL.h>
+#include <../sdl/SDL_image.h>
 #include <string>
 using namespace std;
 
