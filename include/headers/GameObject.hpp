@@ -8,12 +8,14 @@ using namespace std;
 class GameObject {
 public:
     GameObject(SDL_Renderer* renderer, int value, int x, int y, int width, int height);
+    GameObject(SDL_Renderer* renderer, const string& imagePath, int x, int y, int width, int height);
     ~GameObject();
 
     void render(SDL_Renderer* renderer);
 
 private:
     string getImagePathToValue(int value);
+    void loadTexture(SDL_Renderer* renderer, const string& imagePath);
     
     int x;
     int y;
