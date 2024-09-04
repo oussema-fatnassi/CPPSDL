@@ -5,7 +5,7 @@
 
 SDLNumberGrid::SDLNumberGrid(Window& window, int gridSize, int tileSize)
     : window(window), gridSize(gridSize), tileSize(tileSize), grid(gridSize, std::vector<int>(gridSize, 0)),
-      xStart(75), yStart(200), offsetX(10), offsetY(8) {  // Set to match the background position
+      xStart(75), yStart(300), offsetX(10), offsetY(8), score(0) {  // Set to match the background position
     srand(time(0)); // Seed for random number generation
     addRandomNumber(); // Start by adding a random 2 or 4
     addRandomNumber(); // Add a second random number
@@ -15,7 +15,7 @@ SDLNumberGrid::SDLNumberGrid(Window& window, int gridSize, int tileSize)
     if (!font) {
         std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
     }
-    textColor = {255, 255, 255}; //CHANGE THE CORRECT COLOR
+    textColor = {255, 255, 255}; 
     textColor2 = { 113, 112, 107};
 }
 
@@ -184,7 +184,6 @@ void SDLNumberGrid::moveDown() {
 
 void SDLNumberGrid::merge(std::vector<int>& row) {
     int gridSize = this->gridSize;
-
     // Shift non-zero elements to the left
     std::vector<int> newRow;
     for (int i = 0; i < gridSize; ++i) {
@@ -200,9 +199,10 @@ void SDLNumberGrid::merge(std::vector<int>& row) {
     // Merge adjacent elements if they are the same
     for (int i = 0; i < gridSize - 1; ++i) {
         if (newRow[i] != 0 && newRow[i] == newRow[i + 1]) {
-            newRow[i] *= 2;         // Double the current cell value
-            newRow[i + 1] = 0;      // Empty the next cell
-            i++;                    // Skip the next cell to avoid double merging
+            newRow[i] *= 2;            // Double the current cell value
+            score += newRow[i];         // Add the merged value to the score
+            newRow[i + 1] = 0;          // Empty the next cell
+            i++;                        // Skip the next cell to avoid double merging
         }
     }
 
@@ -220,6 +220,7 @@ void SDLNumberGrid::merge(std::vector<int>& row) {
 
     row = finalRow;
 }
+
 
 const int TILE_GAP = 10;
 
@@ -307,7 +308,7 @@ bool SDLNumberGrid::canMove() const {
 }
 
 void SDLNumberGrid::writeText(const std::string& text, TTF_Font* font, SDL_Color color, int x, int y) {
-    SDL_Surface* textSurface = TTF_RenderText_LCD(font, text.c_str(), color, {0, 0, 0, 255});
+    SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
     if (!textSurface) {
         std::cerr << "Unable to render text surface! TTF_Error: " << TTF_GetError() << std::endl;
         return;
@@ -326,4 +327,8 @@ void SDLNumberGrid::writeText(const std::string& text, TTF_Font* font, SDL_Color
 
     SDL_RenderCopy(window.getRenderer(), textTexture, nullptr, &dstRect);
     SDL_DestroyTexture(textTexture);
+}
+
+int SDLNumberGrid::getScore() const {
+    return score;
 }

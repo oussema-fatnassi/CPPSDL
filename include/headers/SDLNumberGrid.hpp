@@ -18,6 +18,7 @@ public:
     bool isGameOver() const;
     bool canMove() const;
     void writeText(const string& text, TTF_Font* font, SDL_Color color, int x, int y);
+    int getScore() const;
 
 private:
     bool addRandomNumber();                      // Add a random 2 or 4 to an empty cell
@@ -36,6 +37,7 @@ private:
     int yStart;
     int offsetX;
     int offsetY;
+    int score;
 
     TTF_Font* font;
     SDL_Color textColor;
