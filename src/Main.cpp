@@ -1,22 +1,30 @@
-#include <iostream>
-#include "Window.hpp"
-#include "GameObject.hpp"
+#include "SDLNumberGrid.hpp"
+#include <SDL.h>
 
-int main() {
-    Window window("Testing", 600, 900);
+int main(int argc, char* argv[]) {
+    Window window("2048 Game", 600, 600);
 
-    GameObject gameObject(window.getRenderer(), 8, 85, 210, 100, 100);
+    SDLNumberGrid grid(window);
 
-    while (!window.isClosed()) {
-        window.pollEvents();
-        window.clear();
+    bool quit = false;
+    SDL_Event event;
 
-        window.renderImage("../assets/images/4x4_grid.svg", 75, 200, 450, 450);
-        
-        gameObject.render(window.getRenderer());
+    while (!quit) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                quit = true;
+            } else if (event.type == SDL_KEYDOWN) {
+                grid.handleInput(event.key.keysym.sym);
+            }
+        }
 
-        window.present();
-        SDL_Delay(10);
+        grid.render();
+
+        if (grid.isGameOver()) {
+            quit = true;
+        }
+
+        SDL_Delay(100);
     }
 
     return 0;
