@@ -7,4 +7,3 @@ link :
 	 g++ main.o -o main -L"C:\Users\admin\Desktop\SFML-2.6.1\lib" -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lsfml-main -lsfml-audio-s -lopengl32 -lfreetype -lwinmm -lgdi32 -mwindows
 clean :
 		rm -f main.o*
-		
