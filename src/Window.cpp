@@ -2,20 +2,17 @@
 #include <SDL_image.h>
 #include <iostream>
 
-Window::Window(const std::string& title, int width, int height)
-    : _title(title), _width(width), _height(height) {
-    _closed = !init();
+Window::Window(const string& title, int width, int height)
+    : title(title), width(width), height(height) {
+    closed = !init();
 }
 
 Window::~Window() {
-    if (_texture) {
-        SDL_DestroyTexture(_texture);
+    if (renderer) {
+        SDL_DestroyRenderer(renderer);
     }
-    if (_renderer) {
-        SDL_DestroyRenderer(_renderer);
-    }
-    if (_window) {
-        SDL_DestroyWindow(_window);
+    if (window) {
+        SDL_DestroyWindow(window);
     }
     SDL_Quit();
     IMG_Quit();
@@ -23,24 +20,24 @@ Window::~Window() {
 
 bool Window::init() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
+        cerr << "SDL_Init Error: " << SDL_GetError() << endl;
         return false;
     }
 
     if (IMG_Init(IMG_INIT_PNG) == 0) {
-        std::cerr << "IMG_Init Error: " << IMG_GetError() << std::endl;
+        cerr << "IMG_Init Error: " << IMG_GetError() << endl;
         return false;
     }
 
-    _window = SDL_CreateWindow(_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, 0);
-    if (!_window) {
-        std::cerr << "Failed to create window: " << SDL_GetError() << std::endl;
+    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
+    if (!window) {
+        cerr << "Failed to create window: " << SDL_GetError() << endl;
         return false;
     }
 
-    _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
-    if (!_renderer) {
-        std::cerr << "Failed to create renderer: " << SDL_GetError() << std::endl;
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer) {
+        cerr << "Failed to create renderer: " << SDL_GetError() << endl;
         return false;
     }
 
@@ -50,81 +47,44 @@ bool Window::init() {
 void Window::pollEvents() {
     SDL_Event event;
     if (SDL_PollEvent(&event)) {
-        switch (event.type) {
-            case SDL_QUIT:
-                _closed = true;
-                break;
-            default:
-                break;
+        if (event.type == SDL_QUIT) {
+            closed = true;
         }
     }
 }
 
 bool Window::isClosed() const {
-    return _closed;
+    return closed;
 }
 
 void Window::clear() const {
-    SDL_RenderClear(_renderer);
+    SDL_RenderClear(renderer);
 }
 
-void Window::renderImage(const std::string& imagePath, int x, int y, int width, int height) {
+void Window::present() const {
+    SDL_RenderPresent(renderer);
+}
+
+void Window::renderImage(const string& imagePath, int x, int y, int width, int height) {
     SDL_Surface* surface = IMG_Load(imagePath.c_str());
     if (!surface) {
-        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+        cerr << "Failed to load image: " << IMG_GetError() << endl;
         return;
     }
 
-    if (_texture) {
-        SDL_DestroyTexture(_texture);
-    }
-    
-    _texture = SDL_CreateTextureFromSurface(_renderer, surface);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_FreeSurface(surface);
 
-    if (!_texture) {
-        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+    if (!texture) {
+        cerr << "Failed to create texture: " << SDL_GetError() << endl;
         return;
     }
 
-    SDL_Rect dstRect;
-    dstRect.x = x;
-    dstRect.y = y;
-    dstRect.w = width;
-    dstRect.h = height;
-
-    SDL_RenderClear(_renderer);
-    SDL_RenderCopy(_renderer, _texture, nullptr, &dstRect);
-    SDL_RenderPresent(_renderer);
+    SDL_Rect dstRect = {x, y, width, height};
+    SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+    SDL_DestroyTexture(texture);
 }
 
-void Window::renderGameObject(GameObject* gameObjects) {
-    SDL_Surface* surface = IMG_Load(gameObjects->getImagePath().c_str());
-    if (!surface) {
-        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
-        return;
-    }
-
-    if (_texture) {
-        SDL_DestroyTexture(_texture);
-    }
-    
-    _texture = SDL_CreateTextureFromSurface(_renderer, surface);
-    SDL_FreeSurface(surface);
-
-    if (!_texture) {
-        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
-        return;
-    }
-
-    SDL_Rect dstRect;
-    dstRect.x = gameObjects->getX();
-    dstRect.y = gameObjects->getY();
-    dstRect.w = gameObjects->getWidth();
-    dstRect.h = gameObjects->getHeight();
-
-    SDL_RenderClear(_renderer);
-    SDL_RenderCopy(_renderer, _texture, nullptr, &dstRect);
-    SDL_RenderPresent(_renderer);
-
+SDL_Renderer* Window::getRenderer() const {
+    return renderer;
 }

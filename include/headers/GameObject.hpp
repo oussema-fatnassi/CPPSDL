@@ -7,28 +7,19 @@ using namespace std;
 
 class GameObject {
 public:
-    GameObject(int value, int x, int y, int width, int height);
+    GameObject(SDL_Renderer* renderer, int value, int x, int y, int width, int height);
     ~GameObject();
-    string getImagePathToValue(int value);
-    string getImagePath();
-    int getX();
-    int getY();
-    int getWidth();
-    int getHeight();
+
+    void render(SDL_Renderer* renderer);
 
 private:
-    bool init();
-    int value;
-    string imagePath;
+    string getImagePathToValue(int value);
+    
     int x;
     int y;
     int width;
     int height;
     SDL_Texture* texture;
-    bool closed;
-
 };
-
-
 
 #endif  // GAMEOBJECT_HPP

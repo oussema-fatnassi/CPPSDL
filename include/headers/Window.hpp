@@ -3,32 +3,31 @@
 
 #include <SDL.h>
 #include <string>
-#include "GameObject.hpp"
+using namespace std;
 
 class Window {
 public:
-    Window(const std::string& title, int width, int height);
+    Window(const string& title, int width, int height);
     ~Window();
 
     void pollEvents();
     bool isClosed() const;
 
     void clear() const;
-    void renderImage(const std::string& imagePath, int x, int y, int width, int height);
-    void renderGameObject(GameObject* gameObjects);
+    void present() const;
+    void renderImage(const string& imagePath, int x, int y, int width, int height);
+    SDL_Renderer* getRenderer() const;
 
 private:
     bool init();
     
-    std::string _title;
-    int _width = 800;
-    int _height = 600;
+    string title;
+    int width;
+    int height;
+    bool closed = false;
 
-    bool _closed = false;
-
-    SDL_Window* _window = nullptr;
-    SDL_Renderer* _renderer = nullptr;
-    SDL_Texture* _texture = nullptr;
+    SDL_Window* window = nullptr;
+    SDL_Renderer* renderer = nullptr;
 };
 
 #endif
