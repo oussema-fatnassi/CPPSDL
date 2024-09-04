@@ -1,12 +1,16 @@
 #ifndef INPUTHANDLER_HPP
 #define INPUTHANDLER_HPP
 
-class InputHandler
-{
-public:
-    enum class Direction { UP, DOWN, LEFT, RIGHT, NONE };
+#include <SDL.h>
 
-    static Direction getArrowKey();
+class InputHandler {
+public:
+    enum class Direction { NONE, UP, DOWN, LEFT, RIGHT };
+    
+    Direction getDirection();
+
+private:
+    Direction mapSDLKeyToDirection(SDL_Keycode key);
 };
 
-#endif // INPUTHANDLER_HPP
+#endif  // INPUTHANDLER_HPP
