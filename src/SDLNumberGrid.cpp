@@ -64,32 +64,40 @@ bool SDLNumberGrid::isGridFull() const {
 }
 
 void SDLNumberGrid::handleInput(SDL_Keycode key) {
-    bool moved = false;
-
-    previousGrid = grid;
+    previousGrid = grid;  // Store the grid before any movement
     previousScore = score;
 
     if (key == SDLK_LEFT) {
         moveLeft();
-        moved = true;
     } else if (key == SDLK_RIGHT) {
         moveRight();
-        moved = true;
     } else if (key == SDLK_UP) {
         moveUp();
-        moved = true;
     } else if (key == SDLK_DOWN) {
         moveDown();
-        moved = true;
     }
 
-    if (moved) {
+    // Check if the grid has changed before adding a new random tile
+    if (gridHasChanged()) {
         if (!addRandomNumber()) {
             std::cout << "Game Over" << std::endl;
         }
         canUndo = true;
     }
 }
+
+
+bool SDLNumberGrid::gridHasChanged() const {
+    for (int i = 0; i < gridSize; ++i) {
+        for (int j = 0; j < gridSize; ++j) {
+            if (grid[i][j] != previousGrid[i][j]) {
+                return true;  // Grid has changed
+            }
+        }
+    }
+    return false;  // Grid is unchanged
+}
+
 
 
 void SDLNumberGrid::moveLeft() {

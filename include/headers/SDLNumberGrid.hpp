@@ -30,6 +30,7 @@ private:
     void moveUp();                               // Move all numbers up
     void moveDown();                             // Move all numbers down
     void merge(std::vector<int>& row);           // Merge adjacent equal numbers
+    bool gridHasChanged() const;                       // Check if the grid has changed
 
     Window& window;
     std::vector<std::vector<int>> grid;
