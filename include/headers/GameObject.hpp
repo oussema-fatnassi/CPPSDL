@@ -11,11 +11,15 @@ public:
     GameObject(SDL_Renderer* renderer, const string& imagePath, int x, int y, int width, int height);
     ~GameObject();
 
-    void render(SDL_Renderer* renderer);
+    void loadTexture(SDL_Renderer* renderer, const string& imagePath);
+    virtual void render(SDL_Renderer* renderer);
+    int getX();
+    int getY();
+    int getWidth();
+    int getHeight();
 
 private:
     string getImagePathToValue(int value);
-    void loadTexture(SDL_Renderer* renderer, const string& imagePath);
     
     int x;
     int y;

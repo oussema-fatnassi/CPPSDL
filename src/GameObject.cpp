@@ -62,3 +62,19 @@ void GameObject::loadTexture(SDL_Renderer* renderer, const string& imagePath) {
         cerr << "Failed to create texture: " << SDL_GetError() << endl;
     }
 }
+
+int GameObject::getX() {
+    return x;
+}
+
+int GameObject::getY() {
+    return y;
+}
+
+int GameObject::getWidth() {
+    return width;
+}   
+
+int GameObject::getHeight() {
+    return height;
+}
