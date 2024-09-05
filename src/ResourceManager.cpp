@@ -19,7 +19,7 @@ SDL_Surface* ResourceManager::getSurface(string filepath) {
     if (search != surfaces.end()) {
         return surfaces[filepath];
     } else {
-        SDL_Surface* surface = IMG_Load(filepath.c_str());  // Use IMG_Load for multiple formats
+        SDL_Surface* surface = IMG_Load(filepath.c_str());  
         if (!surface) {
             cerr << "Failed to load image: " << IMG_GetError() << endl;
         } else {
