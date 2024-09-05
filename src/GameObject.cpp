@@ -53,19 +53,22 @@ string GameObject::getImagePathToValue(int value) {
 }
 
 void GameObject::loadTexture(SDL_Renderer* renderer, const string& imagePath) {
-    SDL_Surface* surface = IMG_Load(imagePath.c_str());
+    SDL_Surface* surface = ResourceManager::getInstance().getSurface(imagePath); 
     if (!surface) {
         cerr << "Failed to load image: " << IMG_GetError() << endl;
         return;
     }
 
-    texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
+    if (texture) {
+        SDL_DestroyTexture(texture);  // Free previous texture
+    }
 
+    texture = SDL_CreateTextureFromSurface(renderer, surface);
     if (!texture) {
         cerr << "Failed to create texture: " << SDL_GetError() << endl;
     }
 }
+
 
 int GameObject::getX() {
     return x;
