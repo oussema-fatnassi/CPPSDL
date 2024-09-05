@@ -19,6 +19,8 @@ public:
     bool canMove() const;
     void writeText(const string& text, TTF_Font* font, SDL_Color color, int x, int y);
     int getScore() const;
+    void undo();
+    void reset();
 
 private:
     bool addRandomNumber();                      // Add a random 2 or 4 to an empty cell
@@ -38,6 +40,10 @@ private:
     int offsetX;
     int offsetY;
     int score;
+
+    vector<vector<int>> previousGrid;
+    int previousScore;
+    bool canUndo;
 
     TTF_Font* font;
     SDL_Color textColor;

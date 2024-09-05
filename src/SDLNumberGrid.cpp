@@ -66,6 +66,9 @@ bool SDLNumberGrid::isGridFull() const {
 void SDLNumberGrid::handleInput(SDL_Keycode key) {
     bool moved = false;
 
+    previousGrid = grid;
+    previousScore = score;
+
     if (key == SDLK_LEFT) {
         moveLeft();
         moved = true;
@@ -84,6 +87,7 @@ void SDLNumberGrid::handleInput(SDL_Keycode key) {
         if (!addRandomNumber()) {
             std::cout << "Game Over" << std::endl;
         }
+        canUndo = true;
     }
 }
 
@@ -331,4 +335,24 @@ void SDLNumberGrid::writeText(const std::string& text, TTF_Font* font, SDL_Color
 
 int SDLNumberGrid::getScore() const {
     return score;
+}
+
+void SDLNumberGrid::undo() {
+    if (canUndo) {
+        grid = previousGrid;   
+        score = previousScore; 
+        canUndo = false;       
+        cout << "Undo successful" << endl;
+    } else {
+        cout << "Undo not allowed" << endl;
+    }
+}
+
+void SDLNumberGrid::reset() {
+    grid = vector<vector<int>>(gridSize, vector<int>(gridSize, 0));
+    score = 0;
+    addRandomNumber();
+    addRandomNumber();
+    canUndo = false;  
+    cout << "Grid reset" << endl;
 }
