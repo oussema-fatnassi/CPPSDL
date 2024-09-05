@@ -1,28 +1,32 @@
 #include "GameObject.hpp"
 #include <iostream>
 
+#include "GameObject.hpp"
+#include "ResourceManager.hpp"
+#include <iostream>
+
 GameObject::GameObject(SDL_Renderer* renderer, int value, int x, int y, int width, int height)
     : x(x), y(y), width(width), height(height), texture(nullptr) {
-    
+
     if (value == 0) {
-        return;
+        return;  
     }
-    
+
     string imagePath = getImagePathToValue(value);
 
-    SDL_Surface* surface = IMG_Load(imagePath.c_str());
+    SDL_Surface* surface = ResourceManager::getInstance().getSurface(imagePath);
+
     if (!surface) {
-        cerr << "Failed to load image: " << IMG_GetError() << endl;
+        cerr << "Failed to load image: " << imagePath << endl;
         return;
     }
 
     texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-
     if (!texture) {
         cerr << "Failed to create texture: " << SDL_GetError() << endl;
     }
 }
+
 
 GameObject::GameObject(SDL_Renderer* renderer, const string& imagePath, int x, int y, int width, int height)
     : x(x), y(y), width(width), height(height), texture(nullptr) {
