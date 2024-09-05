@@ -16,11 +16,13 @@ public:
     void render();
     void handleInput(SDL_Keycode key);
     bool isGameOver() const;
+    bool isGameWon();
     bool canMove() const;
     void writeText(const string& text, TTF_Font* font, SDL_Color color, int x, int y);
     int getScore() const;
     void undo();
     void reset();
+    bool gameWon = false;
 
 private:
     bool addRandomNumber();                      // Add a random 2 or 4 to an empty cell

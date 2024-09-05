@@ -296,6 +296,20 @@ bool SDLNumberGrid::isGameOver() const {
     return isGridFull();
 }
 
+bool SDLNumberGrid::isGameWon() {
+    if (!gameWon) {  
+        for (int i = 0; i < gridSize; ++i) {
+            for (int j = 0; j < gridSize; ++j) {
+                if (grid[i][j] == 2048) {
+                    gameWon = true;  
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 bool SDLNumberGrid::canMove() const {
     for (int i = 0; i < gridSize; ++i) {
         for (int j = 0; j < gridSize; ++j) {
@@ -361,6 +375,7 @@ void SDLNumberGrid::reset() {
     score = 0;
     addRandomNumber();
     addRandomNumber();
-    canUndo = false;  
+    canUndo = false;
+    gameWon = false;  
     cout << "Grid reset" << endl;
 }
