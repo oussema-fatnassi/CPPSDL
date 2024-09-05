@@ -1,14 +1,22 @@
 #include "SDLNumberGrid.hpp"
+#include "Button.hpp"
 #include <SDL.h>
 #include <iostream>
 using namespace std;
 
 int main(int argc, char* argv[]) {
     Window window("2048 Game", 600, 900);
+    SDLNumberGrid grid(window);
+
     GameObject background = GameObject(window.getRenderer(), "../assets/images/4x4_grid.svg", 75, 300, 450, 450);
-    GameObject undoButton = GameObject(window.getRenderer(), "../assets/images/undo.svg", 365, 200, 50, 50);
-    GameObject restartButton = GameObject(window.getRenderer(), "../assets/images/restart.svg", 465, 200, 50, 50);
+    Button undoButton = Button(window.getRenderer(), "../assets/images/undo.svg", "../assets/images/undo.svg", "../assets/images/undo.svg", 365, 200, 50, 50, [&grid]() {
+        grid.undo();
+    });
+    Button restartButton = Button(window.getRenderer(), "../assets/images/restart.svg", "../assets/images/restart_hover.svg", "../assets/images/restart_pressed.svg", 465, 200, 50, 50, [&grid]() {
+        grid.reset();
+    });
     GameObject scoreBoard = GameObject(window.getRenderer(), "../assets/images/score.svg", 350, 100, 180, 80);
+    
     int fontSize1 = 60;
     int fontSize2 = 20;
     int fontSize3 = 40;
@@ -19,8 +27,6 @@ int main(int argc, char* argv[]) {
         std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
         return 1;
     }
-
-    SDLNumberGrid grid(window);
 
     bool quit = false;
     SDL_Event event;
@@ -35,7 +41,7 @@ int main(int argc, char* argv[]) {
         grid.writeText("SCORE", font2, {113, 112, 107, 255}, 405, 105);
         grid.writeText(to_string(grid.getScore()), font3, {251, 248, 239, 255}, 405, 120);
         grid.render();
-        SDL_SetRenderDrawColor(window.getRenderer(), 251, 248, 239, 255);           // Set color background
+        SDL_SetRenderDrawColor(window.getRenderer(), 251, 248, 239, 255);           
         window.present();
 
         while (SDL_PollEvent(&event)) {
@@ -43,10 +49,15 @@ int main(int argc, char* argv[]) {
                 quit = true;
             } else if (event.type == SDL_KEYDOWN) {
                 grid.handleInput(event.key.keysym.sym);
+            } else if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
+                undoButton.handleEvent(&event);
+                restartButton.handleEvent(&event);  
             }
         }
 
         if (grid.isGameOver() && !grid.canMove()) {
+            cout << "Game Over!" << endl;
+            cout << "Score: " << grid.getScore() << endl;
             quit = true;
         }
 
