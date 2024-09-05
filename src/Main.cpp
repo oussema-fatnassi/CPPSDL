@@ -7,14 +7,11 @@ using namespace std;
 int main(int argc, char* argv[]) {
     Window window("2048 Game", 600, 900);
     SDLNumberGrid grid(window);
+    GameObject gameOver = GameObject(window.getRenderer(), "../assets/images/game_over.svg", 75, 300, 450, 450);
 
     GameObject background = GameObject(window.getRenderer(), "../assets/images/4x4_grid.svg", 75, 300, 450, 450);
-    Button undoButton = Button(window.getRenderer(), "../assets/images/undo.svg", "../assets/images/undo.svg", "../assets/images/undo.svg", 365, 200, 50, 50, [&grid]() {
-        grid.undo();
-    });
-    Button restartButton = Button(window.getRenderer(), "../assets/images/restart.svg", "../assets/images/restart_hover.svg", "../assets/images/restart_pressed.svg", 465, 200, 50, 50, [&grid]() {
-        grid.reset();
-    });
+    Button undoButton = Button(window.getRenderer(), "../assets/images/undo.svg", "../assets/images/undo_hover.svg", "../assets/images/undo_pressed.svg", 365, 200, 50, 50, [&grid]() {grid.undo();});
+    Button restartButton = Button(window.getRenderer(), "../assets/images/restart.svg", "../assets/images/restart_hover.svg", "../assets/images/restart_pressed.svg", 465, 200, 50, 50, [&grid]() {grid.reset();});
     GameObject scoreBoard = GameObject(window.getRenderer(), "../assets/images/score.svg", 350, 100, 180, 80);
     
     int fontSize1 = 60;
@@ -61,7 +58,7 @@ int main(int argc, char* argv[]) {
             quit = true;
         }
 
-        SDL_Delay(100);
+        SDL_Delay(10);
     }
 
     TTF_CloseFont(font1);

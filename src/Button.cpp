@@ -5,7 +5,7 @@ Button::Button(SDL_Renderer* renderer, const std::string& normalImage, const std
                int x, int y, int width, int height, std::function<void()> onClickCallback)
     : GameObject(renderer, normalImage, x, y, width, height), 
       normalImage(normalImage), hoverImage(hoverImage), pressedImage(pressedImage), 
-      currentState(ButtonState::NORMAL), onClickCallback(onClickCallback) {}
+      currentState(ButtonState::NORMAL), onClickCallback(onClickCallback), renderer(renderer) {}
 
 void Button::handleEvent(SDL_Event* event) {
     if (event->type == SDL_MOUSEMOTION || event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_MOUSEBUTTONUP) {
