@@ -29,37 +29,40 @@ int main(int argc, char* argv[]) {
     SDL_Event event;
 
     while (!quit) {
-        window.clear();
-        background.render(window.getRenderer());
-        undoButton.render(window.getRenderer());
-        restartButton.render(window.getRenderer());
-        scoreBoard.render(window.getRenderer());
-        grid.writeText("2048", font1, {113, 112, 107, 255}, 50, 100);
-        grid.writeText("SCORE", font2, {113, 112, 107, 255}, 405, 105);
-        grid.writeText(to_string(grid.getScore()), font3, {251, 248, 239, 255}, 405, 120);
-        grid.render();
-        SDL_SetRenderDrawColor(window.getRenderer(), 251, 248, 239, 255);           
-        window.present();
+    window.clear();
+    background.render(window.getRenderer());
+    undoButton.render(window.getRenderer());
+    restartButton.render(window.getRenderer());
+    scoreBoard.render(window.getRenderer());
+    grid.writeText("2048", font1, {113, 112, 107, 255}, 50, 100);
+    grid.writeText("SCORE", font2, {113, 112, 107, 255}, 405, 105);
+    grid.writeText(to_string(grid.getScore()), font3, {251, 248, 239, 255}, 405, 120);
+    grid.render();
 
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                quit = true;
-            } else if (event.type == SDL_KEYDOWN) {
-                grid.handleInput(event.key.keysym.sym);
-            } else if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
-                undoButton.handleEvent(&event);
-                restartButton.handleEvent(&event);  
-            }
-        }
-
-        if (grid.isGameOver() && !grid.canMove()) {
-            cout << "Game Over!" << endl;
-            cout << "Score: " << grid.getScore() << endl;
-            quit = true;
-        }
-
-        SDL_Delay(10);
+    if (grid.isGameOver() && !grid.canMove()) {
+        cout << "Game Over!" << endl;
+        cout << "Score: " << grid.getScore() << endl;
+        gameOver.render(window.getRenderer()); // Render the Game Over image here
+        grid.writeText("GAME OVER!", font1, {113, 112, 107, 255}, 135, 480);
     }
+
+    SDL_SetRenderDrawColor(window.getRenderer(), 251, 248, 239, 255);           
+    window.present();  // Present after everything is rendered
+
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            quit = true;
+        } else if (event.type == SDL_KEYDOWN) {
+            grid.handleInput(event.key.keysym.sym);
+        } else if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
+            undoButton.handleEvent(&event);
+            restartButton.handleEvent(&event);  
+        }
+    }
+
+    SDL_Delay(10);
+    }
+
 
     TTF_CloseFont(font1);
     TTF_CloseFont(font2);
