@@ -20,7 +20,11 @@ const string RIGHT_ARROW_NORMAL = "../assets/images/right_arrow.svg";
 const string RIGHT_ARROW_HOVER = "../assets/images/right_arrow_hover.svg";
 const string RIGHT_ARROW_PRESSED = "../assets/images/right_arrow_pressed.svg";
 
+const string IMAGE_GRID_3X3 = "../assets/images/image_grid_3x3.svg";
 const string IMAGE_GRID_4X4 = "../assets/images/image_grid_4x4.svg";
+const string IMAGE_GRID_5X5 = "../assets/images/image_grid_5x5.svg";
+const string IMAGE_GRID_6X6 = "../assets/images/image_grid_6x6.svg";
+const string IMAGE_GRID_8X8 = "../assets/images/image_grid_8x8.svg";
 
 const string GAME_OVER = "../assets/images/game_over.svg";
 const string GAME_WIN = "../assets/images/game_win.svg";
