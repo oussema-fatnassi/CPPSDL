@@ -18,6 +18,8 @@ public:
     int getWidth();
     int getHeight();
 
+    void setTexture(SDL_Renderer* renderer, const string& imagePath);
+
 private:
     string getImagePathToValue(int value);
     
