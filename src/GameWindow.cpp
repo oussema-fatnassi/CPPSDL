@@ -2,7 +2,7 @@
 #include <iostream>
 
 GameWindow::GameWindow(NumberGrid& grid, int windowSize)
-    : window(sf::VideoMode(windowSize, windowSize), "2048 Game"),
+    : window(sf::VideoMode(windowSize, windowSize), "2048"),
       numberGrid(grid),
       windowSize(windowSize),
       cellSize(windowSize / grid.getGridSize()) 

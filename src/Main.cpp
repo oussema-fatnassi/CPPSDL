@@ -7,5 +7,5 @@ int main() {
 
     gameWindow.run();
 
-    return 0;
+    return ;
 }
