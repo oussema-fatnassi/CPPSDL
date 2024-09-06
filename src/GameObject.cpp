@@ -69,6 +69,10 @@ void GameObject::loadTexture(SDL_Renderer* renderer, const string& imagePath) {
     }
 }
 
+void GameObject::setTexture(SDL_Renderer* renderer, const string& imagePath) {
+    loadTexture(renderer, imagePath);
+}
+
 
 int GameObject::getX() {
     return x;

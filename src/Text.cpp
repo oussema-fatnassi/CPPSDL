@@ -1,5 +1,6 @@
 #include "Text.hpp"
 #include <iostream>
+using namespace std;
 
 Text::Text(SDL_Renderer* renderer, const std::string& text, TTF_Font* font, SDL_Color color, int x, int y)
     : text(text), font(font), color(color), renderer(renderer) {
@@ -35,4 +36,12 @@ void Text::createTexture() {
 
 void Text::render(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, texture, nullptr, &rect);
+}
+
+void Text::setText(const std::string& newText) {
+    text = newText;
+    if (texture) {
+        SDL_DestroyTexture(texture);  // Free previous texture
+    }
+    createTexture();
 }

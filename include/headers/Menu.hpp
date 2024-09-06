@@ -4,6 +4,8 @@
 #include "Button.hpp"
 #include "UI.hpp"
 #include <../sdl/SDL.h>
+#include <vector>
+using namespace std;
 
 class Menu {
 public:
@@ -12,6 +14,10 @@ public:
 
     void handleEvent(SDL_Event* event);
     void update();
+    void startButtonClicked();
+    void quitButtonClicked();
+    void leftArrowClicked();
+    void rightArrowClicked();
     void drawMainMenu();
 
 private:
@@ -22,13 +28,13 @@ private:
     Button* leftArrowButton;
     Button* rightArrowButton;
     SDL_Renderer* renderer;
+    GameObject* gridImage;
+    Text* gridText;
 
-    void startButtonClicked();
-    void quitButtonClicked();
-    void leftArrowClicked();
-    void rightArrowClicked();
     TTF_Font* font;
     TTF_Font* font1;
+
+    vector<pair<string, string>> gridOptions;
 
 };
 

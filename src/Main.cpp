@@ -17,8 +17,8 @@ int main(int argc, char* argv[]) {
 
     while (!quit) {
         window.clear();
-
         menu.update();
+
 
         SDL_SetRenderDrawColor(window.getRenderer(), 251, 248, 239, 255);           
         window.present();  

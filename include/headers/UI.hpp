@@ -18,6 +18,8 @@ public:
     void addText(Text* text);
     void addGameObject(GameObject* gameObject);
     void render();
+    void removeText(Text* textToRemove);
+    
 
 private:
     SDL_Renderer* renderer;
