@@ -5,6 +5,7 @@
 #include <../sdl/SDL_ttf.h>
 #include "Button.hpp"
 #include "Text.hpp"
+#include "GameObject.hpp"
 #include <vector>
 #include <string>
 using namespace std;
@@ -15,12 +16,14 @@ public:
     ~UI();
     void addButton(Button* button);
     void addText(Text* text);
+    void addGameObject(GameObject* gameObject);
     void render();
 
 private:
     SDL_Renderer* renderer;
     vector<Button*> buttons;
     vector<Text*> texts;
+    vector<GameObject*> gameObjects;
 };
 
 #endif // UI_HPP
