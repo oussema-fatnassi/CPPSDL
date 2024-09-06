@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include "Assets.hpp"
 
 SDLNumberGrid::SDLNumberGrid(Window& window, int gridSize, int tileSize)
     : window(window), gridSize(gridSize), tileSize(tileSize), grid(gridSize, std::vector<int>(gridSize, 0)),
@@ -11,7 +12,7 @@ SDLNumberGrid::SDLNumberGrid(Window& window, int gridSize, int tileSize)
     addRandomNumber(); // Add a second random number
 
     // Initialize font and text color
-    font = TTF_OpenFont("../assets/fonts/ClearSansBold.ttf", 40);
+    font = TTF_OpenFont(FONT_PATH.c_str(), 40);
     if (!font) {
         std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
     }

@@ -20,6 +20,8 @@ const string RIGHT_ARROW_NORMAL = "../assets/images/right_arrow.svg";
 const string RIGHT_ARROW_HOVER = "../assets/images/right_arrow_hover.svg";
 const string RIGHT_ARROW_PRESSED = "../assets/images/right_arrow_pressed.svg";
 
+const string IMAGE_GRID_4X4 = "../assets/images/image_grid_4x4.svg";
+
 const string GAME_OVER = "../assets/images/game_over.svg";
 const string GAME_WIN = "../assets/images/game_win.svg";
 

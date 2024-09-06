@@ -28,6 +28,7 @@ private:
     void leftArrowClicked();
     void rightArrowClicked();
     TTF_Font* font;
+    TTF_Font* font1;
 
 };
 
