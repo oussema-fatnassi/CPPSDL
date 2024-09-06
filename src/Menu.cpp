@@ -11,19 +11,18 @@ Menu::~Menu() {
 
 void Menu::drawMainMenu(){
 
+    font = TTF_OpenFont("../assets/fonts/ClearSansBold.ttf", 60);
+    Text* title = new Text(renderer, "Game Title", font, {255, 255, 255, 255}, 100, 50);
     startButton = new Button(renderer, "../assets/images/start.svg", "../assets/images/start_hover.svg", "../assets/images/start_pressed.svg", 100, 100, 308, 80, [this]{ startButtonClicked(); });
-
     quitButton = new Button(renderer, "../assets/images/quit.svg", "../assets/images/quit_hover.svg", "../assets/images/quit_pressed.svg", 100, 250, 308, 80, [this]{ quitButtonClicked(); });
-
     leftArrowButton = new Button(renderer, "../assets/images/left_arrow.svg", "../assets/images/left_arrow_hover.svg", "../assets/images/left_arrow_pressed.svg", 100, 400, 34, 74, [this] {leftArrowClicked(); });
-
     rightArrowButton = new Button(renderer, "../assets/images/right_arrow.svg", "../assets/images/right_arrow_hover.svg", "../assets/images/right_arrow_pressed.svg", 150, 400, 34, 74, [this](){ rightArrowClicked(); });
 
     ui.addButton(startButton);
     ui.addButton(quitButton);
     ui.addButton(leftArrowButton);
     ui.addButton(rightArrowButton);
-
+    ui.addText(title);
     ui.render();
 }
 
@@ -51,5 +50,5 @@ void Menu::rightArrowClicked() {
 }
 
 void Menu::update() {
-    ui.render();
+    ui.render(); 
 }

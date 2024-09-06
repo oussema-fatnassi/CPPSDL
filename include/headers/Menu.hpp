@@ -27,6 +27,8 @@ private:
     void quitButtonClicked();
     void leftArrowClicked();
     void rightArrowClicked();
+    TTF_Font* font;
+
 };
 
 
