@@ -15,7 +15,7 @@ public:
 
 private:
     SDL_Renderer* renderer;
-    vector<Button> buttons;
+    vector<Button*> buttons;
 };
 
 #endif // UI_HPP
