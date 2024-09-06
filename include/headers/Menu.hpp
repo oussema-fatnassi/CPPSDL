@@ -10,7 +10,7 @@ public:
     Menu(SDL_Renderer* renderer);
     ~Menu();
 
-    void handleEvents(SDL_Event* event);
+    void handleEvent(SDL_Event* event);
     void update();
     void drawMainMenu();
 
@@ -22,6 +22,11 @@ private:
     Button* leftArrowButton;
     Button* rightArrowButton;
     SDL_Renderer* renderer;
+
+    void startButtonClicked();
+    void quitButtonClicked();
+    void leftArrowClicked();
+    void rightArrowClicked();
 };
 
 
