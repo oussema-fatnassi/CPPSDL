@@ -20,3 +20,47 @@ git clone https://github.com/oussema-fatnassi/CPPSDL.git
 ```
 ## Credits
 - Developed by Oussema Fatnassi, Baptiste Appriou, Ali Abakar Issa
+
+
+###### Steps for Winfows installation
+- Open MSYS MINGW64
+- Type : pacman -S mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_image mingw-w64-x86_64-SDL2_ttf
+- Verify that everything is installed
+- Type : cd /ucrt64/lib
+- Type : ls | grep SDL2_image
+- You should see : 
+libSDL2.a
+libSDL2.dll.a
+libSDL2_image.a
+libSDL2_image.dll.a
+libSDL2_test.a
+libSDL2_ttf.a
+libSDL2_ttf.dll.a
+libSDL2main.a
+- If not, type : pacman -S mingw-w64-ucrt-x86_64-SDL2 mingw-w64-ucrt-x86_64-SDL2_image mingw-w64-ucrt-x86_64-SDL2_ttf
+- Install everything
+
+In case of error repeat any point necessary
+
+
+
+If the following error appears :
+
+Running
+
+   'nmake' '-?'
+
+  failed with:
+
+   no such file or directory
+
+- Close and re-open MSYS MINGW64
+- Type echo $MSYSTEM
+It should output : MINGW64
+- Type : pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc
+- Verify that everything is installed
+- Navigate to your project : cd /(link to your project)/build
+If there is a space " " type "\ " instead
+- Type rm -rf * or delete manually everything in the build folder
+- Type : cmake -G "MinGW Makefiles" ..
+- Type : mingw32-make
