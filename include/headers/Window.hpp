@@ -1,9 +1,11 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include <SDL.h>
+#include <../sdl/SDL.h>
+#include <../sdl/SDL_ttf.h>
+#include <../sdl/SDL_image.h>
 #include <string>
-#include <SDL_ttf.h>
+
 using namespace std;
 
 class Window {

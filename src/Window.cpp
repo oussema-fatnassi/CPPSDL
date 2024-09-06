@@ -1,5 +1,4 @@
 #include "Window.hpp"
-#include <SDL_image.h>
 #include <iostream>
 
 Window::Window(const string& title, int width, int height)

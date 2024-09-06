@@ -1,8 +1,8 @@
 #ifndef RESOURCEMANAGER_HPP
 #define RESOURCEMANAGER_HPP
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include <../sdl/SDL.h>
+#include <../sdl/SDL_image.h>
 #include <string>
 #include <unordered_map>
 using namespace std;

@@ -3,7 +3,7 @@
 
 #include "Button.hpp"
 #include "UI.hpp"
-#include <SDL.h>
+#include <../sdl/SDL.h>
 
 class Menu {
 public:

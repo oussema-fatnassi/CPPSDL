@@ -4,7 +4,7 @@
 #include "UI.hpp"
 #include "Menu.hpp"
 #include "Window.hpp"
-#include <SDL.h>
+#include <../sdl/SDL.h>
 
 enum class GameState {
     MAIN_MENU,

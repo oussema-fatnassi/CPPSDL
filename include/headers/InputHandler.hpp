@@ -1,7 +1,7 @@
 #ifndef INPUTHANDLER_HPP
 #define INPUTHANDLER_HPP
 
-#include <SDL.h>
+#include <../sdl/SDL.h>
 
 class InputHandler {
 public:

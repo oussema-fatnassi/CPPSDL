@@ -1,8 +1,8 @@
 #ifndef UI_HPP
 #define UI_HPP
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <../sdl/SDL.h>
+#include <../sdl/SDL_ttf.h>
 #include "Button.hpp"
 #include "Text.hpp"
 #include <vector>

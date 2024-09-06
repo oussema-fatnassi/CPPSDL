@@ -3,7 +3,7 @@
 
 #include "GameObject.hpp"
 #include <functional>
-#include <SDL.h>
+#include <../sdl/SDL.h>
 using namespace std;
 
 class Button : public GameObject {
