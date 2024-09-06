@@ -27,7 +27,7 @@ git clone https://github.com/oussema-fatnassi/CPPSDL.git
 - Type : pacman -S mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_image mingw-w64-x86_64-SDL2_ttf
 - Verify that everything is installed
 - Type : cd /ucrt64/lib
-- Type : ls | grep SDL2_image
+- Type : ls | grep SDL2
 - You should see : 
 libSDL2.a
 libSDL2.dll.a
