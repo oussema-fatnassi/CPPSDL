@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Livello_2" data-name="Livello 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 450">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #f2b179;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: #f67c5f;
+      }
+
+      .cls-3 {
+        fill: #eee4da;
+      }
+
+      .cls-4 {
+        fill: #bbaea0;
+      }
+
+      .cls-5 {
+        fill: #d6cdc4;
+      }
+
+      .cls-6 {
+        fill: #ede0c8;
+      }
+    </style>
+  </defs>
+  <g id="MainMenu">
+    <rect class="cls-4" width="450" height="450" rx="7.6" ry="7.6"/>
+    <rect class="cls-4" x="10" y="10" width="430" height="430" rx="7.6" ry="7.6"/>
+    <rect class="cls-5" x="10" y="10" width="135" height="135" rx="8.64" ry="8.64"/>
+    <rect class="cls-5" x="157" y="10" width="135" height="135" rx="8.64" ry="8.64"/>
+    <rect class="cls-5" x="304" y="10" width="135" height="135" rx="8.64" ry="8.64"/>
+    <rect class="cls-5" x="10" y="157" width="135" height="135" rx="8.64" ry="8.64"/>
+    <rect class="cls-5" x="157" y="157" width="135" height="135" rx="8.64" ry="8.64"/>
+    <rect class="cls-5" x="304" y="157" width="135" height="135" rx="8.64" ry="8.64"/>
+    <rect class="cls-5" x="10" y="304" width="135" height="135" rx="8.64" ry="8.64"/>
+    <rect class="cls-5" x="157" y="304" width="135" height="135" rx="8.64" ry="8.64"/>
+    <rect class="cls-5" x="304" y="304" width="135" height="135" rx="8.64" ry="8.64"/>
+    <rect class="cls-3" x="10" y="10" width="135" height="135" rx="9" ry="9"/>
+    <rect class="cls-3" x="157" y="158" width="135" height="135" rx="9" ry="9"/>
+    <rect class="cls-3" x="304" y="304" width="135" height="135" rx="9" ry="9"/>
+    <rect class="cls-6" x="157" y="304" width="135" height="135" rx="9" ry="9"/>
+    <rect class="cls-1" x="10" y="157" width="135" height="135" rx="9" ry="9"/>
+    <rect class="cls-2" x="10" y="304" width="135" height="135" rx="9" ry="9"/>
+  </g>
+</svg>
