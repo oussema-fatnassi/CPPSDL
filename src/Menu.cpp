@@ -1,5 +1,6 @@
 #include "Menu.hpp"
 #include <iostream>
+#include "Assets.hpp"
 
 Menu::Menu(SDL_Renderer* renderer) : ui(renderer), currentSelection(0){
     this->renderer = renderer;
@@ -13,10 +14,10 @@ void Menu::drawMainMenu(){
 
     font = TTF_OpenFont("../assets/fonts/ClearSansBold.ttf", 60);
     Text* title = new Text(renderer, "Game Title", font, {255, 255, 255, 255}, 100, 50);
-    startButton = new Button(renderer, "../assets/images/start.svg", "../assets/images/start_hover.svg", "../assets/images/start_pressed.svg", 100, 100, 308, 80, [this]{ startButtonClicked(); });
-    quitButton = new Button(renderer, "../assets/images/quit.svg", "../assets/images/quit_hover.svg", "../assets/images/quit_pressed.svg", 100, 250, 308, 80, [this]{ quitButtonClicked(); });
-    leftArrowButton = new Button(renderer, "../assets/images/left_arrow.svg", "../assets/images/left_arrow_hover.svg", "../assets/images/left_arrow_pressed.svg", 100, 400, 34, 74, [this] {leftArrowClicked(); });
-    rightArrowButton = new Button(renderer, "../assets/images/right_arrow.svg", "../assets/images/right_arrow_hover.svg", "../assets/images/right_arrow_pressed.svg", 150, 400, 34, 74, [this](){ rightArrowClicked(); });
+    startButton = new Button(renderer, START_BUTTON_NORMAL, START_BUTTON_HOVER, START_BUTTON_PRESSED, 100, 100, 308, 80, [this]{ startButtonClicked(); });
+    quitButton = new Button(renderer, QUIT_BUTTON_NORMAL, QUIT_BUTTON_HOVER, QUIT_BUTTON_PRESSED, 100, 250, 308, 80, [this]{ quitButtonClicked(); });
+    leftArrowButton = new Button(renderer, LEFT_ARROW_NORMAL, LEFT_ARROW_HOVER, LEFT_ARROW_PRESSED, 100, 400, 34, 74, [this] {leftArrowClicked(); });
+    rightArrowButton = new Button(renderer, RIGHT_ARROW_NORMAL, RIGHT_ARROW_HOVER, RIGHT_ARROW_PRESSED, 150, 400, 34, 74, [this](){ rightArrowClicked(); });
 
     ui.addButton(startButton);
     ui.addButton(quitButton);
