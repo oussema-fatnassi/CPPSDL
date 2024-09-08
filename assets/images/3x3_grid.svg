@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 450">
+  <defs>
+    <style>
+      .cls-1 { fill: #bbaea0; }
+      .cls-2 { fill: #d6cdc4; }
+    </style>
+  </defs>
+  <rect class="cls-1" width="450" height="450" rx="7.6" ry="7.6"/>
+  <rect class="cls-1" x="10" y="10" width="430" height="430" rx="7.6" ry="7.6"/>
+  <rect class="cls-2" x="10" y="10" width="135" height="135" rx="8.64" ry="8.64"/>
+  <rect class="cls-2" x="157" y="10" width="135" height="135" rx="8.64" ry="8.64"/>
+  <rect class="cls-2" x="304" y="10" width="135" height="135" rx="8.64" ry="8.64"/>
+  <rect class="cls-2" x="10" y="157" width="135" height="135" rx="8.64" ry="8.64"/>
+  <rect class="cls-2" x="157" y="157" width="135" height="135" rx="8.64" ry="8.64"/>
+  <rect class="cls-2" x="304" y="157" width="135" height="135" rx="8.64" ry="8.64"/>
+  <rect class="cls-2" x="10" y="304" width="135" height="135" rx="8.64" ry="8.64"/>
+  <rect class="cls-2" x="157" y="304" width="135" height="135" rx="8.64" ry="8.64"/>
+  <rect class="cls-2" x="304" y="304" width="135" height="135" rx="8.64" ry="8.64"/>
+</svg>
