@@ -29,7 +29,12 @@ const string IMAGE_GRID_8X8 = "../assets/images/image_grid_8x8.svg";
 const string GAME_OVER = "../assets/images/game_over.svg";
 const string GAME_WIN = "../assets/images/game_win.svg";
 
-const string GRID = "../assets/images/4x4_grid.svg";
+const string GRID = "../assets/images/3x3_grid.svg";
+const string GRID1 = "../assets/images/4x4_grid.svg";
+const string GRID2 = "../assets/images/5x5_grid.svg";
+const string GRID3 = "../assets/images/6x6_grid.svg";
+const string GRID4 = "../assets/images/8x8_grid.svg";
+
 
 const string UNDO_BUTTON_NORMAL = "../assets/images/undo.svg";
 const string UNDO_BUTTON_HOVER = "../assets/images/undo_hover.svg";
