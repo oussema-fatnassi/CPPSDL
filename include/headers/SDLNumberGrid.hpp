@@ -29,10 +29,6 @@ public:
 private:
     bool addRandomNumber();                      // Add a random 2 or 4 to an empty cell
     bool isGridFull() const;                     // Check if the grid is full
-    void moveLeft();                             // Move all numbers to the left
-    void moveRight();                            // Move all numbers to the right
-    void moveUp();                               // Move all numbers up
-    void moveDown();                             // Move all numbers down
     void merge(vector<int>& row);           // Merge adjacent equal numbers
     bool gridHasChanged() const;                       // Check if the grid has changed
     void move(int dx, int dy);
