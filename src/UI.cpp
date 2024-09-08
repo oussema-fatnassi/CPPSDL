@@ -40,3 +40,9 @@ void UI::render() {
         gameObject->render(renderer);
     }
 }
+
+void UI:: clear() {
+    buttons.clear();
+    texts.clear();
+    gameObjects.clear();
+}
