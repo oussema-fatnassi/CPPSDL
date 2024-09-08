@@ -4,7 +4,7 @@
 using namespace std;
 
 // Constructor: initializing options for grids
-Menu::Menu(SDL_Renderer* renderer) : ui(renderer), currentSelection(1) {
+Menu::Menu(SDL_Renderer* renderer) : ui(renderer), currentSelection(1), restartButton(nullptr), undoButton(nullptr) {
     this->renderer = renderer;
 
     // Define grid options (image paths and labels)
@@ -55,10 +55,17 @@ void Menu::handleEvent(SDL_Event* event) {
     quitButton->handleEvent(event);
     leftArrowButton->handleEvent(event);
     rightArrowButton->handleEvent(event);
+    if (restartButton != nullptr) {
+        restartButton->handleEvent(event);
+    }
+    if (undoButton != nullptr) {
+        undoButton->handleEvent(event);
+    }
 }
 
 void Menu::startButtonClicked() {
     std::cout << "Start button clicked" << std::endl;
+    drawGame();
 }
 
 void Menu::quitButtonClicked() {
@@ -81,10 +88,35 @@ void Menu::rightArrowClicked() {
 
 void Menu::update() {
     gridImage->setTexture(renderer, gridOptions[currentSelection].first);
-
-    cout << "Updating text to: " << gridOptions[currentSelection].second << endl;
-
     gridText->setText(gridOptions[currentSelection].second);
 
     ui.render();
+}
+
+void Menu::drawGame() {
+    ui.clear();
+
+    restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] { cout << "Restart button clicked" << endl; });
+    undoButton = new Button(renderer, UNDO_BUTTON_NORMAL, UNDO_BUTTON_HOVER, UNDO_BUTTON_PRESSED, 365, 200, 50, 50, [] { cout << "Undo button clicked" << endl; });
+    ui.addGameObject(new GameObject(renderer, SCORE, 350, 100, 180, 80));
+    ui.addGameObject(new GameObject(renderer, getGameGridTexture(currentSelection), 75, 300, 450, 450)) ;    
+    ui.addText(new Text(renderer, "2048", font1, {113, 112, 107, 255}, 50, 100));
+    ui.addText(new Text(renderer, "SCORE", font1, {113, 112, 107, 255}, 405, 105));
+    ui.addText(new Text(renderer, "0", font1, {251, 248, 239, 255}, 405, 120));
+
+    ui.addButton(restartButton);
+    ui.addButton(undoButton);
+
+    ui.render();
+}
+
+string Menu::getGameGridTexture(int selection) {
+    switch (selection) {
+        case 0: return GRID;
+        case 1: return GRID1;
+        case 2: return GRID2;
+        case 3: return GRID3;
+        case 4: return GRID4;
+        default: return GRID;  
+    }
 }

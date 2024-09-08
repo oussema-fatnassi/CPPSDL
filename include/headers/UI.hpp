@@ -19,6 +19,7 @@ public:
     void addGameObject(GameObject* gameObject);
     void render();
     void removeText(Text* textToRemove);
+    void clear();
     
 
 private:

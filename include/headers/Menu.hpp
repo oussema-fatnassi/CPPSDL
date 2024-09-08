@@ -19,22 +19,22 @@ public:
     void leftArrowClicked();
     void rightArrowClicked();
     void drawMainMenu();
+    void drawGame();
 
 private:
     UI ui;
     int currentSelection;
-    Button* startButton;
-    Button* quitButton;
-    Button* leftArrowButton;
-    Button* rightArrowButton;
+    Button* startButton, *quitButton, *leftArrowButton, *rightArrowButton;
+    Button* restartButton, *undoButton;
     SDL_Renderer* renderer;
-    GameObject* gridImage;
+    GameObject* gridImage, *background, *scoreBoard ;
     Text* gridText;
 
     TTF_Font* font;
     TTF_Font* font1;
 
     vector<pair<string, string>> gridOptions;
+    string getGameGridTexture(int selection);
 
 };
 
