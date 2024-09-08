@@ -5,7 +5,7 @@
 #include "Assets.hpp"
 
 SDLNumberGrid::SDLNumberGrid(Window& window, int gridSize, int tileSize)
-    : window(window), gridSize(gridSize), tileSize(tileSize), grid(gridSize, std::vector<int>(gridSize, 0)),
+    : window(window), gridSize(gridSize), tileSize(tileSize), grid(gridSize, vector<int>(gridSize, 0)),
       xStart(75), yStart(300), offsetX(10), offsetY(8), score(0) {  // Set to match the background position
     srand(time(0)); // Seed for random number generation
     addRandomNumber(); // Start by adding a random 2 or 4
@@ -14,7 +14,7 @@ SDLNumberGrid::SDLNumberGrid(Window& window, int gridSize, int tileSize)
     // Initialize font and text color
     font = TTF_OpenFont(FONT_PATH.c_str(), 40);
     if (!font) {
-        std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
+        cerr << "Failed to load font: " << TTF_GetError() << endl;
     }
     textColor = {255, 255, 255}; 
     textColor2 = { 113, 112, 107};
@@ -29,7 +29,7 @@ SDLNumberGrid::~SDLNumberGrid() {
 
 
 bool SDLNumberGrid::addRandomNumber() {
-    std::vector<std::pair<int, int>> emptyCells;
+    vector<pair<int, int>> emptyCells;
 
     // Find all empty cells
     for (int i = 0; i < gridSize; i++) {
@@ -64,30 +64,6 @@ bool SDLNumberGrid::isGridFull() const {
     return true;
 }
 
-void SDLNumberGrid::handleInput(SDL_Keycode key) {
-    previousGrid = grid;  // Store the grid before any movement
-    previousScore = score;
-
-    if (key == SDLK_LEFT) {
-        moveLeft();
-    } else if (key == SDLK_RIGHT) {
-        moveRight();
-    } else if (key == SDLK_UP) {
-        moveUp();
-    } else if (key == SDLK_DOWN) {
-        moveDown();
-    }
-
-    // Check if the grid has changed before adding a new random tile
-    if (gridHasChanged()) {
-        if (!addRandomNumber()) {
-            std::cout << "Game Over" << std::endl;
-        }
-        canUndo = true;
-    }
-}
-
-
 bool SDLNumberGrid::gridHasChanged() const {
     for (int i = 0; i < gridSize; ++i) {
         for (int j = 0; j < gridSize; ++j) {
@@ -100,141 +76,92 @@ bool SDLNumberGrid::gridHasChanged() const {
 }
 
 
-
-void SDLNumberGrid::moveLeft() {
+void SDLNumberGrid::move(int dx, int dy) {
+    // Traverse grid in a way that ensures correct merging for each direction
     for (int i = 0; i < gridSize; ++i) {
-        merge(grid[i]);
-        // Shift non-zero elements to the left after merging
-        std::vector<int> newRow;
+        vector<int> line;
 
+        // Extract row/column based on direction
         for (int j = 0; j < gridSize; ++j) {
-            if (grid[i][j] != 0) {
-                newRow.push_back(grid[i][j]);
+            int x = i, y = j;
+            if (dx == 0) { // Horizontal movement
+                x = i;
+                y = (dy > 0) ? gridSize - j - 1 : j; // Right or left
+            } else { // Vertical movement
+                x = (dx > 0) ? gridSize - j - 1 : j; // Down or up
+                y = i;
+            }
+
+            if (grid[x][y] != 0) {
+                line.push_back(grid[x][y]);
             }
         }
 
-        // Fill the remaining spaces with zeros
-        while (newRow.size() < gridSize) {
-            newRow.push_back(0);
-        }
+        // Merge numbers in the line
+        merge(line);
 
-        // Copy the new row back into the grid
+        // Put merged line back into grid
         for (int j = 0; j < gridSize; ++j) {
-            grid[i][j] = newRow[j];
-        }
-    }
-}
+            int x = i, y = j;
+            if (dx == 0) { // Horizontal movement
+                x = i;
+                y = (dy > 0) ? gridSize - j - 1 : j; // Right or left
+            } else { // Vertical movement
+                x = (dx > 0) ? gridSize - j - 1 : j; // Down or up
+                y = i;
+            }
 
-void SDLNumberGrid::moveRight() {
-    for (int i = 0; i < gridSize; ++i) {
-        // Reverse the row before merging to simulate moving right
-        std::reverse(grid[i].begin(), grid[i].end());
-        merge(grid[i]);
-
-        // Shift non-zero elements to the right after merging
-        std::vector<int> newRow;
-
-        for (int j = 0; j < gridSize; ++j) {
-            if (grid[i][j] != 0) {
-                newRow.push_back(grid[i][j]);
+            if (j < line.size()) {
+                grid[x][y] = line[j];
+            } else {
+                grid[x][y] = 0;
             }
         }
-
-        // Fill the remaining spaces with zeros
-        while (newRow.size() < gridSize) {
-            newRow.push_back(0);
-        }
-
-        // Copy the new row back into the grid
-        for (int j = 0; j < gridSize; ++j) {
-            grid[i][j] = newRow[j];
-        }
-
-        // Reverse the row back to its original order
-        std::reverse(grid[i].begin(), grid[i].end());
     }
 }
 
-void SDLNumberGrid::moveUp() {
-    for (int j = 0; j < gridSize; ++j) {
-        std::vector<int> column;
+void SDLNumberGrid::merge(vector<int>& line) {
+    if (line.empty()) return;
 
-        // Extract the column
-        for (int i = 0; i < gridSize; ++i) {
-            column.push_back(grid[i][j]);
-        }
+    vector<int> mergedLine;
 
-        merge(column);
-
-        // Place the column back into the grid
-        for (int i = 0; i < gridSize; ++i) {
-            grid[i][j] = column[i];
+    for (size_t i = 0; i < line.size(); ++i) {
+        if (i < line.size() - 1 && line[i] == line[i + 1]) {
+            // Merge two adjacent numbers of the same value
+            mergedLine.push_back(line[i] * 2);
+            score += line[i] * 2;
+            ++i; // Skip the next element since it's merged
+        } else {
+            mergedLine.push_back(line[i]);
         }
     }
+
+    // Assign back the merged result to the original line
+    line = mergedLine;
 }
 
-void SDLNumberGrid::moveDown() {
-    for (int j = 0; j < gridSize; ++j) {
-        std::vector<int> column;
+void SDLNumberGrid::handleInput(SDL_Keycode key) {
+    previousGrid = grid;
+    previousScore = score;
 
-        // Extract the column
-        for (int i = 0; i < gridSize; ++i) {
-            column.push_back(grid[i][j]);
+    // Determine the direction of movement
+    if (key == SDLK_LEFT) {
+        move(0, -1); // Move left
+    } else if (key == SDLK_RIGHT) {
+        move(0, 1);  // Move right
+    } else if (key == SDLK_UP) {
+        move(-1, 0); // Move up
+    } else if (key == SDLK_DOWN) {
+        move(1, 0);  // Move down
+    }
+
+    if (gridHasChanged()) {
+        if (!addRandomNumber()) {
+            cout << "Game Over" << endl;
         }
-
-        // Reverse the column for merging
-        std::reverse(column.begin(), column.end());
-        merge(column);
-
-        // Reverse the column back and place it into the grid
-        std::reverse(column.begin(), column.end());
-
-        for (int i = 0; i < gridSize; ++i) {
-            grid[i][j] = column[i];
-        }
+        canUndo = true;
     }
 }
-
-void SDLNumberGrid::merge(std::vector<int>& row) {
-    int gridSize = this->gridSize;
-    // Shift non-zero elements to the left
-    std::vector<int> newRow;
-    for (int i = 0; i < gridSize; ++i) {
-        if (row[i] != 0) {
-            newRow.push_back(row[i]);
-        }
-    }
-
-    while (newRow.size() < gridSize) {
-        newRow.push_back(0);
-    }
-
-    // Merge adjacent elements if they are the same
-    for (int i = 0; i < gridSize - 1; ++i) {
-        if (newRow[i] != 0 && newRow[i] == newRow[i + 1]) {
-            newRow[i] *= 2;            // Double the current cell value
-            score += newRow[i];         // Add the merged value to the score
-            newRow[i + 1] = 0;          // Empty the next cell
-            i++;                        // Skip the next cell to avoid double merging
-        }
-    }
-
-    // Shift again to move non-zero elements to the left after merging
-    std::vector<int> finalRow;
-    for (int i = 0; i < gridSize; ++i) {
-        if (newRow[i] != 0) {
-            finalRow.push_back(newRow[i]);
-        }
-    }
-
-    while (finalRow.size() < gridSize) {
-        finalRow.push_back(0);
-    }
-
-    row = finalRow;
-}
-
-
 const int TILE_GAP = 10;
 
 void SDLNumberGrid::render() {
@@ -256,7 +183,7 @@ void SDLNumberGrid::renderTile(int value, int x, int y) {
 
     // Render the text in the center of the tile
     if (value != 0) {
-        std::string text = std::to_string(value);
+        string text = to_string(value);
         SDL_Color color;
 
         // Choose the text color based on the value
@@ -334,10 +261,10 @@ bool SDLNumberGrid::canMove() const {
     return false;
 }
 
-void SDLNumberGrid::writeText(const std::string& text, TTF_Font* font, SDL_Color color, int x, int y) {
+void SDLNumberGrid::writeText(const string& text, TTF_Font* font, SDL_Color color, int x, int y) {
     SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
     if (!textSurface) {
-        std::cerr << "Unable to render text surface! TTF_Error: " << TTF_GetError() << std::endl;
+        cerr << "Unable to render text surface! TTF_Error: " << TTF_GetError() << endl;
         return;
     }
 
@@ -345,7 +272,7 @@ void SDLNumberGrid::writeText(const std::string& text, TTF_Font* font, SDL_Color
     SDL_FreeSurface(textSurface);
 
     if (!textTexture) {
-        std::cerr << "Unable to create texture from rendered text! SDL_Error: " << SDL_GetError() << std::endl;
+        cerr << "Unable to create texture from rendered text! SDL_Error: " << SDL_GetError() << endl;
         return;
     }
 

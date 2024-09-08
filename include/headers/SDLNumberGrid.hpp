@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <../sdl/SDL.h>
 #include <../sdl/SDL_ttf.h>
+using namespace std;
 
 
 class SDLNumberGrid {
@@ -32,11 +33,12 @@ private:
     void moveRight();                            // Move all numbers to the right
     void moveUp();                               // Move all numbers up
     void moveDown();                             // Move all numbers down
-    void merge(std::vector<int>& row);           // Merge adjacent equal numbers
+    void merge(vector<int>& row);           // Merge adjacent equal numbers
     bool gridHasChanged() const;                       // Check if the grid has changed
+    void move(int dx, int dy);
 
     Window& window;
-    std::vector<std::vector<int>> grid;
+    vector<vector<int>> grid;
     int gridSize;
     int tileSize;
     int xStart;
