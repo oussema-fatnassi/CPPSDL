@@ -8,11 +8,12 @@ using namespace std;
 
 class Text {
 public:
-    Text(SDL_Renderer* renderer, const std::string& text, TTF_Font* font, SDL_Color color, int x, int y);
+    Text(SDL_Renderer* renderer, const std::string& text, TTF_Font* font, SDL_Color color, int x, int y, int ID);
     ~Text();
     void render(SDL_Renderer* renderer);
     void setText(const std::string& newText);
     string getText() { return text; }
+    int getID() { return ID; }
     
 private:
     std::string text;
@@ -21,6 +22,7 @@ private:
     SDL_Texture* texture;
     SDL_Rect rect;
     SDL_Renderer* renderer;
+    int ID;
 
     void createTexture();
 };

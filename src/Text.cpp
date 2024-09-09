@@ -2,8 +2,8 @@
 #include <iostream>
 using namespace std;
 
-Text::Text(SDL_Renderer* renderer, const std::string& text, TTF_Font* font, SDL_Color color, int x, int y)
-    : text(text), font(font), color(color), renderer(renderer) {
+Text::Text(SDL_Renderer* renderer, const std::string& text, TTF_Font* font, SDL_Color color, int x, int y, int ID)
+    : text(text), font(font), color(color), renderer(renderer) , ID(ID) {
 
     rect.x = x;
     rect.y = y;
@@ -35,6 +35,10 @@ void Text::createTexture() {
 }
 
 void Text::render(SDL_Renderer* renderer) {
+    if (!renderer || !font) {
+        std::cerr << "Renderer or font is null!" << std::endl;
+        return;
+    }
     SDL_RenderCopy(renderer, texture, nullptr, &rect);
 }
 
