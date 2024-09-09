@@ -5,6 +5,7 @@
 #include "UI.hpp"
 #include <../sdl/SDL.h>
 #include <vector>
+#include "Grid.hpp"
 using namespace std;
 
 class Menu {
@@ -20,6 +21,7 @@ public:
     void rightArrowClicked();
     void drawMainMenu();
     void drawGame();
+    void handleInput(SDL_Keycode key);
 
 private:
     UI ui;
@@ -29,6 +31,8 @@ private:
     SDL_Renderer* renderer;
     GameObject* gridImage, *background, *scoreBoard ;
     Text* gridText;
+    Grid* gridObject;
+    SDL_Event* event; 
 
     TTF_Font* font;
     TTF_Font* font1;

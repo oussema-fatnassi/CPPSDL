@@ -3,11 +3,9 @@
 #include "Assets.hpp"
 using namespace std;
 
-// Constructor: initializing options for grids
 Menu::Menu(SDL_Renderer* renderer) : ui(renderer), currentSelection(1), restartButton(nullptr), undoButton(nullptr) {
     this->renderer = renderer;
 
-    // Define grid options (image paths and labels)
     gridOptions = {
         {IMAGE_GRID_3X3, "Tiny 3x3"},
         {IMAGE_GRID_4X4, "Classic 4x4"},
@@ -19,7 +17,8 @@ Menu::Menu(SDL_Renderer* renderer) : ui(renderer), currentSelection(1), restartB
     drawMainMenu();
 }
 
-Menu::~Menu() {}
+Menu::~Menu() {
+}
 
 void Menu::drawMainMenu() {
     font = TTF_OpenFont(FONT_PATH.c_str(), 60);
@@ -28,7 +27,6 @@ void Menu::drawMainMenu() {
     Text* startText = new Text(renderer, "START", font, {255, 255, 255, 255}, 225, 650);
     Text* quitText = new Text(renderer, "QUIT", font, {255, 255, 255, 255}, 225, 750);
 
-    // Set initial grid and text
     gridImage = new GameObject(renderer, gridOptions[currentSelection].first, 150, 150, 300, 300);
     gridText = new Text(renderer, gridOptions[currentSelection].second, font1, {113, 112, 107, 255}, 190, 510);
 
@@ -61,7 +59,29 @@ void Menu::handleEvent(SDL_Event* event) {
     if (undoButton != nullptr) {
         undoButton->handleEvent(event);
     }
+
 }
+
+void Menu::handleInput(SDL_Keycode key) {
+    switch (key) {
+        case SDLK_DOWN:
+            gridObject->move(1, 0);
+            break;
+        case SDLK_UP:
+            gridObject->move(-1, 0);
+            break;
+        case SDLK_LEFT:
+            gridObject->move(0, -1);
+            break;
+        case SDLK_RIGHT:
+            gridObject->move(0, 1);
+            break;
+    }
+    gridObject->addRandomNumber(); // Add a random number after each move
+    ui.setGrid(gridObject); // Ensure the UI has the latest grid state
+    ui.renderGame(); // Render the updated grid
+}
+
 
 void Menu::startButtonClicked() {
     std::cout << "Start button clicked" << std::endl;
@@ -89,13 +109,14 @@ void Menu::rightArrowClicked() {
 void Menu::update() {
     gridImage->setTexture(renderer, gridOptions[currentSelection].first);
     gridText->setText(gridOptions[currentSelection].second);
-
     ui.render();
 }
 
 void Menu::drawGame() {
     ui.clear();
 
+    gridObject = new Grid(4);
+    ui.setGrid(gridObject);
     restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] { cout << "Restart button clicked" << endl; });
     undoButton = new Button(renderer, UNDO_BUTTON_NORMAL, UNDO_BUTTON_HOVER, UNDO_BUTTON_PRESSED, 365, 200, 50, 50, [] { cout << "Undo button clicked" << endl; });
     ui.addGameObject(new GameObject(renderer, SCORE, 350, 100, 180, 80));
@@ -105,8 +126,8 @@ void Menu::drawGame() {
     ui.addText(new Text(renderer, "0", font1, {251, 248, 239, 255}, 405, 120));
 
     ui.addButton(restartButton);
-    ui.addButton(undoButton);
 
+    ui.addButton(undoButton);
     ui.render();
 }
 
