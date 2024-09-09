@@ -8,6 +8,7 @@
 #include "GameObject.hpp"
 #include <vector>
 #include <string>
+#include "Grid.hpp"
 using namespace std;
 
 class UI {
@@ -18,15 +19,28 @@ public:
     void addText(Text* text);
     void addGameObject(GameObject* gameObject);
     void render();
-    void removeText(Text* textToRemove);
+    void renderTile(int value, int x, int y);
+    void renderGame();
     void clear();
-    
+    void setGrid(Grid* newGrid);
 
 private:
     SDL_Renderer* renderer;
     vector<Button*> buttons;
     vector<Text*> texts;
     vector<GameObject*> gameObjects;
+    int gridSize;
+    int tileSize;
+    int xStart;
+    int yStart;
+    int offsetX;
+    int offsetY;
+    SDL_Color textColor;
+    SDL_Color textColor2;
+    TTF_Font* font;
+    Grid* gridObject;
+    vector<vector<int>> grid;
+
 };
 
 #endif // UI_HPP
