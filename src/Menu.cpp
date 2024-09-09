@@ -60,7 +60,6 @@ void Menu::handleEvent(SDL_Event* event) {
     if (undoButton != nullptr) {
         undoButton->handleEvent(event);
     }
-
 }
 
 void Menu::handleInput(SDL_Keycode key) {
@@ -120,8 +119,17 @@ void Menu::drawGame() {
 
     gridObject = new Grid(4);
     ui.setGrid(gridObject);
-    restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] { gridObject->reset(); });
-    undoButton = new Button(renderer, UNDO_BUTTON_NORMAL, UNDO_BUTTON_HOVER, UNDO_BUTTON_PRESSED, 365, 200, 50, 50, [this] {gridObject->undo(); });
+    restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] { 
+        gridObject->reset(); 
+        ui.setGrid(gridObject); // Update the UI with the reset grid
+        ui.renderGame();        // Re-render the grid to reflect the reset
+    });
+
+    undoButton = new Button(renderer, UNDO_BUTTON_NORMAL, UNDO_BUTTON_HOVER, UNDO_BUTTON_PRESSED, 365, 200, 50, 50, [this] {
+        gridObject->undo(); 
+        ui.setGrid(gridObject); // Update the UI with the undone grid state
+        ui.renderGame();        // Re-render the grid to reflect the undo
+    });
     
     ui.addText(new Text(renderer, "SCORE", font2, {113, 112, 107, 255}, 405, 105, 1));
     ui.addText(new Text(renderer, "0", font1, {0, 0, 0, 255}, 405, 120, 1111));

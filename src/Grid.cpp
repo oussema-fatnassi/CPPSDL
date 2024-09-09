@@ -119,30 +119,33 @@ void Grid::merge(vector<int>& line) {
 }
 
 void Grid::handleInput(SDL_Keycode key) {
+    // Save current grid and score before moving
     previousGrid = grid;
     previousScore = score;
 
+    // Move grid based on key input
     if (key == SDLK_LEFT) {
-        move(0, -1); // Move left
-        cout << "Left" << endl;
+        move(0, -1);
     } else if (key == SDLK_RIGHT) {
-        move(0, 1);  // Move right
-        cout << "Right" << endl;
+        move(0, 1);
     } else if (key == SDLK_UP) {
-        move(-1, 0); // Move up
-        cout << "Up" << endl;
+        move(-1, 0);
     } else if (key == SDLK_DOWN) {
-        move(1, 0);  // Move down
-        cout << "Down" << endl;
+        move(1, 0);
     }
 
+    // Check if the grid has changed
     if (gridHasChanged()) {
+        // Add a random number to the grid
         if (!addRandomNumber()) {
-            cout << "Game Over" << endl;
+            std::cout << "Game Over" << std::endl;
         }
-        canUndo = true;
+        canUndo = true;  // Allow undo since a valid move has occurred
+    } else {
+        canUndo = false; // Disallow undo if the grid hasn't changed
     }
 }
+
 
 bool Grid::isGameOver() const {
     return isGridFull();
