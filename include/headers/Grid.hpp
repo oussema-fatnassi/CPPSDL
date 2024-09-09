@@ -8,6 +8,7 @@ using namespace std;
 class Grid {
 public: 
     Grid(int size);
+    Grid();
     ~Grid();
 
     void handleInput(SDL_Keycode key);
@@ -18,13 +19,16 @@ public:
     void undo();
     void reset();
     bool gameWon = false;
+    vector<vector<int>> getGridData() const;
+    int getSize() const;
+    int getTileValue(int i, int j) const;
+    void move(int dx, int dy);
+    bool addRandomNumber();                      // Add a random 2 or 4 to an empty cell
 
 private:
-    bool addRandomNumber();                      // Add a random 2 or 4 to an empty cell
     bool isGridFull() const;                     // Check if the grid is full
     void merge(vector<int>& row);           // Merge adjacent equal numbers
     bool gridHasChanged() const;                       // Check if the grid has changed
-    void move(int dx, int dy);
 
     vector<vector<int>> grid;
     int gridSize;
