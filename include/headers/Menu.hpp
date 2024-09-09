@@ -29,7 +29,7 @@ private:
     Button* startButton, *quitButton, *leftArrowButton, *rightArrowButton;
     Button* restartButton, *undoButton;
     SDL_Renderer* renderer;
-    GameObject* gridImage, *background, *scoreBoard ;
+    GameObject* gridImage, *background, *scoreBoard, *gameOver, *gameWin;
     Text* gridText;
     Grid* gridObject;
     SDL_Event* event;

@@ -67,16 +67,15 @@ void Menu::drawGame() {
     });
     
     ui.addText(new Text(renderer, "SCORE", font2, {113, 112, 107, 255}, 405, 105, 1));
-    ui.addText(new Text(renderer, "0", font1, {0, 0, 0, 255}, 405, 120, 1111));
+    ui.addText(new Text(renderer, "0", font1, {251, 248, 239, 255}, 405, 120, 1111));
     ui.addText(new Text(renderer, "2048", font, {113, 112, 107, 255}, 50, 100, 2));
-    // scoreBoard = new GameObject(renderer, SCORE, 350, 100, 180, 80);
-    // ui.addGameObject(new GameObject(renderer, SCORE, 350, 100, 180, 80));
+    scoreBoard = new GameObject(renderer, SCORE, 350, 100, 180, 80);
+    ui.addGameObject(new GameObject(renderer, SCORE, 350, 100, 180, 80));
 
     ui.addGameObject(new GameObject(renderer, getGameGridTexture(currentSelection), 75, 300, 450, 450)) ;    
 
     ui.addButton(restartButton);
     ui.addButton(undoButton);
-    ui.addText(scoreText);  
     // ui.addGameObject(scoreBoard);
     ui.render();
 }

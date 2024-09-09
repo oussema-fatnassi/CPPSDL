@@ -44,14 +44,14 @@ void UI::render() {
         button->render(renderer);
     }
 
+
+    for (GameObject* gameObject : gameObjects) {
+        gameObject->render(renderer);
+    }
     for (Text* text : texts) {
         if (text) { // Ensure text is not null
             text->render(renderer);
         }
-    }
-
-    for (GameObject* gameObject : gameObjects) {
-        gameObject->render(renderer);
     }
     renderGame();
 }
