@@ -8,7 +8,10 @@ Button::Button(SDL_Renderer* renderer, const std::string& normalImage, const std
       currentState(ButtonState::NORMAL), onClickCallback(onClickCallback), renderer(renderer) {}
 
 void Button::handleEvent(SDL_Event* event) {
-    if (event->type == SDL_MOUSEMOTION || event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_MOUSEBUTTONUP) {
+    if (currentState == ButtonState::DISABLED) {
+        return;
+    }
+    else if (event->type == SDL_MOUSEMOTION || event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_MOUSEBUTTONUP) {
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
 
@@ -37,6 +40,10 @@ void Button::handleEvent(SDL_Event* event) {
 
 void Button::render(SDL_Renderer* renderer) {
     GameObject::render(renderer);  
+}
+
+void Button::disable() {
+    currentState = ButtonState::DISABLED;  // Nouveau state pour désactiver
 }
 
 void Button::changeState(ButtonState newState) {
