@@ -57,6 +57,19 @@ void UI::render() {
 }
 
 void UI:: clear() {
+    for (auto& button : buttons) {
+        button->disable();
+        button = nullptr;
+    }
+
+    for (auto& text : texts) {
+        text = nullptr;
+    }
+
+    for (auto& gameObject : gameObjects) {
+        gameObject = nullptr;
+    }
+
     buttons.clear();
     texts.clear();
     gameObjects.clear();
