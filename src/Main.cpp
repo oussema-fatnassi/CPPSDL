@@ -1,7 +1,7 @@
-#include "SDLNumberGrid.hpp"
 #include "Button.hpp"
 #include <iostream>
 #include "Menu.hpp"
+#include "Window.hpp"
 
 using namespace std;
 
@@ -27,7 +27,9 @@ int main(int argc, char* argv[]) {
             if (event.type == SDL_QUIT) {
                 quit = true;
             } else if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
-                menu.handleEvent(&event);  
+                menu.handleEvent(&event);
+            } else if (event.type == SDL_KEYDOWN) {
+                menu.handleInput(event.key.keysym.sym);  // Pass key events to the Menu
             }
         }
 
