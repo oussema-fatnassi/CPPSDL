@@ -21,6 +21,16 @@ file(GLOB_RECURSE SRC_FILES "${SRC_DIR}/*.cpp")
 # Create the executable from the source files
 add_executable(Main ${SRC_FILES})
 
+# Set the build type to Debug to include debugging symbols
+set(CMAKE_BUILD_TYPE Debug)
+
+# Enable Address Sanitizer if desired
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    # Add Address Sanitizer compiler and linker options
+    add_compile_options(-fsanitize=address -g)
+    add_link_options(-fsanitize=address)
+endif()
+
 # Platform-specific settings
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     # macOS specific settings
@@ -30,7 +40,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 
     # Link SDL2, SDL2_image and SDL2_ttf libraries
     target_link_libraries(Main /opt/homebrew/opt/sdl2/lib/libSDL2.dylib /opt/homebrew/opt/sdl2_image/lib/libSDL2_image.dylib /opt/homebrew/opt/sdl2_ttf/lib/libSDL2_ttf.dylib)
-    
+
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     # Windows specific settings
     find_package(SDL2 REQUIRED)
