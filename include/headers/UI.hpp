@@ -23,6 +23,7 @@ public:
     void renderGame();
     void clear();
     void setGrid(Grid* newGrid);
+    void updateScoreText(const string& score);
 
 private:
     SDL_Renderer* renderer;

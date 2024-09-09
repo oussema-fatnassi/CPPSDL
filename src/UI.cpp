@@ -45,7 +45,9 @@ void UI::render() {
     }
 
     for (Text* text : texts) {
-        text->render(renderer);
+        if (text) { // Ensure text is not null
+            text->render(renderer);
+        }
     }
 
     for (GameObject* gameObject : gameObjects) {
@@ -122,4 +124,14 @@ void UI::setGrid(Grid* newGrid) {
         }
         cout << endl;
     }
+}
+void UI::updateScoreText(const std::string& score) {
+    // Update the score text with the new score
+    for (auto& text : texts) {
+        if (text->getID() == 1111) {
+            text->setText(score);
+            break;
+        }
+    }
+    renderGame(); // Re-render to update the UI
 }

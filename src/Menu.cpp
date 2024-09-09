@@ -23,12 +23,13 @@ Menu::~Menu() {
 void Menu::drawMainMenu() {
     font = TTF_OpenFont(FONT_PATH.c_str(), 60);
     font1 = TTF_OpenFont(FONT_PATH.c_str(), 40);
-    Text* title = new Text(renderer, "2048", font, {113, 112, 107, 255}, 225, 50);
-    Text* startText = new Text(renderer, "START", font, {255, 255, 255, 255}, 225, 650);
-    Text* quitText = new Text(renderer, "QUIT", font, {255, 255, 255, 255}, 225, 750);
+    font2 = TTF_OpenFont(FONT_PATH.c_str(), 20);
+    Text* title = new Text(renderer, "2048", font, {113, 112, 107, 255}, 225, 50, 1);
+    Text* startText = new Text(renderer, "START", font, {255, 255, 255, 255}, 225, 650, 1);
+    Text* quitText = new Text(renderer, "QUIT", font, {255, 255, 255, 255}, 225, 750, 1);
 
     gridImage = new GameObject(renderer, gridOptions[currentSelection].first, 150, 150, 300, 300);
-    gridText = new Text(renderer, gridOptions[currentSelection].second, font1, {113, 112, 107, 255}, 190, 510);
+    gridText = new Text(renderer, gridOptions[currentSelection].second, font1, {113, 112, 107, 255}, 190, 510, 1);
 
     startButton = new Button(renderer, START_BUTTON_NORMAL, START_BUTTON_HOVER, START_BUTTON_PRESSED, 146, 650, 308, 80, [this] { startButtonClicked(); });
     quitButton = new Button(renderer, QUIT_BUTTON_NORMAL, QUIT_BUTTON_HOVER, QUIT_BUTTON_PRESSED, 146, 750, 308, 80, [this] { quitButtonClicked(); });
@@ -80,6 +81,8 @@ void Menu::handleInput(SDL_Keycode key) {
     gridObject->addRandomNumber(); // Add a random number after each move
     ui.setGrid(gridObject); // Ensure the UI has the latest grid state
     ui.renderGame(); // Render the updated grid
+    ui.updateScoreText(to_string(gridObject->getScore()));
+
 }
 
 
@@ -117,17 +120,21 @@ void Menu::drawGame() {
 
     gridObject = new Grid(4);
     ui.setGrid(gridObject);
-    restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] { cout << "Restart button clicked" << endl; });
-    undoButton = new Button(renderer, UNDO_BUTTON_NORMAL, UNDO_BUTTON_HOVER, UNDO_BUTTON_PRESSED, 365, 200, 50, 50, [] { cout << "Undo button clicked" << endl; });
-    ui.addGameObject(new GameObject(renderer, SCORE, 350, 100, 180, 80));
+    restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] { gridObject->reset(); });
+    undoButton = new Button(renderer, UNDO_BUTTON_NORMAL, UNDO_BUTTON_HOVER, UNDO_BUTTON_PRESSED, 365, 200, 50, 50, [this] {gridObject->undo(); });
+    
+    ui.addText(new Text(renderer, "SCORE", font2, {113, 112, 107, 255}, 405, 105, 1));
+    ui.addText(new Text(renderer, "0", font1, {0, 0, 0, 255}, 405, 120, 1111));
+    ui.addText(new Text(renderer, "2048", font, {113, 112, 107, 255}, 50, 100, 2));
+    // scoreBoard = new GameObject(renderer, SCORE, 350, 100, 180, 80);
+    // ui.addGameObject(new GameObject(renderer, SCORE, 350, 100, 180, 80));
+
     ui.addGameObject(new GameObject(renderer, getGameGridTexture(currentSelection), 75, 300, 450, 450)) ;    
-    ui.addText(new Text(renderer, "2048", font1, {113, 112, 107, 255}, 50, 100));
-    ui.addText(new Text(renderer, "SCORE", font1, {113, 112, 107, 255}, 405, 105));
-    ui.addText(new Text(renderer, "0", font1, {251, 248, 239, 255}, 405, 120));
 
     ui.addButton(restartButton);
-
     ui.addButton(undoButton);
+    ui.addText(scoreText);  
+    // ui.addGameObject(scoreBoard);
     ui.render();
 }
 

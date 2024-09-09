@@ -32,10 +32,10 @@ private:
     GameObject* gridImage, *background, *scoreBoard ;
     Text* gridText;
     Grid* gridObject;
-    SDL_Event* event; 
+    SDL_Event* event;
+    Text* scoreText; 
 
-    TTF_Font* font;
-    TTF_Font* font1;
+    TTF_Font* font, *font1, *font2;
 
     vector<pair<string, string>> gridOptions;
     string getGameGridTexture(int selection);
