@@ -49,6 +49,39 @@ void Menu::drawMainMenu() {
 
 }
 
+void Menu::drawGame() {
+    ui.clear();
+
+    gridObject = new Grid(4);
+    ui.setGrid(gridObject);
+    restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] { 
+        gridObject->reset(); 
+        ui.setGrid(gridObject); // Update the UI with the reset grid
+        ui.renderGame();        // Re-render the grid to reflect the reset
+    });
+
+    undoButton = new Button(renderer, UNDO_BUTTON_NORMAL, UNDO_BUTTON_HOVER, UNDO_BUTTON_PRESSED, 365, 200, 50, 50, [this] {
+        gridObject->undo(); 
+        ui.setGrid(gridObject); // Update the UI with the undone grid state
+        ui.renderGame();        // Re-render the grid to reflect the undo
+    });
+    
+    ui.addText(new Text(renderer, "SCORE", font2, {113, 112, 107, 255}, 405, 105, 1));
+    ui.addText(new Text(renderer, "0", font1, {0, 0, 0, 255}, 405, 120, 1111));
+    ui.addText(new Text(renderer, "2048", font, {113, 112, 107, 255}, 50, 100, 2));
+    // scoreBoard = new GameObject(renderer, SCORE, 350, 100, 180, 80);
+    // ui.addGameObject(new GameObject(renderer, SCORE, 350, 100, 180, 80));
+
+    ui.addGameObject(new GameObject(renderer, getGameGridTexture(currentSelection), 75, 300, 450, 450)) ;    
+
+    ui.addButton(restartButton);
+    ui.addButton(undoButton);
+    ui.addText(scoreText);  
+    // ui.addGameObject(scoreBoard);
+    ui.render();
+}
+
+
 void Menu::handleEvent(SDL_Event* event) {
     startButton->handleEvent(event);
     quitButton->handleEvent(event);
@@ -63,20 +96,21 @@ void Menu::handleEvent(SDL_Event* event) {
 }
 
 void Menu::handleInput(SDL_Keycode key) {
-    switch (key) {
-        case SDLK_DOWN:
-            gridObject->move(1, 0);
-            break;
-        case SDLK_UP:
-            gridObject->move(-1, 0);
-            break;
-        case SDLK_LEFT:
-            gridObject->move(0, -1);
-            break;
-        case SDLK_RIGHT:
-            gridObject->move(0, 1);
-            break;
-    }
+    // switch (key) {
+    //     case SDLK_DOWN:
+    //         gridObject->move(1, 0);
+    //         break;
+    //     case SDLK_UP:
+    //         gridObject->move(-1, 0);
+    //         break;
+    //     case SDLK_LEFT:
+    //         gridObject->move(0, -1);
+    //         break;
+    //     case SDLK_RIGHT:
+    //         gridObject->move(0, 1);
+    //         break;
+    // }
+    gridObject->handleInput(key);
     gridObject->addRandomNumber(); // Add a random number after each move
     ui.setGrid(gridObject); // Ensure the UI has the latest grid state
     ui.renderGame(); // Render the updated grid
@@ -114,37 +148,6 @@ void Menu::update() {
     ui.render();
 }
 
-void Menu::drawGame() {
-    ui.clear();
-
-    gridObject = new Grid(4);
-    ui.setGrid(gridObject);
-    restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] { 
-        gridObject->reset(); 
-        ui.setGrid(gridObject); // Update the UI with the reset grid
-        ui.renderGame();        // Re-render the grid to reflect the reset
-    });
-
-    undoButton = new Button(renderer, UNDO_BUTTON_NORMAL, UNDO_BUTTON_HOVER, UNDO_BUTTON_PRESSED, 365, 200, 50, 50, [this] {
-        gridObject->undo(); 
-        ui.setGrid(gridObject); // Update the UI with the undone grid state
-        ui.renderGame();        // Re-render the grid to reflect the undo
-    });
-    
-    ui.addText(new Text(renderer, "SCORE", font2, {113, 112, 107, 255}, 405, 105, 1));
-    ui.addText(new Text(renderer, "0", font1, {0, 0, 0, 255}, 405, 120, 1111));
-    ui.addText(new Text(renderer, "2048", font, {113, 112, 107, 255}, 50, 100, 2));
-    // scoreBoard = new GameObject(renderer, SCORE, 350, 100, 180, 80);
-    // ui.addGameObject(new GameObject(renderer, SCORE, 350, 100, 180, 80));
-
-    ui.addGameObject(new GameObject(renderer, getGameGridTexture(currentSelection), 75, 300, 450, 450)) ;    
-
-    ui.addButton(restartButton);
-    ui.addButton(undoButton);
-    ui.addText(scoreText);  
-    // ui.addGameObject(scoreBoard);
-    ui.render();
-}
 
 string Menu::getGameGridTexture(int selection) {
     switch (selection) {

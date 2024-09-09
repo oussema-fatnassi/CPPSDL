@@ -53,10 +53,12 @@ bool Grid::gridHasChanged() const {
     for (int i = 0; i < gridSize; ++i) {
         for (int j = 0; j < gridSize; ++j) {
             if (grid[i][j] != previousGrid[i][j]) {
+                cout << "Grid has changed" << endl;
                 return true;  // Grid has changed
             }
         }
     }
+    cout << "Grid has not changed" << endl;
     return false;  // Grid is unchanged
 }
 
@@ -119,11 +121,10 @@ void Grid::merge(vector<int>& line) {
 }
 
 void Grid::handleInput(SDL_Keycode key) {
-    // Save current grid and score before moving
+    cout << "Handling input: " << key << endl;
     previousGrid = grid;
     previousScore = score;
 
-    // Move grid based on key input
     if (key == SDLK_LEFT) {
         move(0, -1);
     } else if (key == SDLK_RIGHT) {
@@ -134,17 +135,17 @@ void Grid::handleInput(SDL_Keycode key) {
         move(1, 0);
     }
 
-    // Check if the grid has changed
     if (gridHasChanged()) {
-        // Add a random number to the grid
         if (!addRandomNumber()) {
-            std::cout << "Game Over" << std::endl;
+            cout << "Game Over" << std::endl;
         }
-        canUndo = true;  // Allow undo since a valid move has occurred
+        canUndo = true;  
     } else {
-        canUndo = false; // Disallow undo if the grid hasn't changed
+        cout << "Grid did not change, undo disabled" << endl;
+        canUndo = false; 
     }
 }
+
 
 
 bool Grid::isGameOver() const {
