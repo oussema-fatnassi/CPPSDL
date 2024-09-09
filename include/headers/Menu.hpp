@@ -33,13 +33,12 @@ private:
     Text* gridText;
     Grid* gridObject;
     SDL_Event* event;
-    Text* scoreText; 
+    Text* scoreText, *gameOverText, *gameWinText, *continueText; 
 
     TTF_Font* font, *font1, *font2;
 
     vector<pair<string, string>> gridOptions;
     string getGameGridTexture(int selection);
-
 };
 
 
