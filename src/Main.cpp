@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
 //     GameObject gameOver = GameObject(window.getRenderer(), GAME_OVER, 75, 300, 450, 450);
 //     GameObject gameWin = GameObject(window.getRenderer(), GAME_WIN, 75, 300, 450, 450);
 
-//     GameObject background = GameObject(window.getRenderer(), GRID, 75, 300, 450, 450);
+//     GameObject background = GameObject(window.getRenderer(), GRID1, 75, 300, 450, 450);
 //     Button undoButton = Button(window.getRenderer(), UNDO_BUTTON_NORMAL, UNDO_BUTTON_HOVER, UNDO_BUTTON_PRESSED, 365, 200, 50, 50, [&grid]() { grid.undo(); });
 //     Button restartButton = Button(window.getRenderer(), RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [&grid]() { grid.reset(); });
 //     GameObject scoreBoard = GameObject(window.getRenderer(), SCORE, 350, 100, 180, 80);
