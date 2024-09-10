@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
 set(LIB_DIR "${CMAKE_SOURCE_DIR}/lib")
+set(TEST_DIR "${CMAKE_SOURCE_DIR}/testing")
 
 # Include directories for your headers
 include_directories(${INCLUDE_DIR}/headers)
@@ -18,7 +19,7 @@ include_directories(${INCLUDE_DIR}/headers)
 # Add source files
 file(GLOB_RECURSE SRC_FILES "${SRC_DIR}/*.cpp")
 
-# Create the executable from the source files
+# Create the main executable from the source files
 add_executable(Main ${SRC_FILES})
 
 # Set the build type to Debug to include debugging symbols
@@ -60,3 +61,28 @@ endif()
 set_target_properties(Main PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
+
+# Fetch Google Test
+include(FetchContent)
+FetchContent_Declare(
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG        release-1.11.0
+)
+FetchContent_MakeAvailable(googletest)
+
+# Add test executable
+file(GLOB_RECURSE TEST_FILES "${TEST_DIR}/*.cpp")
+add_executable(tests ${TEST_FILES})
+
+# Link Google Test libraries
+target_link_libraries(tests
+    gtest_main
+)
+
+# Include Google Test headers
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+
+# Add a test
+enable_testing()
+add_test(NAME example_test COMMAND tests)
