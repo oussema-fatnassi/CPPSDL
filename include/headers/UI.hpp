@@ -8,8 +8,18 @@
 #include "GameObject.hpp"
 #include <vector>
 #include <string>
+#include <unordered_map>
 #include "Grid.hpp"
+
 using namespace std;
+
+// Define a struct to hold grid properties
+struct GridProperties {
+    int gap;
+    int tileSize;
+    int offsetX;
+    int offsetY;
+};
 
 class UI {
 public:
@@ -42,6 +52,9 @@ private:
     Grid* gridObject;
     vector<vector<int>> grid;
 
+    // New members to manage grid properties
+    int TILE_GAP;
+    unordered_map<int, GridProperties> gridPropertiesMap;
 };
 
 #endif // UI_HPP

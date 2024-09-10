@@ -59,7 +59,14 @@ void Menu::drawGame() {
     gameWinText = new Text(renderer, "YOU WON!", font, {113, 112, 107, 255}, 155, 450, 1);
     continueText = new Text(renderer, "Move to continue", font2, {113, 112, 107, 255}, 220, 530, 1);
 
-    gridObject = new Grid(4);
+    switch (currentSelection) {
+        case 0: gridObject = new Grid(3); break;
+        case 1: gridObject = new Grid(4); break;
+        case 2: gridObject = new Grid(5); break;
+        case 3: gridObject = new Grid(6); break;
+        case 4: gridObject = new Grid(8); break;
+        default: gridObject = new Grid(4); break; // Default to 4x4
+    }
     ui.setGrid(gridObject);
     restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] { 
         gridObject->reset(); 
@@ -102,7 +109,6 @@ void Menu::handleEvent(SDL_Event* event) {
 
 void Menu::handleInput(SDL_Keycode key) {
     gridObject->handleInput(key);
-    gridObject->addRandomNumber(); // Add a random number after each move
     ui.setGrid(gridObject); // Ensure the UI has the latest grid state
     ui.renderGame(); // Render the updated grid
     ui.updateScoreText(to_string(gridObject->getScore()));

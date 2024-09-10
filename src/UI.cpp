@@ -13,6 +13,12 @@ UI::UI(SDL_Renderer* renderer)
     if (!font) {
         std::cerr << "TTF_OpenFont Error: " << TTF_GetError() << std::endl;
     }
+
+    gridPropertiesMap[3] = {12, 135, 10, 10};  
+    gridPropertiesMap[4] = {10, 100, 10, 8};   
+    gridPropertiesMap[5] = {8, 80, 9, 9};   
+    gridPropertiesMap[6] = {6, 68, 6, 6}; 
+    gridPropertiesMap[8] = {3, 53, 2, 2}; 
 }
 
 UI::~UI() {
@@ -129,13 +135,25 @@ void UI::setGrid(Grid* newGrid) {
     gridObject = newGrid;
     gridSize = gridObject->getSize();
     grid = gridObject->getGridData();  
-    // Debugging output
-    cout << "Grid Size: " << gridSize << endl;
-    for (const auto& row : grid) {
-        for (int value : row) {
-            cout << value << " ";
+
+    auto it = gridPropertiesMap.find(gridSize);
+    if (it != gridPropertiesMap.end()) {
+        TILE_GAP = it->second.gap;
+        tileSize = it->second.tileSize;
+        offsetX = it->second.offsetX;
+        offsetY = it->second.offsetY;
+
+        // Debugging output
+        cout << "Grid Size: " << gridSize << endl;
+        for (const auto& row : grid) {
+            for (int value : row) {
+                cout << value << " ";
+            }
+            cout << endl;
         }
-        cout << endl;
+    } else {
+        cerr << "Unsupported grid size: " << gridSize << endl;
+        // Set default properties or handle error
     }
 }
 void UI::updateScoreText(const std::string& score) {
