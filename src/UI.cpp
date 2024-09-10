@@ -45,6 +45,14 @@ void UI::addGameObject(GameObject* gameObject) {
     gameObjects.push_back(gameObject);
 }
 
+void UI::addGameObjectEnd(GameObject* gameObjectEnd){
+    gameObjectsEnd.push_back(gameObjectEnd);
+}
+
+void UI::addTextEnd(Text* textEnd){
+    textsEnd.push_back(textEnd);
+}
+
 void UI::render() {
     for (Button* button : buttons) {
         button->render(renderer);
@@ -59,7 +67,17 @@ void UI::render() {
             text->render(renderer);
         }
     }
+
     renderGame();
+    for (GameObject* gameObjectEnd : gameObjectsEnd) {
+        gameObjectEnd->render(renderer);
+    }
+
+    for (Text* textEnd : textsEnd) {
+        if (textEnd) { // Ensure text is not null
+            textEnd->render(renderer);
+        }
+    }
 }
 
 void UI:: clear() {
@@ -76,9 +94,19 @@ void UI:: clear() {
         gameObject = nullptr;
     }
 
+    for(auto& gameObjectEnd : gameObjectsEnd){
+        gameObjectEnd = nullptr;
+    }
+
+    for(auto& textEnd : textsEnd){
+        textEnd = nullptr;
+    }
+
     buttons.clear();
     texts.clear();
     gameObjects.clear();
+    gameObjectsEnd.clear();
+    textsEnd.clear();
 }
 
 void UI::renderTile(int value, int x, int y) {
@@ -165,4 +193,18 @@ void UI::updateScoreText(const std::string& score) {
         }
     }
     renderGame(); // Re-render to update the UI
+}
+
+void UI::removeGameObject(GameObject* gameObject) {
+    auto it = find(gameObjects.begin(), gameObjects.end(), gameObject);
+    if (it != gameObjects.end()) {
+        gameObjects.erase(it);
+    }
+}
+
+void UI::removeText(Text* text) {
+    auto it = find(texts.begin(), texts.end(), text);
+    if (it != texts.end()) {
+        texts.erase(it);
+    }
 }

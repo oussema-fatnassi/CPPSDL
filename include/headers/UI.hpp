@@ -13,7 +13,6 @@
 
 using namespace std;
 
-// Define a struct to hold grid properties
 struct GridProperties {
     int gap;
     int tileSize;
@@ -28,18 +27,24 @@ public:
     void addButton(Button* button);
     void addText(Text* text);
     void addGameObject(GameObject* gameObject);
+    void addTextEnd(Text* text);
+    void addGameObjectEnd(GameObject* gameObject);
     void render();
     void renderTile(int value, int x, int y);
     void renderGame();
     void clear();
     void setGrid(Grid* newGrid);
     void updateScoreText(const string& score);
+    void removeGameObject(GameObject* gameObject);
+    void removeText(Text* text);
 
 private:
     SDL_Renderer* renderer;
     vector<Button*> buttons;
     vector<Text*> texts;
     vector<GameObject*> gameObjects;
+    vector<GameObject*> gameObjectsEnd;
+    vector<Text*> textsEnd;
     int gridSize;
     int tileSize;
     int xStart;
@@ -52,7 +57,6 @@ private:
     Grid* gridObject;
     vector<vector<int>> grid;
 
-    // New members to manage grid properties
     int TILE_GAP;
     unordered_map<int, GridProperties> gridPropertiesMap;
 };

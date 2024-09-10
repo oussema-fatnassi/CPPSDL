@@ -30,7 +30,7 @@ bool Grid::addRandomNumber() {
     }
 
     int randIndex = rand() % emptyCells.size();
-    int randValue = (rand() % 2 + 1) * 2; // Randomly pick 2 or 4
+    int randValue = (rand() % 2 + 1) * 512; // Randomly pick 2 or 4
 
     grid[emptyCells[randIndex].first][emptyCells[randIndex].second] = randValue;
 
@@ -149,6 +149,7 @@ void Grid::handleInput(SDL_Keycode key) {
 
 
 bool Grid::isGameOver() const {
+    cout << "Checking if game is over" << endl;
     return isGridFull();
 }
 
