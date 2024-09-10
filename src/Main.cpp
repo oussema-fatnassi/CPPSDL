@@ -2,41 +2,59 @@
 #include <iostream>
 #include "Menu.hpp"
 #include "Window.hpp"
+#include <../../googletest/googletest/include/gtest/gtest.h>
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
+TEST(Window, Window.add) {
     Window window("2048 Game", 600, 900);
-    UI ui(window.getRenderer());
-    Menu menu(window.getRenderer());
+    GTEST_ASSERT_EQ(window.add(1, 2), 3);
+}
 
-    bool quit = false;
-    SDL_Event event;
-
-    menu.drawMainMenu();
-
-    while (!quit) {
-        window.clear();
-        menu.update();
+int main(int argc, char* argv[]) {
+    
+    Window window = new Window("2048 Game", 600, 900);
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 
 
-        SDL_SetRenderDrawColor(window.getRenderer(), 251, 248, 239, 255);           
-        window.present();  
 
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                quit = true;
-            } else if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
-                menu.handleEvent(&event);
-            } else if (event.type == SDL_KEYDOWN) {
-                menu.handleInput(event.key.keysym.sym);  // Pass key events to the Menu
-            }
-        }
 
-        SDL_Delay(10);
-    }
 
-    return 0;
+
+
+
+    // Window window("2048 Game", 600, 900);
+    // UI ui(window.getRenderer());
+    // Menu menu(window.getRenderer());
+    
+    // bool quit = false;
+    // SDL_Event event;
+
+    // menu.drawMainMenu();
+
+    // while (!quit) {
+    //     window.clear();
+    //     menu.update();
+
+
+    //     SDL_SetRenderDrawColor(window.getRenderer(), 251, 248, 239, 255);           
+    //     window.present();  
+
+    //     while (SDL_PollEvent(&event)) {
+    //         if (event.type == SDL_QUIT) {
+    //             quit = true;
+    //         } else if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
+    //             menu.handleEvent(&event);
+    //         } else if (event.type == SDL_KEYDOWN) {
+    //             menu.handleInput(event.key.keysym.sym);  // Pass key events to the Menu
+    //         }
+    //     }
+
+    //     SDL_Delay(10);
+    // }
+
+    // return 0;
 }
 
 // #include "SDLNumberGrid.hpp"
