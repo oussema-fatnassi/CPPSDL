@@ -15,7 +15,7 @@ public:
 
     void pollEvents();
     bool isClosed() const;
-
+    int add(int a, int b) { return a + b; };
     void clear() const;
     void present() const;
     void renderImage(const string& imagePath, int x, int y, int width, int height);
