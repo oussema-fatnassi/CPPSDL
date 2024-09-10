@@ -2,10 +2,8 @@
 #include "NumberGrid.hpp"
 
 int main() {
-    NumberGrid numberGrid(4);
-    GameWindow gameWindow(numberGrid, 600); // 600x600 window size
-
+    NumberGrid numberGrid(4);  // Create a 4x4 grid
+    GameWindow gameWindow(numberGrid, 600); // Pass grid and window size
     gameWindow.run();
-
-    return ;
+    return 0;
 }
