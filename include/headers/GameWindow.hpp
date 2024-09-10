@@ -7,17 +7,22 @@
 class GameWindow {
 private:
     sf::RenderWindow window;
-    NumberGrid& numberGrid;
-    int windowSize;
-    int cellSize;
-    std::map<int, sf::Color> colorMap;
+    NumberGrid grid;
+    sf::Font font;
+    sf::Text titleText, scoreText, highScoreText, scoreLabel, highScoreLabel;
+    sf::RectangleShape resetButton, undoButton;
+
+    int score;
+    int highScore;
+
+    void initializeUI();
+    void updateUI();
+    void drawUI();
+    void drawGrid(); // Declare the drawGrid function here
 
 public:
     GameWindow(NumberGrid& grid, int windowSize);
     void run();
-    void drawGrid();
-    void handleInput();
-    sf::Color getColor(int value);
 };
 
 #endif // GAMEWINDOW_HPP
