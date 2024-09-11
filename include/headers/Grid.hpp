@@ -24,9 +24,10 @@ public:
     int getTileValue(int i, int j) const;
     void move(int dx, int dy);
     bool addRandomNumber();                      // Add a random 2 or 4 to an empty cell
+    bool isGridFull() const;                     // Check if the grid is full
+    void setGridData(const vector<vector<int>>& newGrid);
 
 private:
-    bool isGridFull() const;                     // Check if the grid is full
     void merge(vector<int>& row);           // Merge adjacent equal numbers
     bool gridHasChanged() const;                       // Check if the grid has changed
 

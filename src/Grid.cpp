@@ -219,6 +219,10 @@ vector<vector<int>> Grid::getGridData() const {
     return grid;
 }
 
+void Grid::setGridData(const vector<vector<int>>& newGrid) {
+    grid = newGrid;
+}
+
 int Grid::getSize() const {
     return gridSize;
 }
