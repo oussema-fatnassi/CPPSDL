@@ -68,22 +68,24 @@ void Menu::drawGame() {
         default: gridObject = new Grid(4); break; // Default to 4x4
     }
     ui.setGrid(gridObject);
-    restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] { 
-        gridObject->reset(); 
-        ui.setGrid(gridObject); // Update the UI with the reset grid
-        ui.renderGame();        // Re-render the grid to reflect the reset
-        ui.updateScoreText("0"); // Reset the score text
 
+    restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] { 
+        gameAlreadyWon = false; // Reset the game won flag
+        gridObject->reset();
+        ui.updateScoreText("0"); // Reset the score text
+        ui.setGrid(gridObject); // Update the UI with the reset grid
         if (gameOverHandled) {
             ui.removeGameObject(gameOver);
             ui.removeText(gameOverText);
             gameOverHandled = false;
             std::cout << "Game restarted, game over UI elements removed." << std::endl;
         }
+        ui.clear();
+        drawGame();
     });
 
     undoButton = new Button(renderer, UNDO_BUTTON_NORMAL, UNDO_BUTTON_HOVER, UNDO_BUTTON_PRESSED, 365, 200, 50, 50, [this] {
-        gridObject->undo(); 
+        gridObject->undo();
         ui.setGrid(gridObject); // Update the UI with the undone grid state
         ui.renderGame();        // Re-render the grid to reflect the undo
         ui.updateScoreText(to_string(gridObject->getScore())); // Update the score text
@@ -115,39 +117,53 @@ void Menu::handleEvent(SDL_Event* event) {
 }
 
 void Menu::handleInput(SDL_Keycode key) {
-    // Check if the game is over, and handle game over state only once
-    if (gridObject->isGameOver() && !gridObject->canMove()) {
-        if (!gameOverHandled) {
-            ui.addGameObjectEnd(gameOver);
-            ui.addTextEnd(gameOverText);
-            gameOverHandled = true;  // Set the flag to true to prevent re-adding game over elements
-            std::cout << "Game over! UI elements added." << std::endl;
-        }
-        return;  // Do not process input if the game is over
-    }
+ // Check if the game is over, and handle game over state only once
+ if (gridObject->isGameOver() && !gridObject->canMove()) {
+     if (!gameOverHandled) {
+         ui.addGameObjectEnd(gameOver);
+         ui.addTextEnd(gameOverText);
+         gameOverHandled = true;
+         std::cout << "Game over! UI elements added." << std::endl;
+     }
+     return;
+ }
 
-    // Check if the game is won, and add the win UI elements once
-    if (gridObject->isGameWon()) {
-        ui.addGameObjectEnd(gameWin);
-        ui.addTextEnd(gameWinText);
-        ui.addTextEnd(continueText);
-    }
+ // If the game is won, only process arrow keys and wait for input to continue
+ if (gridObject->isGameWon() && !gameAlreadyWon) {
+     if (!gameWinHandled) {
+         ui.addGameObjectEnd(gameWin);
+         ui.addTextEnd(gameWinText);
+         ui.addTextEnd(continueText);
+         ui.render();
+         gameWinHandled = true;
+     }
+     // Wait for user to press an arrow key to continue the game
+     if (key == SDLK_LEFT || key == SDLK_RIGHT || key == SDLK_UP || key == SDLK_DOWN) {
+         gameAlreadyWon = true;  // The game can now continue
+         ui.removeGameObject(gameWin);
+         ui.removeText(gameWinText);
+         ui.removeText(continueText);
+         ui.render();
+         return;
+     }
+     return;  // Skip other inputs until the user presses an arrow key
+ }
 
-    // Process input if the game is not over or won
-    gridObject->handleInput(key);
-    ui.setGrid(gridObject); // Ensure the UI has the latest grid state
-    ui.renderGame(); // Render the updated grid
-    ui.updateScoreText(std::to_string(gridObject->getScore()));
+ // Process input if the game is not over or won
+ gridObject->handleInput(key);
+ ui.setGrid(gridObject);
+ ui.renderGame();
+ ui.updateScoreText(std::to_string(gridObject->getScore()));
 
-    // Re-check if the game is over after processing input
-    if (gridObject->isGameOver() && !gridObject->canMove()) {
-        if (!gameOverHandled) {
-            ui.addGameObjectEnd(gameOver);
-            ui.addTextEnd(gameOverText);
-            gameOverHandled = true;  // Set the flag to true to prevent re-adding game over elements
-            std::cout << "Game over after input! UI elements added." << std::endl;
-        }
-    }
+ // Re-check if the game is over after processing input
+ if (gridObject->isGameOver() && !gridObject->canMove()) {
+     if (!gameOverHandled) {
+         ui.addGameObjectEnd(gameOver);
+         ui.addTextEnd(gameOverText);
+         gameOverHandled = true;
+         std::cout << "Game over after input! UI elements added." << std::endl;
+     }
+ }
 }
 
 

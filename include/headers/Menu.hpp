@@ -40,6 +40,8 @@ private:
     vector<pair<string, string>> gridOptions;
     string getGameGridTexture(int selection);
     bool gameOverHandled = false;
+    bool gameWinHandled = false;
+    bool gameAlreadyWon = false;
 
 };
 
