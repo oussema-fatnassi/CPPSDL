@@ -1,24 +1,23 @@
 #include "ResourceManager.hpp"
-#include <iostream>
 
-ResourceManager::ResourceManager(){}
+ResourceManager::ResourceManager(){}                                                // Constructor
 
-ResourceManager:: ResourceManager(ResourceManager const&){}
+ResourceManager:: ResourceManager(ResourceManager const&){}                         // Copy constructor      
 
-ResourceManager ResourceManager :: operator=(ResourceManager const& rhs){
+ResourceManager ResourceManager :: operator=(ResourceManager const& rhs){           // Assignment operator
     return *this;
 }
 
-ResourceManager& ResourceManager::getInstance(){
+ResourceManager& ResourceManager::getInstance(){                                    // Get instance method
     static ResourceManager* instance = new ResourceManager();
     return *instance;
 }
 
-SDL_Surface* ResourceManager::getSurface(string filepath) {
-    auto search = surfaces.find(filepath);
-    if (search != surfaces.end()) {
+SDL_Surface* ResourceManager::getSurface(string filepath) {                         // Get surface method           
+    auto search = surfaces.find(filepath);                                          // Search for surface in map
+    if (search != surfaces.end()) {                                                 // If surface is found, return it
         return surfaces[filepath];
-    } else {
+    } else {                                                                        // If surface is not found, load it             
         SDL_Surface* surface = IMG_Load(filepath.c_str());  
         if (!surface) {
             cerr << "Failed to load image: " << IMG_GetError() << endl;

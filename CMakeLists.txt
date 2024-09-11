@@ -9,8 +9,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Set the paths for your project
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
-set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
+set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include/headers")
 set(LIB_DIR "${CMAKE_SOURCE_DIR}/lib")
+set(TEST_DIR "${CMAKE_SOURCE_DIR}/testing")
+include_directories(${INCLUDE_DIR})
 
 # Include directories for your headers
 include_directories(${INCLUDE_DIR}/headers)
@@ -18,7 +20,7 @@ include_directories(${INCLUDE_DIR}/headers)
 # Add source files
 file(GLOB_RECURSE SRC_FILES "${SRC_DIR}/*.cpp")
 
-# Create the executable from the source files
+# Create the main executable from the source files
 add_executable(Main ${SRC_FILES})
 
 # Set the build type to Debug to include debugging symbols
@@ -60,3 +62,13 @@ endif()
 set_target_properties(Main PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
+
+find_package(GTest REQUIRED)
+
+include_directories(${GTEST_INCLUDE_DIRS})
+
+# Ajouter le fichier source de test
+add_executable(test testing/test_main.cpp)
+
+# Lier GoogleTest et pthread
+target_link_libraries(test ${GTEST_LIBRARIES} pthread)

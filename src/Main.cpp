@@ -6,34 +6,33 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    Window window("2048 Game", 600, 900);
-    UI ui(window.getRenderer());
-    Menu menu(window.getRenderer());
+    Window window("2048 Game", 600, 900);                       // Create a window
+    UI ui(window.getRenderer());                                // Create a UI object
+    Menu menu(window.getRenderer());                            // Create a Menu object     
 
     bool quit = false;
     SDL_Event event;
 
-    menu.drawMainMenu();
+    menu.drawMainMenu();                                        // Draw the main menu
 
-    while (!quit) {
-        window.clear();
-        menu.update();
+    while (!quit) {                                             // Main game loop
+        window.clear();                                         // Clear the window
+        menu.update();                                          // Update the menu
 
+        SDL_SetRenderDrawColor(window.getRenderer(), 251, 248, 239, 255);       // Set the render draw color          
+        window.present();                                        // Present the window              
 
-        SDL_SetRenderDrawColor(window.getRenderer(), 251, 248, 239, 255);           
-        window.present();  
-
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
+        while (SDL_PollEvent(&event)) {                         // Poll events
+            if (event.type == SDL_QUIT) {                       // If quit event, set quit to true         
                 quit = true;
-            } else if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
+            } else if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {         // Handle mouse events
                 menu.handleEvent(&event);
-            } else if (event.type == SDL_KEYDOWN) {
-                menu.handleInput(event.key.keysym.sym);  // Pass key events to the Menu
+            } else if (event.type == SDL_KEYDOWN) {             // Handle key events
+                menu.handleInput(event.key.keysym.sym);         // Pass key events to the Menu
             }
         }
 
-        SDL_Delay(10);
+        SDL_Delay(10);                                          // Delay to reduce CPU usage
     }
 
     return 0;

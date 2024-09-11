@@ -4,6 +4,9 @@
 #include <string>
 using namespace std;
 
+// Asset paths for the game
+
+// Button assets
 const string START_BUTTON_NORMAL = "../assets/images/start.svg";
 const string START_BUTTON_HOVER = "../assets/images/start_hover.svg";
 const string START_BUTTON_PRESSED = "../assets/images/start_pressed.svg";
@@ -20,6 +23,15 @@ const string RIGHT_ARROW_NORMAL = "../assets/images/right_arrow.svg";
 const string RIGHT_ARROW_HOVER = "../assets/images/right_arrow_hover.svg";
 const string RIGHT_ARROW_PRESSED = "../assets/images/right_arrow_pressed.svg";
 
+const string UNDO_BUTTON_NORMAL = "../assets/images/undo.svg";
+const string UNDO_BUTTON_HOVER = "../assets/images/undo_hover.svg";
+const string UNDO_BUTTON_PRESSED = "../assets/images/undo_pressed.svg";
+
+const string RESTART_BUTTON_NORMAL = "../assets/images/restart.svg";
+const string RESTART_BUTTON_HOVER = "../assets/images/restart_hover.svg";
+const string RESTART_BUTTON_PRESSED = "../assets/images/restart_pressed.svg";
+
+// Image assets
 const string IMAGE_GRID_3X3 = "../assets/images/image_grid_3x3.svg";
 const string IMAGE_GRID_4X4 = "../assets/images/image_grid_4x4.svg";
 const string IMAGE_GRID_5X5 = "../assets/images/image_grid_5x5.svg";
@@ -35,19 +47,9 @@ const string GRID2 = "../assets/images/5x5_grid.svg";
 const string GRID3 = "../assets/images/6x6_grid.svg";
 const string GRID4 = "../assets/images/8x8_grid.svg";
 
-
-const string UNDO_BUTTON_NORMAL = "../assets/images/undo.svg";
-const string UNDO_BUTTON_HOVER = "../assets/images/undo_hover.svg";
-const string UNDO_BUTTON_PRESSED = "../assets/images/undo_pressed.svg";
-
-const string RESTART_BUTTON_NORMAL = "../assets/images/restart.svg";
-const string RESTART_BUTTON_HOVER = "../assets/images/restart_hover.svg";
-const string RESTART_BUTTON_PRESSED = "../assets/images/restart_pressed.svg";
-
 const string SCORE = "../assets/images/score.svg";
 
+// Font path
 const string FONT_PATH = "../assets/fonts/ClearSansBold.ttf";
-
-
 
 #endif // ASSETS_HPP

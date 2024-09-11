@@ -3,30 +3,33 @@
 
 #include <../sdl/SDL.h>
 #include <../sdl/SDL_ttf.h>
+#include "Assets.hpp"
 #include "Button.hpp"
-#include "Text.hpp"
 #include "GameObject.hpp"
-#include <vector>
+#include "Grid.hpp"
+#include "Text.hpp"
+#include <algorithm>
+#include <iostream>
 #include <string>
 #include <iostream>
 #include <algorithm>
 #include <unordered_map>
-#include "Grid.hpp"
-
+#include <vector>
 using namespace std;
 
-struct GridProperties {
+struct GridProperties {                                     // GridProperties struct used for storing grid properties
     int gap;
     int tileSize;
     int offsetX;
     int offsetY;
 };
 
-class UI {
+class UI {                                                  // UI class used for creating the user interface and managind all the rendering
 public:
-    UI(SDL_Renderer* renderer);
-    ~UI();
-    void addButton(Button* button);
+    UI(SDL_Renderer* renderer);                             // Constructor   
+    ~UI();                                                  // Destructor         
+
+    void addButton(Button* button);                         // Public methods
     void addText(Text* text);
     void addGameObject(GameObject* gameObject);
     void addTextEnd(Text* text);
@@ -35,31 +38,21 @@ public:
     void renderTile(int value, int x, int y);
     void renderGame();
     void clear();
-    void setGrid(Grid* newGrid);
     void updateScoreText(const string& score);
     void removeGameObject(GameObject* gameObject);
     void removeText(Text* text);
+    void setGrid(Grid* newGrid);                            // Setters  
 
 private:
-    SDL_Renderer* renderer;
+    SDL_Renderer* renderer;                                 // Member variables
     vector<Button*> buttons;
-    vector<Text*> texts;
-    vector<GameObject*> gameObjects;
-    vector<GameObject*> gameObjectsEnd;
-    vector<Text*> textsEnd;
-    int gridSize;
-    int tileSize;
-    int xStart;
-    int yStart;
-    int offsetX;
-    int offsetY;
-    SDL_Color textColor;
-    SDL_Color textColor2;
+    vector<Text*> texts, textsEnd;
+    vector<GameObject*> gameObjects, gameObjectsEnd;
+    int gridSize, tileSize, xStart, yStart, offsetX, offsetY, TILE_GAP;
+    SDL_Color textColor, textColor2;
     TTF_Font* font;
     Grid* gridObject;
     vector<vector<int>> grid;
-
-    int TILE_GAP;
     unordered_map<int, GridProperties> gridPropertiesMap;
 };
 
