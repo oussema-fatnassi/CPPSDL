@@ -9,9 +9,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Set the paths for your project
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
-set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
+set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include/headers")
 set(LIB_DIR "${CMAKE_SOURCE_DIR}/lib")
 set(TEST_DIR "${CMAKE_SOURCE_DIR}/testing")
+include_directories(${INCLUDE_DIR})
 
 # Include directories for your headers
 include_directories(${INCLUDE_DIR}/headers)
@@ -62,27 +63,12 @@ set_target_properties(Main PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
 
-# Fetch Google Test
-include(FetchContent)
-FetchContent_Declare(
-    googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG        release-1.11.0
-)
-FetchContent_MakeAvailable(googletest)
+find_package(GTest REQUIRED)
 
-# Add test executable
-file(GLOB_RECURSE TEST_FILES "${TEST_DIR}/*.cpp")
-add_executable(tests ${TEST_FILES})
+include_directories(${GTEST_INCLUDE_DIRS})
 
-# Link Google Test libraries
-target_link_libraries(tests
-    gtest_main
-)
+# Ajouter le fichier source de test
+add_executable(test testing/test_main.cpp)
 
-# Include Google Test headers
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
-
-# Add a test
-enable_testing()
-add_test(NAME example_test COMMAND tests)
+# Lier GoogleTest et pthread
+target_link_libraries(test ${GTEST_LIBRARIES} pthread)
