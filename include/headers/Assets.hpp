@@ -31,6 +31,10 @@ const string RESTART_BUTTON_NORMAL = "../assets/images/restart.svg";
 const string RESTART_BUTTON_HOVER = "../assets/images/restart_hover.svg";
 const string RESTART_BUTTON_PRESSED = "../assets/images/restart_pressed.svg";
 
+const string BACK_BUTTON_NORMAL = "../assets/images/back.svg";
+const string BACK_BUTTON_HOVER = "../assets/images/back_hover.svg";
+const string BACK_BUTTON_PRESSED = "../assets/images/back_pressed.svg";
+
 // Image assets
 const string IMAGE_GRID_3X3 = "../assets/images/image_grid_3x3.svg";
 const string IMAGE_GRID_4X4 = "../assets/images/image_grid_4x4.svg";
