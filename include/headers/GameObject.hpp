@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "ResourceManager.hpp"
 
 class GameObject {  // GameObject class used for creating game objects (tiles, images)        
 public:
@@ -26,7 +27,7 @@ private:
     int y;
     int width;
     int height;
-    sf::Texture texture;
+    sf::Texture* texture;
     sf::Sprite sprite;
     sf::RenderWindow& window; // Reference to the SFML window
 };

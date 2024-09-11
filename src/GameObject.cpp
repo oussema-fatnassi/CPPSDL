@@ -34,13 +34,18 @@ std::string GameObject::getImagePathToValue(int value) {
 }
 
 void GameObject::loadTexture(const std::string& imagePath) {
-    if (!texture.loadFromFile(imagePath)) {
-        std::cerr << "Failed to load image: " << imagePath << std::endl;
+    texture = ResourceManager::getInstance().getTexture(imagePath);  // Get texture from resource manager
+    if (!texture) {
+        std::cerr << "Failed to load texture: " << imagePath << std::endl;
         return;
     }
-    sprite.setTexture(texture);
-    sprite.setPosition(static_cast<float>(x), static_cast<float>(y));
-    sprite.setScale(static_cast<float>(width) / texture.getSize().x, static_cast<float>(height) / texture.getSize().y);
+
+    sprite.setTexture(*texture);  // Set the texture for the sprite
+    sprite.setPosition(static_cast<float>(x), static_cast<float>(y));  // Set the position
+    sprite.setScale(
+        static_cast<float>(width) / texture->getSize().x, 
+        static_cast<float>(height) / texture->getSize().y
+    );  // Scale the sprite to fit the desired width and height
 }
 
 void GameObject::setTexture(const std::string& imagePath) {

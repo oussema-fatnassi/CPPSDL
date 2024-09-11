@@ -1,71 +1,73 @@
-// #include "Window.hpp"
-// #include "GameObject.hpp"
-// #include <SFML/Graphics.hpp>
-// #include <iostream>
-// #include "Assets.hpp"
-// #include "Button.hpp"
-
-// int main() {
-//     // Create a Window object with title "SFML Window" and dimensions 600x800
-//     Window window("SFML Window", 600, 800);
-
-//     // Create a GameObject with an image
-//     GameObject gameObject(window.getRenderWindow(),IMAGE_GRID_3X3, 75, 100, 450, 450);
-//     Button button(window.getRenderWindow(), START_BUTTON_NORMAL, START_BUTTON_HOVER, START_BUTTON_PRESSED, 250, 600, 100, 50, [&gameObject]() { gameObject.setTexture(IMAGE_GRID_4X4); });
-
-//     // Main loop
-//     while (!window.isClosed()) {
-//         // Poll events (e.g., for closing the window)
-//         window.pollEvents();
-
-//         // Clear the window
-//         window.clear();
-
-//         // Render the GameObject
-//         gameObject.render();
-//         button.render();
-
-//         // Display the rendered frame
-//         window.present();
-//     }
-
-//     return 0;
-// }
-
-#include "Text.hpp"
 #include "Window.hpp"
+#include "GameObject.hpp"
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Assets.hpp"
-
+#include "Button.hpp"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Text Example");
-    
-    // Load a font from file
-    sf::Font font;
-    if (!font.loadFromFile(FONT_PATH)) {
-        std::cerr << "Failed to load font!" << std::endl;
-        return -1;
-    }
-    
-    // Create a Text object
-    Text text(window, "Hello, SFML!", font, sf::Color::White, 100, 100, 1);
+    // Create a Window object with title "SFML Window" and dimensions 600x800
+    Window window("SFML Window", 600, 800);
+
+    // Create a GameObject with an image
+    GameObject gameObject(window.getRenderWindow(),IMAGE_GRID_3X3, 75, 100, 450, 450);
+    Button button(window.getRenderWindow(), START_BUTTON_NORMAL, START_BUTTON_HOVER, START_BUTTON_PRESSED, 250, 600, 100, 50, [&gameObject]() { gameObject.setTexture(IMAGE_GRID_4X4); });
 
     // Main loop
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+    while (!window.isClosed()) {
+        // Poll events (e.g., for closing the window)
+        window.pollEvents();
 
+        // Clear the window
         window.clear();
-        text.render();    // Render the text
-        window.display();
+
+        // Render the GameObject
+        gameObject.render();
+        button.render();
+
+        // Display the rendered frame
+        window.present();
     }
 
     return 0;
 }
+
+
+// // TEXT TESTING
+// #include "Text.hpp"
+// #include "Window.hpp"
+// #include <iostream>
+// #include "Assets.hpp"
+
+
+// int main() {
+//     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Text Example");
+    
+//     // Load a font from file
+//     sf::Font font;
+//     if (!font.loadFromFile(FONT_PATH)) {
+//         std::cerr << "Failed to load font!" << std::endl;
+//         return -1;
+//     }
+    
+//     // Create a Text object
+//     Text text(window, "Hello, SFML!", font, sf::Color::White, 100, 100, 1);
+
+//     // Main loop
+//     while (window.isOpen()) {
+//         sf::Event event;
+//         while (window.pollEvent(event)) {
+//             if (event.type == sf::Event::Closed)
+//                 window.close();
+//         }
+
+//         window.clear();
+//         text.render();    // Render the text
+//         window.display();
+//     }
+
+//     return 0;
+// }
 
 
 
