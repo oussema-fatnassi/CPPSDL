@@ -12,6 +12,20 @@ NumberGrid::NumberGrid(int gridSize) : Grid(gridSize), grid(gridSize, vector<int
     addRandomNumber(); // Add a second random number
 }
 
+void NumberGrid::saveState() {
+    // Save current grid and score
+    previousStates.push({grid, score});
+}
+
+void NumberGrid::restoreState() {
+    // Check if there's a state to restore
+    if (!previousStates.empty()) {
+        grid = previousStates.top().first;
+        score = previousStates.top().second;
+        previousStates.pop();
+    }
+}
+
 bool NumberGrid::addRandomNumber() {
     vector<pair<int, int>> emptyCells;
 
@@ -38,6 +52,7 @@ bool NumberGrid::addRandomNumber() {
 }
 
 void NumberGrid::move(InputHandler::Direction dir) {
+    saveState();
     bool moved = false;
     switch (dir) {
         case InputHandler::Direction::LEFT:
