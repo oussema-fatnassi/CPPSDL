@@ -1,65 +1,73 @@
-// #include "Button.hpp"
+#include "Button.hpp"
 
-// Button::Button(SDL_Renderer* renderer, const std::string& normalImage, const std::string& hoverImage, const std::string& pressedImage,      // Constructor
-//                int x, int y, int width, int height, std::function<void()> onClickCallback)
-//     : GameObject(renderer, normalImage, x, y, width, height), 
-//       normalImage(normalImage), hoverImage(hoverImage), pressedImage(pressedImage), 
-//       currentState(ButtonState::NORMAL), onClickCallback(onClickCallback), renderer(renderer) {}
+Button::Button(sf::RenderWindow& window, const std::string& normalImage, const std::string& hoverImage, const std::string& pressedImage,      // Constructor
+               int x, int y, int width, int height, std::function<void()> onClickCallback)
+    : GameObject(window, normalImage, x, y, width, height), 
+      normalImage(normalImage), hoverImage(hoverImage), pressedImage(pressedImage), 
+      currentState(ButtonState::NORMAL), onClickCallback(onClickCallback), window(window) {}
 
-// Button::~Button() {}                                        // Destructor
+Button::~Button() {}                                        // Destructor
 
-// void Button::handleEvent(SDL_Event* event) {                // Handle event method      
-//     if (currentState == ButtonState::DISABLED) {            // If button is disabled, return
-//         return;
-//     }
-//     else if (event->type == SDL_MOUSEMOTION || event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_MOUSEBUTTONUP) {            
-//         int mouseX, mouseY;
-//         SDL_GetMouseState(&mouseX, &mouseY);
+void Button::handleEvent(sf::Event* event, sf::RenderWindow& window) {
+    if (currentState == ButtonState::DISABLED) {
+        return; // If button is disabled, do nothing
+    }
 
-//         bool inside = (mouseX > this->getX() && mouseX < this->getX() + this->getWidth() && mouseY > this->getY() && mouseY < this->getY() + this->getHeight());
+    if (event->type == sf::Event::MouseMoved || 
+        event->type == sf::Event::MouseButtonPressed || 
+        event->type == sf::Event::MouseButtonReleased) {
+        
+        // Get the mouse position relative to the window
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        
+        // Check if the mouse is inside the button's bounds
+        bool inside = (mousePos.x > this->getX() && mousePos.x < this->getX() + this->getWidth() && 
+                       mousePos.y > this->getY() && mousePos.y < this->getY() + this->getHeight());
 
-//         if (!inside) {                                      // If mouse is not inside button, change state to normal
-//             changeState(ButtonState::NORMAL);
-//         } else {                                            // If mouse is inside button, change state to hover
-//             switch (event->type) {
-//                 case SDL_MOUSEMOTION:
-//                     changeState(ButtonState::HOVER);
-//                     break;
-//                 case SDL_MOUSEBUTTONDOWN:                   // If mouse is pressed, change state to pressed
-//                     changeState(ButtonState::PRESSED);
-//                     break;
-//                 case SDL_MOUSEBUTTONUP:
-//                     if (currentState == ButtonState::PRESSED) {
-//                         onClickCallback(); 
-//                     }
-//                     changeState(ButtonState::HOVER);
-//                     break;
-//             }
-//         }
-//     }
-// }
+        if (!inside) {
+            changeState(ButtonState::NORMAL);  // Mouse is outside the button
+        } else {
+            switch (event->type) {
+                case sf::Event::MouseMoved:  // Mouse is hovering over the button
+                    changeState(ButtonState::HOVER);
+                    break;
+                case sf::Event::MouseButtonPressed:  // Mouse button is pressed
+                    if (event->mouseButton.button == sf::Mouse::Left) {
+                        changeState(ButtonState::PRESSED);
+                    }
+                    break;
+                case sf::Event::MouseButtonReleased:  // Mouse button is released
+                    if (event->mouseButton.button == sf::Mouse::Left && currentState == ButtonState::PRESSED) {
+                        onClickCallback();  // Trigger callback when button is clicked
+                        changeState(ButtonState::HOVER);
+                    }
+                    break;
+            }
+        }
+    }
+}
 
-// void Button::render(SDL_Renderer* renderer) {               // Render method
-//     GameObject::render(renderer);  
-// }
+void Button::render() {               // Render method
+    GameObject::render();  
+}
 
-// void Button::disable() {                                    // Disable method, change state to disabled
-//     currentState = ButtonState::DISABLED;  
-// }
+void Button::disable() {                                    // Disable method, change state to disabled
+    currentState = ButtonState::DISABLED;  
+}
 
-// void Button::changeState(ButtonState newState) {            // Change state method and load texture based on state
-//     if (currentState != newState) {
-//         currentState = newState;
-//         switch (newState) {
-//             case ButtonState::NORMAL:
-//                 loadTexture(renderer, normalImage);
-//                 break;
-//             case ButtonState::HOVER:
-//                 loadTexture(renderer, hoverImage);
-//                 break;
-//             case ButtonState::PRESSED:
-//                 loadTexture(renderer, pressedImage);
-//                 break;
-//         }
-//     }
-// }
+void Button::changeState(ButtonState newState) {            // Change state method and load texture based on state
+    if (currentState != newState) {
+        currentState = newState;
+        switch (newState) {
+            case ButtonState::NORMAL:
+                loadTexture(normalImage);
+                break;
+            case ButtonState::HOVER:
+                loadTexture(hoverImage);
+                break;
+            case ButtonState::PRESSED:
+                loadTexture(pressedImage);
+                break;
+        }
+    }
+}
