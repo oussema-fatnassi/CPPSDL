@@ -141,7 +141,6 @@ void UI::renderTile(int value, int x, int y) {                  // Render the ti
         }
     }
 }
-// const int TILE_GAP = 10;
 
 void UI::renderGame() {                                         // Render the game grid with the tiles
     if (gridObject == nullptr) {
