@@ -8,6 +8,8 @@
 #include "GameObject.hpp"
 #include <vector>
 #include <string>
+#include <iostream>
+#include <algorithm>
 #include <unordered_map>
 #include "Grid.hpp"
 

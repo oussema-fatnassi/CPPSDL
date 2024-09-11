@@ -31,6 +31,12 @@ UI::~UI() {
     for (auto& gameObject : gameObjects) {
         delete gameObject;
     }
+    for(auto& gameObjectEnd : gameObjectsEnd){
+        delete gameObjectEnd;
+    }
+    for(auto& textEnd : textsEnd){
+        delete textEnd;
+    }
 }
 
 void UI::addButton(Button* button) {
