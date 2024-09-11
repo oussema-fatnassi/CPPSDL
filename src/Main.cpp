@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Assets.hpp"
+#include "Button.hpp"
 
 int main() {
     // Create a Window object with title "SFML Window" and dimensions 600x800
@@ -10,6 +11,7 @@ int main() {
 
     // Create a GameObject with an image
     GameObject gameObject(window.getRenderWindow(),IMAGE_GRID_3X3, 75, 100, 450, 450);
+    Button button(window.getRenderWindow(), START_BUTTON_NORMAL, START_BUTTON_HOVER, START_BUTTON_PRESSED, 250, 600, 100, 50, [&gameObject]() { gameObject.setTexture(IMAGE_GRID_4X4); });
 
     // Main loop
     while (!window.isClosed()) {
@@ -21,6 +23,7 @@ int main() {
 
         // Render the GameObject
         gameObject.render();
+        button.render();
 
         // Display the rendered frame
         window.present();
