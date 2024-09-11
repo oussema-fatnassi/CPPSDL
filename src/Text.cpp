@@ -1,57 +1,35 @@
-// #include "Text.hpp"
+#include "Text.hpp"
 
-// Text::Text(SDL_Renderer* renderer, const std::string& text, TTF_Font* font, SDL_Color color, int x, int y, int ID)      // Constructor
-//     : text(text), font(font), color(color), renderer(renderer) , ID(ID) {
+Text::Text(sf::RenderWindow& window, const std::string& text, const sf::Font& font, sf::Color color, int x, int y, int ID) 
+    : window(window), text(text), color(color), ID(ID) {
+    this->font = font;              // Copy the font
+    sfmlText.setFont(this->font);   // Set the font for the SFML text object
+    sfmlText.setString(this->text); // Set the string (text) to display
+    sfmlText.setFillColor(this->color);  // Set the color of the text
+    sfmlText.setPosition(x, y);     // Set the position of the text
+}
 
-//     rect.x = x;
-//     rect.y = y;
-//     createTexture();
-// }
+Text::~Text() {
+    // No need for manual cleanup, SFML handles resource management.
+}
 
-// Text::~Text() {                                                                         // Destructor      
-//     if (texture) {
-//         SDL_DestroyTexture(texture);
-//     }
-// }
+void Text::updateText() {
+    sfmlText.setString(text);       // Update the string when the text is changed
+}
 
-// void Text::createTexture() {                                                            // Create texture of text with font and color
-//     SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
-//     if (!textSurface) {
-//         std::cerr << "Unable to render text surface! TTF_Error: " << TTF_GetError() << std::endl;
-//         return;
-//     }
+void Text::render() {
+    window.draw(sfmlText);          // Draw the text on the window
+}
 
-//     texture = SDL_CreateTextureFromSurface(renderer, textSurface);                      // Create texture from surface
-//     if (!texture) {
-//         std::cerr << "Unable to create texture from rendered text! SDL_Error: " << SDL_GetError() << std::endl;
-//         return;
-//     }
+void Text::setText(const std::string& newText) {
+    text = newText;
+    updateText();                   // Update the displayed text when the text is changed
+}
 
-//     rect.w = textSurface->w;
-//     rect.h = textSurface->h;
-//     SDL_FreeSurface(textSurface);                                                       
-// }
+int Text::getID() {
+    return ID;
+}
 
-// void Text::render(SDL_Renderer* renderer) {                                             // Render text                   
-//     if (!renderer || !font) {
-//         std::cerr << "Renderer or font is null!" << std::endl;
-//         return;
-//     }
-//     SDL_RenderCopy(renderer, texture, nullptr, &rect);                                  // Copy texture to renderer        
-// }
-
-// void Text::setText(const std::string& newText) {                                        // Setters
-//     text = newText;
-//     if (texture) {
-//         SDL_DestroyTexture(texture);  
-//     }
-//     createTexture();
-// }
-
-// int Text::getID() {                                                                     // Getters
-//     return ID;
-// }
-
-// string Text::getText() {
-//     return text;
-// }
+std::string Text::getText() {
+    return text;
+}
