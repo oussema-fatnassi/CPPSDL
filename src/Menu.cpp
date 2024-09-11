@@ -63,18 +63,20 @@ void Menu::drawGame() {                                                         
         default: gridObject = new Grid(4); break;
     }
     ui.setGrid(gridObject);                                                                                                 // Set the grid object in the UI
-    restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] {    // Create the buttons to restart the game
-        gridObject->reset(); 
-        ui.setGrid(gridObject);                                                                                             // Update the UI with the reset grid
-        ui.renderGame();                                                                                                    // Re-render the grid to reflect the reset
-        ui.updateScoreText("0");                                                                                            // Reset the score text
 
-        if (gameOverHandled) {                                                                                              // Remove the game over UI elements if present
+    restartButton = new Button(renderer, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] {  // Create the buttons to restart the game
+        gameAlreadyWon = false; 
+        gridObject->reset();
+        ui.updateScoreText("0"); 
+        ui.setGrid(gridObject); 
+        if (gameOverHandled) {                                                                                             // Remove the game over UI elements if present
             ui.removeGameObject(gameOver);
             ui.removeText(gameOverText);
             gameOverHandled = false;
             std::cout << "Game restarted, game over UI elements removed." << std::endl;
         }
+        ui.clear();
+        drawGame();
     });
 
     undoButton = new Button(renderer, UNDO_BUTTON_NORMAL, UNDO_BUTTON_HOVER, UNDO_BUTTON_PRESSED, 365, 200, 50, 50, [this] {        // Create the buttons to undo the last move
@@ -108,36 +110,54 @@ void Menu::handleEvent(SDL_Event* event) {                                      
     }
 }
 
-void Menu::handleInput(SDL_Keycode key) {                                                                                   // Handle input for the game screen
-    if (gridObject->isGameOver() && !gridObject->canMove()) {                                                               // Check if the game is over, and handle game over state only once
-        if (!gameOverHandled) {
-            ui.addGameObjectEnd(gameOver);
-            ui.addTextEnd(gameOverText);
-            gameOverHandled = true; 
-            std::cout << "Game over! UI elements added." << std::endl;
-        }
-        return;                                                                                                             // Do not process input if the game is over
-    }
+void Menu::handleInput(SDL_Keycode key) {
+ // Check if the game is over, and handle game over state only once
+ if (gridObject->isGameOver() && !gridObject->canMove()) {
+     if (!gameOverHandled) {
+         ui.addGameObjectEnd(gameOver);
+         ui.addTextEnd(gameOverText);
+         gameOverHandled = true;
+         std::cout << "Game over! UI elements added." << std::endl;
+     }
+     return;
+ }
 
-    if (gridObject->isGameWon()) {                                                                                          // Check if the game is won, and handle game won state only once
-        ui.addGameObjectEnd(gameWin);
-        ui.addTextEnd(gameWinText);
-        ui.addTextEnd(continueText);
-    }
+ // If the game is won, only process arrow keys and wait for input to continue
+ if (gridObject->isGameWon() && !gameAlreadyWon) {
+     if (!gameWinHandled) {
+         ui.addGameObjectEnd(gameWin);
+         ui.addTextEnd(gameWinText);
+         ui.addTextEnd(continueText);
+         ui.render();
+         gameWinHandled = true;
+     }
+     // Wait for user to press an arrow key to continue the game
+     if (key == SDLK_LEFT || key == SDLK_RIGHT || key == SDLK_UP || key == SDLK_DOWN) {
+         gameAlreadyWon = true;  // The game can now continue
+         ui.removeGameObject(gameWin);
+         ui.removeText(gameWinText);
+         ui.removeText(continueText);
+         ui.render();
+         return;
+     }
+     return;  // Skip other inputs until the user presses an arrow key
+ }
 
-    gridObject->handleInput(key);                                                                                           // Handle input for the grid object                                                                
-    ui.setGrid(gridObject); 
-    ui.renderGame(); 
-    ui.updateScoreText(std::to_string(gridObject->getScore()));
+ // Process input if the game is not over or won
+ gridObject->handleInput(key);
+ ui.setGrid(gridObject);
+ ui.renderGame();
+ ui.updateScoreText(std::to_string(gridObject->getScore()));
 
-    if (gridObject->isGameOver() && !gridObject->canMove()) {                                                               // Check if the game is over after input
-        if (!gameOverHandled) {
-            ui.addGameObjectEnd(gameOver);
-            ui.addTextEnd(gameOverText);
-            gameOverHandled = true;  
-            std::cout << "Game over after input! UI elements added." << std::endl;
-        }
-    }
+ // Re-check if the game is over after processing input
+ if (gridObject->isGameOver() && !gridObject->canMove()) {
+     if (!gameOverHandled) {
+         ui.addGameObjectEnd(gameOver);
+         ui.addTextEnd(gameOverText);
+         gameOverHandled = true;
+         std::cout << "Game over after input! UI elements added." << std::endl;
+     }
+ }
 }
 
 void Menu::startButtonClicked() {                                                                                           // Handle the start button click event, draw the game screen

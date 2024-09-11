@@ -39,6 +39,8 @@ private:
     TTF_Font* font, *font1, *font2;
     vector<pair<string, string>> gridOptions;
     bool gameOverHandled = false;
+    bool gameWinHandled = false;
+    bool gameAlreadyWon = false;
 
     string getGameGridTexture(int selection);                       // Private methods
 };
