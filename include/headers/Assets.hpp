@@ -36,7 +36,7 @@ const string BACK_BUTTON_HOVER = "../assets/images/back_hover.svg";
 const string BACK_BUTTON_PRESSED = "../assets/images/back_pressed.svg";
 
 // Image assets
-const string IMAGE_GRID_3X3 = "../assets/images/image_grid_3x3.svg";
+const string IMAGE_GRID_3X3 = "../assets/images/image_grid_3x3.png";
 const string IMAGE_GRID_4X4 = "../assets/images/image_grid_4x4.svg";
 const string IMAGE_GRID_5X5 = "../assets/images/image_grid_5x5.svg";
 const string IMAGE_GRID_6X6 = "../assets/images/image_grid_6x6.svg";
