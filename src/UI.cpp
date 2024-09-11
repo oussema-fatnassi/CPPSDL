@@ -83,7 +83,6 @@ void UI::render() {                                             // Render the UI
 
 void UI:: clear() {                                             // Clear the UI elements             
     for (auto& button : buttons) {
-        button->disable();
         button = nullptr;
     }
 

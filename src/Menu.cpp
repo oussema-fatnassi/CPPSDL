@@ -4,33 +4,37 @@ Menu::Menu(SDL_Renderer* renderer) : ui(renderer), currentSelection(1), restartB
     this->renderer = renderer;
 
     gridOptions = {                                                                                                         // Grid options for the main menu
-        {IMAGE_GRID_3X3, "Tiny 3x3"},
-        {IMAGE_GRID_4X4, "Classic 4x4"},
-        {IMAGE_GRID_5X5, "Big 5x5"},
-        {IMAGE_GRID_6X6, "Larger 6x6"},
-        {IMAGE_GRID_8X8, "Huge 8x8"}
+        {IMAGE_GRID_3X3},
+        {IMAGE_GRID_4X4},
+        {IMAGE_GRID_5X5},
+        {IMAGE_GRID_6X6},
+        {IMAGE_GRID_8X8}
     };
-
     drawMainMenu();                                                                                                         // Draw the main menu            
+    isMainMenuActive = true;
+    isGameMenuActive = false;
 }
 
 Menu::~Menu() {}                                                                                                            // Destructor               
 
 void Menu::drawMainMenu() {                                                                                                 // Draw the main menu, add buttons, text and images   
+    isMainMenuActive = true;
+    isGameMenuActive = false;
     font = TTF_OpenFont(FONT_PATH.c_str(), 60);                                                                             // Load the font for the main menu in different sizes
     font1 = TTF_OpenFont(FONT_PATH.c_str(), 40);
     font2 = TTF_OpenFont(FONT_PATH.c_str(), 20);
+    font3 = TTF_OpenFont(FONT_PATH.c_str(), 30);
     Text* title = new Text(renderer, "2048", font, {113, 112, 107, 255}, 225, 50, 1);                                       // Create the texts for the main menu
-    Text* startText = new Text(renderer, "START", font, {255, 255, 255, 255}, 225, 650, 1);
-    Text* quitText = new Text(renderer, "QUIT", font, {255, 255, 255, 255}, 225, 750, 1);
+    Text* startText = new Text(renderer, "Start", font, {255, 255, 255, 255}, 225, 650, 1);
+    Text* quitText = new Text(renderer, "Quit", font, {255, 255, 255, 255}, 235, 740, 1);
 
-    gridImage = new GameObject(renderer, gridOptions[currentSelection].first, 150, 150, 300, 300);                          // Create the elements for the carousel
-    gridText = new Text(renderer, gridOptions[currentSelection].second, font1, {113, 112, 107, 255}, 190, 510, 1);
+    gridImage = new GameObject(renderer, gridOptions[currentSelection], 150, 200, 300, 300);                                // Create the elements for the carousel
 
     startButton = new Button(renderer, START_BUTTON_NORMAL, START_BUTTON_HOVER, START_BUTTON_PRESSED, 146, 650, 308, 80, [this] { startButtonClicked(); });             // Create the buttons for the main menu
     quitButton = new Button(renderer, QUIT_BUTTON_NORMAL, QUIT_BUTTON_HOVER, QUIT_BUTTON_PRESSED, 146, 750, 308, 80, [this] { quitButtonClicked(); });
-    leftArrowButton = new Button(renderer, LEFT_ARROW_NORMAL, LEFT_ARROW_HOVER, LEFT_ARROW_PRESSED, 100, 500, 34, 74, [this] { leftArrowClicked(); });
-    rightArrowButton = new Button(renderer, RIGHT_ARROW_NORMAL, RIGHT_ARROW_HOVER, RIGHT_ARROW_PRESSED, 450, 500, 34, 74, [this] { rightArrowClicked(); });
+    leftArrowButton = new Button(renderer, LEFT_ARROW_NORMAL, LEFT_ARROW_HOVER, LEFT_ARROW_PRESSED, 100, 310, 34, 74, [this] { leftArrowClicked(); });
+    rightArrowButton = new Button(renderer, RIGHT_ARROW_NORMAL, RIGHT_ARROW_HOVER, RIGHT_ARROW_PRESSED, 465, 310, 34, 74, [this] { rightArrowClicked(); });
+    ui.addText(new Text(renderer, "Select Grid Size", font3, {113, 112, 107, 255}, 190, 560, 1));                          // Add the text and game objects to the UI for rendering
 
     ui.addButton(startButton);                                                                                              // Add the buttons, text and images to the ui object for rendering
     ui.addButton(quitButton);
@@ -45,8 +49,9 @@ void Menu::drawMainMenu() {                                                     
 }
 
 void Menu::drawGame() {                                                                                                     // Draw the game screen, add buttons, text and images
+    isMainMenuActive = false;
+    isGameMenuActive = true;
     ui.clear();                                                                                                             // Clear the UI elements from the main menu
-
     gameOver = new GameObject(renderer, GAME_OVER, 75, 300, 450, 450);
     gameWin = new GameObject(renderer, GAME_WIN, 75, 300, 450, 450);
 
@@ -85,83 +90,96 @@ void Menu::drawGame() {                                                         
         ui.renderGame();                                                                                                    // Re-render the grid to reflect the undo
         ui.updateScoreText(to_string(gridObject->getScore()));                                                              // Update the score text
     });
+
+    backButton = new Button(renderer, BACK_BUTTON_NORMAL, BACK_BUTTON_HOVER, BACK_BUTTON_PRESSED, 230, 770, 135, 80, [this] {         // Create the back button to return to the main menu
+        if (gridObject) {
+            delete gridObject;  
+            gridObject = nullptr;
+        }
+
+        ui.clear();  
+        isMainMenuActive = true;
+        isGameMenuActive = false;
+        drawMainMenu();                                                                                                    // Draw the main menu
+    });
     
     ui.addText(new Text(renderer, "SCORE", font2, {113, 112, 107, 255}, 405, 105, 1));                                      // Add the text and game objects to the UI for rendering
-    ui.addText(new Text(renderer, "0", font1, {251, 248, 239, 255}, 405, 120, 1111));
+    ui.addText(new Text(renderer, "0", font1, {251, 248, 239, 255}, 385, 120, 1111));
     ui.addText(new Text(renderer, "2048", font, {113, 112, 107, 255}, 50, 100, 2));
+    ui.addText(new Text(renderer, "Back", font3, {255, 255, 255, 255}, 265, 785, 1));
     ui.addGameObject(new GameObject(renderer, SCORE, 350, 100, 180, 80));
     ui.addGameObject(new GameObject(renderer, getGameGridTexture(currentSelection), 75, 300, 450, 450)) ;    
     ui.addButton(restartButton);
     ui.addButton(undoButton);
+    ui.addButton(backButton);
 
     ui.render();                                                                                                            // Render the game screen
 }
 
 void Menu::handleEvent(SDL_Event* event) {                                                                                  // Handle events for the main menu and game screen based on the event type
-    startButton->handleEvent(event);
-    quitButton->handleEvent(event);
-    leftArrowButton->handleEvent(event);
-    rightArrowButton->handleEvent(event);
-    if (restartButton != nullptr) {
+    if(isMainMenuActive){
+        startButton->handleEvent(event);
+        quitButton->handleEvent(event);
+        leftArrowButton->handleEvent(event);
+        rightArrowButton->handleEvent(event);
+    } else if (isGameMenuActive){
         restartButton->handleEvent(event);
-    }
-    if (undoButton != nullptr) {
         undoButton->handleEvent(event);
+        backButton->handleEvent(event);
     }
 }
 
-void Menu::handleInput(SDL_Keycode key) {
- // Check if the game is over, and handle game over state only once
- if (gridObject->isGameOver() && !gridObject->canMove()) {
-     if (!gameOverHandled) {
-         ui.addGameObjectEnd(gameOver);
-         ui.addTextEnd(gameOverText);
-         gameOverHandled = true;
-         std::cout << "Game over! UI elements added." << std::endl;
-     }
-     return;
- }
+void Menu::handleInput(SDL_Keycode key) {                                                                                   // Handle input for the game screen based on the key pressed                       
+if(isGameMenuActive){
+    if (gridObject->isGameOver() && !gridObject->canMove()) {
+        if (!gameOverHandled) {
+            ui.addGameObjectEnd(gameOver);
+            ui.addTextEnd(gameOverText);
+            gameOverHandled = true;
+            std::cout << "Game over! UI elements added." << std::endl;
+        }
+        return;
+    }
 
- // If the game is won, only process arrow keys and wait for input to continue
- if (gridObject->isGameWon() && !gameAlreadyWon) {
-     if (!gameWinHandled) {
-         ui.addGameObjectEnd(gameWin);
-         ui.addTextEnd(gameWinText);
-         ui.addTextEnd(continueText);
-         ui.render();
-         gameWinHandled = true;
-     }
-     // Wait for user to press an arrow key to continue the game
-     if (key == SDLK_LEFT || key == SDLK_RIGHT || key == SDLK_UP || key == SDLK_DOWN) {
-         gameAlreadyWon = true;  // The game can now continue
-         ui.removeGameObject(gameWin);
-         ui.removeText(gameWinText);
-         ui.removeText(continueText);
-         ui.render();
-         return;
-     }
-     return;  // Skip other inputs until the user presses an arrow key
- }
+    if (gridObject->isGameWon() && !gameAlreadyWon) {                                                                          // Check if the game is won
+        if (!gameWinHandled) {
+            ui.addGameObjectEnd(gameWin);
+            ui.addTextEnd(gameWinText);
+            ui.addTextEnd(continueText);
+            ui.render();
+            gameWinHandled = true;
+        }
+        if (key == SDLK_LEFT || key == SDLK_RIGHT || key == SDLK_UP || key == SDLK_DOWN) {                                     // If the user presses an arrow key, remove the game win UI elements
+            gameAlreadyWon = true;  
+            ui.removeGameObject(gameWin);
+            ui.removeText(gameWinText);
+            ui.removeText(continueText);
+            ui.render();
+            return;
+        }
+        return;                                                                                                                // Skip other inputs until the user presses an arrow key
+    }
 
- // Process input if the game is not over or won
- gridObject->handleInput(key);
- ui.setGrid(gridObject);
- ui.renderGame();
- ui.updateScoreText(std::to_string(gridObject->getScore()));
+    gridObject->handleInput(key);                                                                                              // Process input if the game is not over or won
+    ui.updateScoreText(std::to_string(gridObject->getScore()));
+    ui.setGrid(gridObject);
+    ui.renderGame();
 
- // Re-check if the game is over after processing input
- if (gridObject->isGameOver() && !gridObject->canMove()) {
-     if (!gameOverHandled) {
-         ui.addGameObjectEnd(gameOver);
-         ui.addTextEnd(gameOverText);
-         gameOverHandled = true;
-         std::cout << "Game over after input! UI elements added." << std::endl;
-     }
- }
+    if (gridObject->isGameOver() && !gridObject->canMove()) {                                                                   // Re-check if the game is over after processing input
+        if (!gameOverHandled) {
+            ui.addGameObjectEnd(gameOver);
+            ui.addTextEnd(gameOverText);
+            gameOverHandled = true;
+            std::cout << "Game over after input! UI elements added." << std::endl;
+            }
+        }
+    }
 }
 
 void Menu::startButtonClicked() {                                                                                           // Handle the start button click event, draw the game screen
     std::cout << "Start button clicked" << std::endl;
+    isMainMenuActive = false;
+    isGameMenuActive = true;
     drawGame();
 }
 
@@ -184,8 +202,7 @@ void Menu::rightArrowClicked() {                                                
 }
 
 void Menu::update() {                                                                                                       // Update the grid selection based on the current selection
-    gridImage->setTexture(renderer, gridOptions[currentSelection].first);
-    gridText->setText(gridOptions[currentSelection].second);
+    gridImage->setTexture(renderer, gridOptions[currentSelection]);
     ui.render();
 }
 

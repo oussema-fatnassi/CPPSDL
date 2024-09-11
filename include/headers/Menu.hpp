@@ -28,19 +28,19 @@ public:
 private:
     UI ui;                                                          // Member variables                
     int currentSelection;
-    Button* startButton, *quitButton, *leftArrowButton, *rightArrowButton;
-    Button* restartButton, *undoButton;
+    Button* startButton, *quitButton, *leftArrowButton, *rightArrowButton, *restartButton, *undoButton, *backButton;
     SDL_Renderer* renderer;
     GameObject* gridImage, *background, *scoreBoard, *gameOver, *gameWin;
-    Text* gridText;
     Grid* gridObject;
     SDL_Event* event;
-    Text* scoreText, *gameOverText, *gameWinText, *continueText; 
-    TTF_Font* font, *font1, *font2;
-    vector<pair<string, string>> gridOptions;
+    Text* scoreText, *gameOverText, *gameWinText, *continueText, *gridText; 
+    TTF_Font* font, *font1, *font2, *font3;
+    vector<string> gridOptions;
     bool gameOverHandled = false;
     bool gameWinHandled = false;
     bool gameAlreadyWon = false;
+    bool isMainMenuActive;
+    bool isGameMenuActive;
 
     string getGameGridTexture(int selection);                       // Private methods
 };
