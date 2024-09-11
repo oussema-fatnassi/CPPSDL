@@ -8,14 +8,14 @@ Button::Button(sf::RenderWindow& window, const std::string& normalImage, const s
 
 Button::~Button() {}                                        // Destructor
 
-void Button::handleEvent(sf::Event* event, sf::RenderWindow& window) {
+void Button::handleEvent(sf::Event& event, sf::RenderWindow& window) {
     if (currentState == ButtonState::DISABLED) {
         return; // If button is disabled, do nothing
     }
 
-    if (event->type == sf::Event::MouseMoved || 
-        event->type == sf::Event::MouseButtonPressed || 
-        event->type == sf::Event::MouseButtonReleased) {
+    if (event.type == sf::Event::MouseMoved || 
+        event.type == sf::Event::MouseButtonPressed || 
+        event.type == sf::Event::MouseButtonReleased) {
         
         // Get the mouse position relative to the window
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -27,17 +27,17 @@ void Button::handleEvent(sf::Event* event, sf::RenderWindow& window) {
         if (!inside) {
             changeState(ButtonState::NORMAL);  // Mouse is outside the button
         } else {
-            switch (event->type) {
+            switch (event.type) {
                 case sf::Event::MouseMoved:  // Mouse is hovering over the button
                     changeState(ButtonState::HOVER);
                     break;
                 case sf::Event::MouseButtonPressed:  // Mouse button is pressed
-                    if (event->mouseButton.button == sf::Mouse::Left) {
+                    if (event.mouseButton.button == sf::Mouse::Left) {
                         changeState(ButtonState::PRESSED);
                     }
                     break;
                 case sf::Event::MouseButtonReleased:  // Mouse button is released
-                    if (event->mouseButton.button == sf::Mouse::Left && currentState == ButtonState::PRESSED) {
+                    if (event.mouseButton.button == sf::Mouse::Left && currentState == ButtonState::PRESSED) {
                         onClickCallback();  // Trigger callback when button is clicked
                         changeState(ButtonState::HOVER);
                     }

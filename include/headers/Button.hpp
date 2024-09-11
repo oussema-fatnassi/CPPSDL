@@ -16,7 +16,7 @@ public:
            int x, int y, int width, int height, function<void()> onClickCallback);
     ~Button();                                                      // Destructor
 
-    void handleEvent(sf::Event* event, sf::RenderWindow& window);                             //Public methods
+    void handleEvent(sf::Event& event, sf::RenderWindow& window);                             //Public methods
     void render() override;                      
     void disable();                                                 
 
