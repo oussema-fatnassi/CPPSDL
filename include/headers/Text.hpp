@@ -4,19 +4,20 @@
 #include <../sdl/SDL.h>
 #include <../sdl/SDL_ttf.h>
 #include <string>
+#include <iostream>
 using namespace std;
 
-class Text {
+class Text {                                                // Text class used for creating text objects
 public:
-    Text(SDL_Renderer* renderer, const std::string& text, TTF_Font* font, SDL_Color color, int x, int y, int ID);
-    ~Text();
-    void render(SDL_Renderer* renderer);
-    void setText(const std::string& newText);
-    string getText() { return text; }
-    int getID() { return ID; }
+    Text(SDL_Renderer* renderer, const std::string& text, TTF_Font* font, SDL_Color color, int x, int y, int ID);   // Constructor
+    ~Text();                                                // Destructor       
+    void render(SDL_Renderer* renderer);                    // Public methods    
+    void setText(const std::string& newText);               // Setters
+    int getID();                                            // Getters    
+    string getText();
     
 private:
-    std::string text;
+    std::string text;                                       // Member variables        
     TTF_Font* font;
     SDL_Color color;
     SDL_Texture* texture;
@@ -24,7 +25,7 @@ private:
     SDL_Renderer* renderer;
     int ID;
 
-    void createTexture();
+    void createTexture();                                   // Private methods 
 };
 
 #endif

@@ -1,41 +1,46 @@
 #ifndef GRID_HPP
 #define GRID_HPP
 
-#include <vector>
 #include <../sdl/SDL.h>
+#include <vector>
+#include <iostream>
+#include <ctime>
+#include <algorithm>
 using namespace std;
 
-class Grid {
+class Grid {                                                // Grid class used for creating the game grid and handling game logic       
 public: 
-    Grid(int size);
-    Grid();
-    ~Grid();
+    Grid(int size);                                         // Constructor
+    Grid();                                                 // Default constructor       
+    ~Grid();                                                // Destructor       
 
-    void handleInput(SDL_Keycode key);
+    void handleInput(SDL_Keycode key);                      // Public methods
     bool isGameOver() const;
     bool isGameWon();
     bool canMove() const;
-    int getScore() const;
     void undo();
     void reset();
-    bool gameWon = false;
-    vector<vector<int>> getGridData() const;
+    void move(int dx, int dy);
+    bool addRandomNumber();                      
+    bool isGridFull() const;                     
+    
+    bool gameWon = false;                                   // Member variables    
+
+    vector<vector<int>> getGridData() const;                // Getters
+    int getScore() const;
     int getSize() const;
     int getTileValue(int i, int j) const;
-    void move(int dx, int dy);
-    bool addRandomNumber();                      // Add a random 2 or 4 to an empty cell
-    bool isGridFull() const;                     // Check if the grid is full
-    void setGridData(const vector<vector<int>>& newGrid);
+
+    void setGridData(const vector<vector<int>>& newGrid);   // Setters
 
 private:
-    void merge(vector<int>& row);           // Merge adjacent equal numbers
-    bool gridHasChanged() const;                       // Check if the grid has changed
+    void merge(vector<int>& row);                           // Private methods
+    bool gridHasChanged() const;                       
 
-    vector<vector<int>> grid;
+    vector<vector<int>> grid;                               // Member variables    
+    vector<vector<int>> previousGrid;
     int gridSize;
     int score;
-
-    vector<vector<int>> previousGrid;
     int previousScore;
     bool canUndo;
 };

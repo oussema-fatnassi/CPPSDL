@@ -5,17 +5,18 @@
 #include <../sdl/SDL_image.h>
 #include <string>
 #include <unordered_map>
+#include <iostream>
 using namespace std;
 
-class ResourceManager {
+class ResourceManager {                                         // ResourceManager class used for managing resources, to be loaded only once (images)
     private:
-        ResourceManager();                                  // Private constructor
+        ResourceManager();                                      // Constructor
         ResourceManager(ResourceManager const&);                // Copy constructor
         ResourceManager operator = (ResourceManager const&);    // Assignment operator
         unordered_map<string, SDL_Surface*> surfaces;
 
     public:
-        static ResourceManager& getInstance();
+        static ResourceManager& getInstance();                  // Getters
         SDL_Surface* getSurface(string filepath);
 };
 #endif // RESOURCEMANAGER_HPP

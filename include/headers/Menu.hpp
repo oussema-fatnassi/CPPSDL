@@ -1,19 +1,21 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 
-#include "Button.hpp"
-#include "UI.hpp"
 #include <../sdl/SDL.h>
-#include <vector>
+#include "Button.hpp"
+#include "Assets.hpp"
+#include "UI.hpp"
 #include "Grid.hpp"
+#include <vector>
+#include <iostream>
 using namespace std;
 
-class Menu {
+class Menu {                                                        // Menu class used for creating the main menu, game menu and game state screen
 public:
-    Menu(SDL_Renderer* renderer);
-    ~Menu();
+    Menu(SDL_Renderer* renderer);                                   // Constructor  
+    ~Menu();                                                        // Destructor       
 
-    void handleEvent(SDL_Event* event);
+    void handleEvent(SDL_Event* event);                             // Public methods
     void update();
     void startButtonClicked();
     void quitButtonClicked();
@@ -24,7 +26,7 @@ public:
     void handleInput(SDL_Keycode key);
 
 private:
-    UI ui;
+    UI ui;                                                          // Member variables                
     int currentSelection;
     Button* startButton, *quitButton, *leftArrowButton, *rightArrowButton;
     Button* restartButton, *undoButton;
@@ -34,15 +36,11 @@ private:
     Grid* gridObject;
     SDL_Event* event;
     Text* scoreText, *gameOverText, *gameWinText, *continueText; 
-
     TTF_Font* font, *font1, *font2;
-
     vector<pair<string, string>> gridOptions;
-    string getGameGridTexture(int selection);
     bool gameOverHandled = false;
 
+    string getGameGridTexture(int selection);                       // Private methods
 };
-
-
 
 #endif // MENU_HPP
