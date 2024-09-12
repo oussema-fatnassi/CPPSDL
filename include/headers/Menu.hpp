@@ -8,6 +8,7 @@
 #include "Grid.hpp"
 #include <vector>
 #include <iostream>
+#include "ResourceManager.hpp"
 
 class Menu {                                                        // Menu class used for creating the main menu, game menu, and game state screen
 public:
