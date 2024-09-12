@@ -2,20 +2,21 @@
 #define TEXT_HPP
 
 #include <SFML/Graphics.hpp>
-#include <string>
 #include <iostream>
+#include <string>
+using namespace std;
 
 class Text {                                                // Text class used for creating text objects
 public:
-    Text(sf::RenderWindow& window, const std::string& text, const sf::Font& font, sf::Color color, int x, int y, int ID, int fontSize);   // Constructor
+    Text(sf::RenderWindow& window, const string& text, const sf::Font& font, sf::Color color, int x, int y, int ID, int fontSize);   // Constructor
     ~Text();                                                // Destructor       
     void render();                                          // Public methods    
-    void setText(const std::string& newText);               // Setters
+    void setText(const string& newText);               // Setters
     int getID();                                            // Getters    
-    std::string getText();
+    string getText();
     
 private:
-    std::string text;                                       // Member variables        
+    string text;                                       // Member variables        
     sf::Font font;
     sf::Text sfmlText;
     sf::Color color;

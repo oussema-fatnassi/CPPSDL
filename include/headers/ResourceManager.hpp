@@ -2,9 +2,10 @@
 #define RESOURCEMANAGER_HPP
 
 #include <SFML/Graphics.hpp>
-#include <unordered_map>
-#include <string>
 #include <iostream>
+#include <string>
+#include <unordered_map>
+using namespace std;
 
 class ResourceManager {
 private:
@@ -12,11 +13,11 @@ private:
     ResourceManager(const ResourceManager&);                // Copy constructor
     ResourceManager& operator=(const ResourceManager&);     // Assignment operator
 
-    std::unordered_map<std::string, sf::Texture> textures;  // Container for textures
+    unordered_map<string, sf::Texture> textures;  // Container for textures
 
 public:
     static ResourceManager& getInstance();                  // Get instance of ResourceManager (singleton)
-    sf::Texture* getTexture(const std::string& filepath);   // Get texture by file path
+    sf::Texture* getTexture(const string& filepath);   // Get texture by file path
 };
 
 #endif // RESOURCEMANAGER_HPP

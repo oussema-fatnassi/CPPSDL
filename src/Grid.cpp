@@ -27,7 +27,7 @@ bool Grid::addRandomNumber() {                                                  
     }
 
     int randIndex = rand() % emptyCells.size();
-    int randValue = (rand() % 2 + 1) * 2;                                                       // Randomly pick 2 or 4
+    int randValue = (rand() % 2 + 1) * 512;                                                       // Randomly pick 2 or 4
 
     grid[emptyCells[randIndex].first][emptyCells[randIndex].second] = randValue;                // Add the random number to the grid    
 
@@ -117,7 +117,7 @@ void Grid::merge(vector<int>& line) {                                           
     line = mergedLine;
 }
 
-void Grid::handleInput(sf::Keyboard::Key key) {                                                       // Method to handle input from the user
+void Grid::handleInput(sf::Keyboard::Key key) {                                                 // Method to handle input from the user
     cout << "Handling input: " << key << endl;
     previousGrid = grid;
     previousScore = score;

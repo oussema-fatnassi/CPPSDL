@@ -1,12 +1,12 @@
 #ifndef BUTTON_HPP
 #define BUTTON_HPP
 
-#include "GameObject.hpp"
-#include <functional>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-using namespace std;
+#include "GameObject.hpp"
+#include <functional>
 #include <iostream>
+using namespace std;
 
 class Button : public GameObject {                                  // Button class inherits from GameObject
 public: 
@@ -16,7 +16,7 @@ public:
            int x, int y, int width, int height, function<void()> onClickCallback);
     ~Button();                                                      // Destructor
 
-    void handleEvent(sf::Event& event, sf::RenderWindow& window);                             //Public methods
+    void handleEvent(sf::Event& event, sf::RenderWindow& window);   //Public methods
     void render() override;                      
     void disable();                                                 
 

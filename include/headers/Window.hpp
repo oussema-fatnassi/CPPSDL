@@ -3,28 +3,29 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+using namespace std;
 
 class Window {
 public:
-    Window(const std::string& title, int width, int height);  // Constructor
-    ~Window();                                                // Destructor
+    Window(const string& title, int width, int height);         // Constructor
+    ~Window();                                                  // Destructor
 
-    void pollEvents();                                        // Poll events (e.g., close)
-    bool isClosed() const;                                    // Check if the window is closed
-    void clear();                                       // Clear the window
-    void present();                                           // Display the window
-    void renderImage(const std::string& imagePath, int x, int y, int width, int height);  // Render an image at the given position
-    sf::RenderWindow& getRenderWindow();              // Get the SFML window object
+    void pollEvents();                                          // Public methods      
+    bool isClosed() const;                                    
+    void clear();                                      
+    void present();                                           
+    void renderImage(const string& imagePath, int x, int y, int width, int height);  
+    sf::RenderWindow& getRenderWindow();                        // Getters
 
 private:
-    bool init();                                              // Initialize window and resources
+    bool init();                                                // Private methods                       
 
-    sf::RenderWindow window;                                  // SFML window object
-    sf::Texture texture;                                      // Texture object for rendering images
-    sf::Sprite sprite;                                        // Sprite to display the texture
-    bool closed;                                              // Track if the window is closed
-    std::string title;                                        // Window title
-    int width, height;                                        // Window dimensions
+    sf::RenderWindow window;                                    // Member variables          
+    sf::Texture texture;                                      
+    sf::Sprite sprite;                                        
+    bool closed;                                             
+    string title;                                        
+    int width, height;                                        
 };
 
 #endif // WINDOW_HPP

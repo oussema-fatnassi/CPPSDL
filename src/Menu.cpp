@@ -1,31 +1,28 @@
 #include "Menu.hpp"
 
-Menu::Menu(sf::RenderWindow& window) :  window(&window), ui(window), currentSelection(1), restartButton(nullptr), undoButton(nullptr) {
+Menu::Menu(sf::RenderWindow& window) :  window(&window), ui(window), currentSelection(1), restartButton(nullptr), undoButton(nullptr) {         // Constructor
 
-    gridOptions = {  // Grid options for the main menu
+    gridOptions = {                                                                         // Grid options for the main menu
         IMAGE_GRID_3X3,
         IMAGE_GRID_4X4,
         IMAGE_GRID_5X5,
         IMAGE_GRID_6X6,
         IMAGE_GRID_8X8
     };
-    drawMainMenu();  // Draw the main menu            
+    drawMainMenu();   
     isMainMenuActive = true;
     isGameMenuActive = false;
 }
 
-Menu::~Menu() {
-    // Proper cleanup for dynamically allocated memory if needed
-}
+Menu::~Menu() {}
 
-void Menu::drawMainMenu() {
+void Menu::drawMainMenu() {                                                         // Draw the main menu with the grid selection
     isMainMenuActive = true;
     isGameMenuActive = false;
 
     font = new sf::Font();
     font->loadFromFile(FONT_PATH);
 
-    // Create texts for the main menu
     title = new Text(*window, "2048", *font, sf::Color(113, 112, 107), 225, 50, 1,60);
     startText = new Text(*window, "Start", *font, sf::Color::White, 225, 650, 1,60);
     quitText = new Text(*window, "Quit", *font, sf::Color::White, 235, 740, 1,60);
@@ -39,7 +36,7 @@ void Menu::drawMainMenu() {
 
     selectGridText = new Text(*window, "Select Grid Size", *font, sf::Color(113, 112, 107), 190, 560, 1,30);
 
-    ui.addButton(startButton);
+    ui.addButton(startButton);                                                      // Add all the UI elements to the UI object to be rendered
     ui.addButton(quitButton);
     ui.addButton(leftArrowButton);
     ui.addButton(rightArrowButton);
@@ -51,7 +48,7 @@ void Menu::drawMainMenu() {
     ui.render();
 }
 
-void Menu::drawGame() {
+void Menu::drawGame() {                                                             // Draw the game menu with the grid and game elements
     isMainMenuActive = false;
     isGameMenuActive = true;
     ui.clear();
@@ -63,7 +60,7 @@ void Menu::drawGame() {
     gameWinText = new Text(*window, "YOU WON!", *font, sf::Color(113, 112, 107), 155, 450, 1,60);
     continueText = new Text(*window, "Move to continue", *font, sf::Color(113, 112, 107), 220, 530, 1,20);
 
-    switch (currentSelection) {
+    switch (currentSelection) {                                                     // Set the grid object based on the current selection
         case 0: gridObject = new Grid(3); break;
         case 1: gridObject = new Grid(4); break;
         case 2: gridObject = new Grid(5); break;
@@ -75,6 +72,7 @@ void Menu::drawGame() {
 
     restartButton = new Button(*window, RESTART_BUTTON_NORMAL, RESTART_BUTTON_HOVER, RESTART_BUTTON_PRESSED, 465, 200, 50, 50, [this] {
         gameAlreadyWon = false;
+        gameWinHandled = false;
         gridObject->reset();
         ui.updateScoreText("0");
         ui.setGrid(gridObject);
@@ -121,7 +119,7 @@ void Menu::drawGame() {
     ui.render();
 }
 
-void Menu::handleEvent(sf::Event& event) {
+void Menu::handleEvent(sf::Event& event) {                                          // Handle the event based on the current menu state
     if (isMainMenuActive) {
         startButton->handleEvent(event, *window);
         quitButton->handleEvent(event, *window);
@@ -134,9 +132,9 @@ void Menu::handleEvent(sf::Event& event) {
     }
 }
 
-void Menu::handleInput(sf::Keyboard::Key key) {
+void Menu::handleInput(sf::Keyboard::Key key) {                                     // Handle the input based on the current menu state
     if (isGameMenuActive) {
-        if (gridObject->isGameOver() && !gridObject->canMove()) {
+        if (gridObject->isGameOver() && !gridObject->canMove()) {                   // Check if the game is over and add the game over UI elements
             if (!gameOverHandled) {
                 ui.addGameObjectEnd(gameOver);
                 ui.addTextEnd(gameOverText);
@@ -145,8 +143,14 @@ void Menu::handleInput(sf::Keyboard::Key key) {
             }
             return;
         }
+        gridObject->handleInput(key);
+        cout << "Updating score text" << endl;
+        ui.updateScoreText(std::to_string(gridObject->getScore()));
+        cout<< "score" << gridObject->getScore() << endl;
+        ui.setGrid(gridObject);
+        ui.renderGame();
 
-        if (gridObject->isGameWon() && !gameAlreadyWon) {
+        if (gridObject->isGameWon() && !gameAlreadyWon) {                           // Check if the game is won and add the game win UI elements
             if (!gameWinHandled) {
                 ui.addGameObjectEnd(gameWin);
                 ui.addTextEnd(gameWinText);
@@ -154,23 +158,16 @@ void Menu::handleInput(sf::Keyboard::Key key) {
                 ui.render();
                 gameWinHandled = true;
             }
-            if (key == sf::Keyboard::Left || key == sf::Keyboard::Right || key == sf::Keyboard::Up || key == sf::Keyboard::Down) {
-                gameAlreadyWon = true;
-                ui.removeGameObject(gameWin);
-                ui.removeText(gameWinText);
-                ui.removeText(continueText);
-                ui.render();
-                return;
-            }
             return;
         }
-
-        gridObject->handleInput(key);
-        cout << "Updating score text" << endl;
-        ui.updateScoreText(std::to_string(gridObject->getScore()));
-        cout<< "score" << gridObject->getScore() << endl;
-        ui.setGrid(gridObject);
-        ui.renderGame();
+        if (gameWinHandled && (key == sf::Keyboard::Left || key == sf::Keyboard::Right || key == sf::Keyboard::Up || key == sf::Keyboard::Down)) {
+            ui.removeGameObject(gameWin);
+            ui.removeText(gameWinText);
+            ui.removeText(continueText);
+            ui.render();
+            gameWinHandled = false;
+            gameAlreadyWon = true;
+        }
 
         if (gridObject->isGameOver() && !gridObject->canMove()) {
             if (!gameOverHandled) {
@@ -183,7 +180,7 @@ void Menu::handleInput(sf::Keyboard::Key key) {
     }
 }
 
-void Menu::startButtonClicked() {
+void Menu::startButtonClicked() {                                                                                            // Handle the start button click event, start the game             
     std::cout << "Start button clicked" << std::endl;
     isMainMenuActive = false;
     isGameMenuActive = true;

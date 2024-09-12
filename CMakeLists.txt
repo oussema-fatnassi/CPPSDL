@@ -62,12 +62,12 @@ set_target_properties(Main PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
 
-# # Find Google Test
-# find_package(GTest REQUIRED)
-# include_directories(${GTEST_INCLUDE_DIRS})
+# Find Google Test
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
 
-# # Add the test source file
-# add_executable(test ${TEST_DIR}/test_main.cpp)
+# Add the test source file
+add_executable(test ${TEST_DIR}/test_main.cpp)
 
-# # Link GoogleTest and pthread
-# target_link_libraries(test ${GTEST_LIBRARIES} pthread)
+# Link GoogleTest and pthread
+target_link_libraries(test ${GTEST_LIBRARIES} pthread)

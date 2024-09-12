@@ -14,7 +14,7 @@ public:
     Grid();                                                 // Default constructor       
     ~Grid();                                                // Destructor       
 
-    void handleInput(sf::Keyboard::Key key);                      // Public methods
+    void handleInput(sf::Keyboard::Key key);                // Public methods
     bool isGameOver() const;
     bool isGameWon();
     bool canMove() const;
