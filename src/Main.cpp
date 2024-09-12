@@ -1,36 +1,36 @@
-#include "Window.hpp"
-#include "GameObject.hpp"
-#include <SFML/Graphics.hpp>
-#include <iostream>
-#include "Assets.hpp"
-#include "Button.hpp"
+// #include "Window.hpp"
+// #include "GameObject.hpp"
+// #include <SFML/Graphics.hpp>
+// #include <iostream>
+// #include "Assets.hpp"
+// #include "Button.hpp"
 
-int main() {
-    // Create a Window object with title "SFML Window" and dimensions 600x800
-    Window window("SFML Window", 600, 800);
+// int main() {
+//     // Create a Window object with title "SFML Window" and dimensions 600x800
+//     Window window("SFML Window", 600, 800);
 
-    // Create a GameObject with an image
-    GameObject gameObject(window.getRenderWindow(),IMAGE_GRID_3X3, 75, 100, 450, 450);
-    Button button(window.getRenderWindow(), START_BUTTON_NORMAL, START_BUTTON_HOVER, START_BUTTON_PRESSED, 250, 600, 100, 50, [&gameObject]() { gameObject.setTexture(IMAGE_GRID_4X4); });
+//     // Create a GameObject with an image
+//     GameObject gameObject(window.getRenderWindow(),IMAGE_GRID_3X3, 75, 100, 450, 450);
+//     Button button(window.getRenderWindow(), START_BUTTON_NORMAL, START_BUTTON_HOVER, START_BUTTON_PRESSED, 250, 600, 100, 50, [&gameObject]() { gameObject.setTexture(IMAGE_GRID_4X4); });
 
-    // Main loop
-    while (!window.isClosed()) {
-        // Poll events (e.g., for closing the window)
-        window.pollEvents();
+//     // Main loop
+//     while (!window.isClosed()) {
+//         // Poll events (e.g., for closing the window)
+//         window.pollEvents();
 
-        // Clear the window
-        window.clear();
+//         // Clear the window
+//         window.clear();
 
-        // Render the GameObject
-        gameObject.render();
-        button.render();
+//         // Render the GameObject
+//         gameObject.render();
+//         button.render();
 
-        // Display the rendered frame
-        window.present();
-    }
+//         // Display the rendered frame
+//         window.present();
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 
 
 // // TEXT TESTING
@@ -72,45 +72,61 @@ int main() {
 
 
 
-// #include "Button.hpp"
-// #include <iostream>
-// #include "Menu.hpp"
-// #include "Window.hpp"
+#include "Button.hpp"
+#include "Menu.hpp"
+#include "Window.hpp"
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <iostream>
 
-// using namespace std;
+int main() {
+    // Create a window with SFML
+    sf::RenderWindow window(sf::VideoMode(600, 900), "2048 Game");
 
-// int main(int argc, char* argv[]) {
-//     Window window("2048 Game", 600, 900);                       // Create a window
-//     UI ui(window.getRenderer());                                // Create a UI object
-//     Menu menu(window.getRenderer());                            // Create a Menu object     
+    UI ui(window);                                // Create a UI object with SFML's window
+    Menu menu(window);                            // Create a Menu object with SFML's window
 
-//     bool quit = false;
-//     SDL_Event event;
+    bool quit = false;
+    sf::Event event;
 
-//     menu.drawMainMenu();                                        // Draw the main menu
+    menu.drawMainMenu();                          // Draw the main menu
 
-//     while (!quit) {                                             // Main game loop
-//         window.clear();                                         // Clear the window
-//         menu.update();                                          // Update the menu
+    while (window.isOpen()) {                     // Main game loop
+        // Clear the window
+        window.clear(sf::Color(251, 248, 239, 255));
 
-//         SDL_SetRenderDrawColor(window.getRenderer(), 251, 248, 239, 255);       // Set the render draw color          
-//         window.present();                                        // Present the window              
+        // Update the menu
+        menu.update();
 
-//         while (SDL_PollEvent(&event)) {                         // Poll events
-//             if (event.type == SDL_QUIT) {                       // If quit event, set quit to true         
-//                 quit = true;
-//             } else if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {         // Handle mouse events
-//                 menu.handleEvent(&event);
-//             } else if (event.type == SDL_KEYDOWN) {             // Handle key events
-//                 menu.handleInput(event.key.keysym.sym);         // Pass key events to the Menu
-//             }
-//         }
+        // Present/render the updated window
+        window.display();
 
-//         SDL_Delay(10);                                          // Delay to reduce CPU usage
-//     }
+        // Poll events
+        while (window.pollEvent(event)) {
+            // If quit event, close the window
+            if (event.type == sf::Event::Closed) {
+                window.close();
+                quit = true;
+            }
+            // Handle mouse events
+            else if (event.type == sf::Event::MouseMoved || 
+                     event.type == sf::Event::MouseButtonPressed || 
+                     event.type == sf::Event::MouseButtonReleased) {
+                menu.handleEvent(event);  // Pass mouse events to Menu
+            }
+            // Handle key events
+            else if (event.type == sf::Event::KeyPressed) {
+                menu.handleInput(event.key.code);  // Pass key events to Menu
+            }
+        }
 
-//     return 0;
-// }
+        // Add a short delay to reduce CPU usage (not strictly necessary in SFML)
+        sf::sleep(sf::milliseconds(10));
+    }
+
+    return 0;
+}
+
 
 // #include "SDLNumberGrid.hpp"
 // #include "Button.hpp"
