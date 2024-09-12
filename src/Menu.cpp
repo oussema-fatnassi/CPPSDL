@@ -93,11 +93,13 @@ void Menu::drawGame() {                                                         
 
     backButton = new Button(renderer, BACK_BUTTON_NORMAL, BACK_BUTTON_HOVER, BACK_BUTTON_PRESSED, 230, 770, 135, 80, [this] {         // Create the back button to return to the main menu
         if (gridObject) {
-            delete gridObject;  
-            gridObject = nullptr;
+            delete gridObject;
         }
+        ui.setGrid(gridObject);
+        ui.render();
 
-        ui.clear();  
+        ui.clear();
+
         isMainMenuActive = true;
         isGameMenuActive = false;
         drawMainMenu();                                                                                                    // Draw the main menu
