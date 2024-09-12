@@ -27,8 +27,8 @@ void Menu::drawMainMenu() {
 
     // Create texts for the main menu
     title = new Text(*window, "2048", *font, sf::Color(113, 112, 107), 225, 50, 1,60);
-    startText = new Text(*window, "Start", *font, sf::Color::White, 225, 650, 1,40);
-    quitText = new Text(*window, "Quit", *font, sf::Color::White, 235, 740, 1,40);
+    startText = new Text(*window, "Start", *font, sf::Color::White, 225, 650, 1,60);
+    quitText = new Text(*window, "Quit", *font, sf::Color::White, 235, 740, 1,60);
 
     gridImage = new GameObject(*window, gridOptions[currentSelection], 150, 200, 300, 300);
 
@@ -37,7 +37,7 @@ void Menu::drawMainMenu() {
     leftArrowButton = new Button(*window, LEFT_ARROW_NORMAL, LEFT_ARROW_HOVER, LEFT_ARROW_PRESSED, 100, 310, 34, 74, [this] { leftArrowClicked(); });
     rightArrowButton = new Button(*window, RIGHT_ARROW_NORMAL, RIGHT_ARROW_HOVER, RIGHT_ARROW_PRESSED, 465, 310, 34, 74, [this] { rightArrowClicked(); });
 
-    selectGridText = new Text(*window, "Select Grid Size", *font, sf::Color(113, 112, 107), 190, 560, 1,40);
+    selectGridText = new Text(*window, "Select Grid Size", *font, sf::Color(113, 112, 107), 190, 560, 1,30);
 
     ui.addButton(startButton);
     ui.addButton(quitButton);
@@ -61,7 +61,7 @@ void Menu::drawGame() {
 
     gameOverText = new Text(*window, "GAME OVER!", *font, sf::Color(113, 112, 107), 135, 480, 1,60);
     gameWinText = new Text(*window, "YOU WON!", *font, sf::Color(113, 112, 107), 155, 450, 1,60);
-    continueText = new Text(*window, "Move to continue", *font, sf::Color(113, 112, 107), 220, 530, 1,30);
+    continueText = new Text(*window, "Move to continue", *font, sf::Color(113, 112, 107), 220, 530, 1,20);
 
     switch (currentSelection) {
         case 0: gridObject = new Grid(3); break;
@@ -98,8 +98,9 @@ void Menu::drawGame() {
     backButton = new Button(*window, BACK_BUTTON_NORMAL, BACK_BUTTON_HOVER, BACK_BUTTON_PRESSED, 230, 770, 135, 80, [this] {
         if (gridObject) {
             delete gridObject;
-            gridObject = nullptr;
         }
+        ui.setGrid(gridObject);
+        ui.render();
 
         ui.clear();
         isMainMenuActive = true;
@@ -107,7 +108,7 @@ void Menu::drawGame() {
         drawMainMenu();
     });
     
-    ui.addText(new Text(*window, "SCORE", *font, sf::Color(113, 112, 107), 405, 105, 1,30));
+    ui.addText(new Text(*window, "SCORE", *font, sf::Color(113, 112, 107), 405, 105, 1,20));
     ui.addText(new Text(*window, "0", *font, sf::Color(251, 248, 239), 385, 120, 2,40));
     ui.addText(new Text(*window, "2048", *font, sf::Color(113, 112, 107), 50, 100, 1,60));
     ui.addText(new Text(*window, "Back", *font, sf::Color::White, 265, 785, 1,30));
