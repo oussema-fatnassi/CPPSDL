@@ -108,36 +108,48 @@ void UI:: clear() {                                             // Clear the UI 
     textsEnd.clear();
 }
 
-void UI::renderTile(int value, int x, int y) { 
+void UI::renderTile(int value, int x, int y) {
     // Render the tile as a GameObject
     GameObject tile(window, value, x, y, tileSize, tileSize);
     tile.render();  // Use GameObject's draw method to render the tile
 
-    if (value != 0) { 
+    if (value != 0) {
         // Render the value of the tile
         std::string textValue = std::to_string(value);
 
         // Set the color of the text based on the value
         sf::Color color = (value <= 8) ? textColor2 : textColor;
-        
+
         // Create SFML text object
         sf::Text tileText;
         tileText.setFont(font);         // Set the font
         tileText.setString(textValue);  // Set the text string to display the tile's value
         tileText.setFillColor(color);   // Set the text color
-        tileText.setCharacterSize(tileSize / 3);  // Adjust the text size relative to tile size
+
+        unsigned int textSize;
+        if (value <= 8192) {
+            textSize = tileSize / 3;
+        } else if (value <= 65536) {
+            textSize = tileSize / 4;
+        } else if (value <= 524288) {
+            textSize = tileSize / 5;
+        } else {
+            textSize = tileSize / 6;
+        }
+        tileText.setCharacterSize(textSize);
 
         // Get the bounds of the text to center it within the tile
         sf::FloatRect textBounds = tileText.getLocalBounds();
-        tileText.setPosition(
-            x + (tileSize - textBounds.width) / 2 - textBounds.left,
-            y + (tileSize - textBounds.height) / 2 - textBounds.top
-        );
+        float textX = x + (tileSize - textBounds.width) / 2 - textBounds.left;
+        float textY = y + (tileSize - textBounds.height) / 2 - textBounds.top;
+        tileText.setPosition(textX, textY);
 
         // Render the text to the window
         window.draw(tileText);
     }
 }
+
+
 
 
 void UI::renderGame() {                                         // Render the game grid with the tiles
@@ -178,15 +190,19 @@ void UI::setGrid(Grid* newGrid) {                               // Set the grid 
         cerr << "Unsupported grid size: " << gridSize << endl;
     }
 }
-void UI::updateScoreText(const std::string& score) {            // Update the score text with the new score
+void UI::updateScoreText(const std::string& score) {
+    std::cout << "updateScoreText called with score: " << score << std::endl;
     for (auto& text : texts) {
-        if (text->getID() == 1111) {
+        if (text->getID() == 2) {
             text->setText(score);
+            std::cout << "Score: " << score << ", Text: " << text->getText() << std::endl;
             break;
         }
     }
-    renderGame();                                               // Re-render to update the UI
+    renderGame();
 }
+
+
 
 void UI::removeGameObject(GameObject* gameObject) {             // Remove the game object from the UI
     auto it = find(gameObjects.begin(), gameObjects.end(), gameObject);
@@ -200,4 +216,12 @@ void UI::removeText(Text* text) {                               // Remove the te
     if (it != texts.end()) {
         texts.erase(it);
     }
+}
+
+bool UI::loadFont(const std::string& fontPath) {
+    if (!font.loadFromFile(fontPath)) {
+        std::cerr << "Failed to load font from file: " << fontPath << std::endl;
+        return false;
+    }
+    return true;
 }
