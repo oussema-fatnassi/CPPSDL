@@ -28,9 +28,9 @@ void GameObject::render() {
 
 std::string GameObject::getImagePathToValue(int value) {
     if (value > 2048) {
-        return "../assets/images/other.svg"; // Path for other values
+        return "../assets/images/other.png"; // Path for other values
     }
-    return "../assets/images/" + std::to_string(value) + ".svg"; // Path for specific values
+    return "../assets/images/" + std::to_string(value) + ".png"; // Path for specific values
 }
 
 void GameObject::loadTexture(const std::string& imagePath) {
