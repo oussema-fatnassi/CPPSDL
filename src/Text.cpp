@@ -1,11 +1,12 @@
 #include "Text.hpp"
 
-Text::Text(sf::RenderWindow& window, const std::string& text, const sf::Font& font, sf::Color color, int x, int y, int ID) 
-    : window(window), text(text), color(color), ID(ID) {
+Text::Text(sf::RenderWindow& window, const std::string& text, const sf::Font& font, sf::Color color, int x, int y, int ID,int fontSize) 
+    : window(window), text(text), color(color), ID(ID),fontSize(fontSize) {
     this->font = font;              // Copy the font
     sfmlText.setFont(this->font);   // Set the font for the SFML text object
     sfmlText.setString(this->text); // Set the string (text) to display
     sfmlText.setFillColor(this->color);  // Set the color of the text
+    sfmlText.setCharacterSize(this->fontSize);  // Set the font size
     sfmlText.setPosition(x, y);     // Set the position of the text
 }
 

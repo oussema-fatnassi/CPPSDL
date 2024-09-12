@@ -7,7 +7,7 @@
 
 class Text {                                                // Text class used for creating text objects
 public:
-    Text(sf::RenderWindow& window, const std::string& text, const sf::Font& font, sf::Color color, int x, int y, int ID);   // Constructor
+    Text(sf::RenderWindow& window, const std::string& text, const sf::Font& font, sf::Color color, int x, int y, int ID, int fontSize);   // Constructor
     ~Text();                                                // Destructor       
     void render();                                          // Public methods    
     void setText(const std::string& newText);               // Setters
@@ -21,6 +21,7 @@ private:
     sf::Color color;
     sf::RenderWindow& window;
     int ID;
+    int fontSize;
 
     void updateText();                                      // Private method to update the text object
 };
