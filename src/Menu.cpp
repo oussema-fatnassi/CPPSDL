@@ -194,22 +194,16 @@ void Menu::quitButtonClicked() {
     exit(0);  // Properly terminate the application
 }
 
-void Menu::leftArrowClicked() {
+void Menu::leftArrowClicked() {                                                                                             // Handle the left arrow click event, update the grid selection (carousel)
     std::cout << "Left arrow clicked" << std::endl;
-    if (currentSelection > 0) {
-        currentSelection--;
-        gridImage->setTexture(gridOptions[currentSelection]);
-        ui.render();
-    }
+    currentSelection = (currentSelection - 1 + gridOptions.size()) % gridOptions.size();
+    update();
 }
 
-void Menu::rightArrowClicked() {
+void Menu::rightArrowClicked() {                                                                                            // Handle the right arrow click event, update the grid selection (carousel)
     std::cout << "Right arrow clicked" << std::endl;
-    if (currentSelection < gridOptions.size() - 1) {
-        currentSelection++;
-        gridImage->setTexture(gridOptions[currentSelection]);
-        ui.render();
-    }
+    currentSelection = (currentSelection + 1) % gridOptions.size();
+    update();
 }
 
 string Menu::getGameGridTexture(int selection) {                                                                            // Get the grid texture based on the current selection
