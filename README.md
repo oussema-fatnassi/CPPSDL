@@ -4,8 +4,9 @@ Tile Twister is a popular puzzle game where you move tiles on a 4x4 grid to try 
 
 ## Features
 
-- 4x4 game grid.
-- Randomly generated tiles with values of .....
+3 version of the project: terminal, SDL and SFML
+
+- Selection of grid size between 3x3, 4x4, 5x5, 6x6 and 8x8
 - Tile movement in four directions: up, down, left, right.
 - Merging of tiles with the same value when they collide.
 - Detection of valid moves and addition of new tiles after each valid move.
@@ -18,8 +19,6 @@ Tile Twister is a popular puzzle game where you move tiles on a 4x4 grid to try 
 ```bash
 git clone https://github.com/oussema-fatnassi/CPPSDL.git
 ```
-## Credits
-- Developed by Oussema Fatnassi, Baptiste Appriou, Ali Abakar Issa
 
 
 ###### Steps for Winfows installation
@@ -64,3 +63,6 @@ If there is a space " " type "\ " instead
 - Type rm -rf * or delete manually everything in the build folder
 - Type : cmake -G "MinGW Makefiles" ..
 - Type : mingw32-make
+
+## Credits
+- Developed by Oussema Fatnassi, Baptiste Appriou, Ali Abakar Issa
