@@ -127,8 +127,10 @@ void Menu::handleEvent(sf::Event& event) {                                      
         rightArrowButton->handleEvent(event, *window);
     } else if (isGameMenuActive) {
         restartButton->handleEvent(event, *window);
-        undoButton->handleEvent(event, *window);
         backButton->handleEvent(event, *window);
+        if(!gridObject->isGameOver() && gridObject->canMove()) 
+        {   undoButton->handleEvent(event, *window);
+        }
     }
 }
 
@@ -152,9 +154,9 @@ void Menu::handleInput(sf::Keyboard::Key key) {                                 
 
         if (gridObject->isGameWon() && !gameAlreadyWon) {                           // Check if the game is won and add the game win UI elements
             if (!gameWinHandled) {
-                ui.addGameObjectEnd(gameWin);
-                ui.addTextEnd(gameWinText);
-                ui.addTextEnd(continueText);
+                ui.addGameObject(gameWin);
+                ui.addText(gameWinText);
+                ui.addText(continueText);
                 ui.render();
                 gameWinHandled = true;
             }
