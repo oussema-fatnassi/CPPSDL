@@ -14,6 +14,9 @@ set(LIB_DIR "${CMAKE_SOURCE_DIR}/lib")
 set(TEST_DIR "${CMAKE_SOURCE_DIR}/testing")
 include_directories(${INCLUDE_DIR})
 
+# Include directories for your headers
+include_directories(${INCLUDE_DIR}/headers)
+
 # Add source files
 file(GLOB_RECURSE SRC_FILES "${SRC_DIR}/*.cpp")
 
@@ -23,21 +26,32 @@ add_executable(Main ${SRC_FILES})
 # Set the build type to Debug to include debugging symbols
 set(CMAKE_BUILD_TYPE Debug)
 
+# Enable Address Sanitizer if desired
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    # Add Address Sanitizer compiler and linker options
+    add_compile_options(-fsanitize=address -g)
+    add_link_options(-fsanitize=address)
+endif()
+
 # Platform-specific settings
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     # macOS specific settings
-
-    # Enable Address Sanitizer only for macOS
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        add_compile_options(-fsanitize=address -g)
-        add_link_options(-fsanitize=address)
-    endif()
 
     # Add SDL2, SDL2_image and SDL2_ttf include directories
     include_directories(/opt/homebrew/opt/sdl2/include/SDL2 /opt/homebrew/opt/sdl2_image/include/SDL2 /opt/homebrew/opt/sdl2_ttf/include/SDL2)
 
     # Link SDL2, SDL2_image and SDL2_ttf libraries
     target_link_libraries(Main /opt/homebrew/opt/sdl2/lib/libSDL2.dylib /opt/homebrew/opt/sdl2_image/lib/libSDL2_image.dylib /opt/homebrew/opt/sdl2_ttf/lib/libSDL2_ttf.dylib)
+
+    find_package(GTest REQUIRED)
+
+    include_directories(${GTEST_INCLUDE_DIRS})
+
+    # Ajouter le fichier source de test
+    add_executable(test testing/test_main.cpp)
+
+    # Lier GoogleTest et pthread
+    target_link_libraries(test ${GTEST_LIBRARIES} pthread)
 
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     # Windows specific settings
@@ -76,6 +90,10 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     # Link SDL2, SDL2_image, and SDL2_ttf libraries
     target_link_libraries(Main ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${SDL2_TTF_LIBRARIES} mingw32 SDL2main SDL2 SDL2_image SDL2_ttf)
+    add_executable(test testing/test_main.cpp)
+    
+    # Link GoogleTest libraries to the test executable
+    target_link_libraries(test gtest gtest_main)
 
 else()
     message(FATAL_ERROR "Unsupported platform")
@@ -87,12 +105,9 @@ set_target_properties(Main PROPERTIES
 )
 
 # Add the test executable
-add_executable(test testing/test_main.cpp)
 
-# Link GoogleTest libraries to the test executable
-target_link_libraries(test gtest gtest_main)
+# Specify output directory for binaries directly in the build folder
+set_target_properties(Main PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+)
 
-# Link pthread on non-Windows platforms
-if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    target_link_libraries(test pthread)
-endif()
