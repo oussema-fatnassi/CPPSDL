@@ -80,7 +80,5 @@ Type rm -rf * or delete manually everything in the build folder
 Type : cmake -G "MinGW Makefiles" ..
 Type : mingw32-make
 
-
-   
 ## Credits
 - Developed by Oussema Fatnassi, Baptiste Appriou, Ali Abakar Issa
