@@ -3,7 +3,6 @@
 Grid::Grid(int gridSize) : gridSize(gridSize), grid(gridSize, vector<int>(gridSize, 0)) {       // Constructor with grid size
     srand(time(0));                                                                             // Seed for random number generation
     addRandomNumber(); 
-    cout << "Grid created" << endl;
     addRandomNumber(); 
 }
 
@@ -27,11 +26,9 @@ bool Grid::addRandomNumber() {                                                  
     }
 
     int randIndex = rand() % emptyCells.size();
-    int randValue = (rand() % 2 + 1) * 2;                                                       // Randomly pick 2 or 4
+    int randValue = (rand() % 2 + 1) * 512;                                                       // Randomly pick 2 or 4
 
     grid[emptyCells[randIndex].first][emptyCells[randIndex].second] = randValue;                // Add the random number to the grid    
-
-    cout << "Random number added" << endl;
     return true;
 }
 
@@ -50,12 +47,10 @@ bool Grid::gridHasChanged() const {                                             
     for (int i = 0; i < gridSize; ++i) {
         for (int j = 0; j < gridSize; ++j) {
             if (grid[i][j] != previousGrid[i][j]) {
-                cout << "Grid has changed" << endl;
                 return true;                                                                    // Grid has changed
             }
         }
     }
-    cout << "Grid has not changed" << endl;
     return false;                                                                               // Grid is unchanged
 }
 
@@ -118,7 +113,6 @@ void Grid::merge(vector<int>& line) {                                           
 }
 
 void Grid::handleInput(SDL_Keycode key) {                                                       // Method to handle input from the user
-    cout << "Handling input: " << key << endl;
     previousGrid = grid;
     previousScore = score;
 
@@ -138,13 +132,11 @@ void Grid::handleInput(SDL_Keycode key) {                                       
         }
         canUndo = true;  
     } else {
-        cout << "Grid did not change, undo disabled" << endl;
         canUndo = false; 
     }
 }
 
 bool Grid::isGameOver() const {                                                                 // Method to check if the game is over
-    cout << "Checking if game is over" << endl;
     return isGridFull();
 }
 
@@ -190,9 +182,6 @@ void Grid::undo() {                                                             
         grid = previousGrid;   
         score = previousScore; 
         canUndo = false;       
-        cout << "Undo successful" << endl;
-    } else {
-        cout << "Undo not allowed" << endl;
     }
 }
 
@@ -203,7 +192,6 @@ void Grid::reset() {                                                            
     addRandomNumber();
     canUndo = false;
     gameWon = false;  
-    cout << "Grid reset" << endl;
 }
 
 int Grid::getScore() const {                                                                    // Getters

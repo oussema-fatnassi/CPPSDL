@@ -167,15 +167,6 @@ void UI::setGrid(Grid* newGrid) {                               // Set the grid 
         tileSize = it->second.tileSize;
         offsetX = it->second.offsetX;
         offsetY = it->second.offsetY;
-
-        // Debugging output
-        cout << "Grid Size: " << gridSize << endl;
-        for (const auto& row : grid) {
-            for (int value : row) {
-                cout << value << " ";
-            }
-            cout << endl;
-        }
     } else {
         cerr << "Unsupported grid size: " << gridSize << endl;
     }

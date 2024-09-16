@@ -23,7 +23,6 @@ SDL_Surface* ResourceManager::getSurface(string filepath) {                     
             cerr << "Failed to load image: " << IMG_GetError() << endl;
         } else {
             surfaces.insert(make_pair(filepath, surface));
-            cout << "Loaded image: " << filepath << endl;
         }
         return surface;
     }
