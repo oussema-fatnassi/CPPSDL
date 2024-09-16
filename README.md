@@ -17,22 +17,11 @@ This project is a recreation of the classic 2048 game, developed using two diffe
 This 2048 game project allows you to experience the popular puzzle game with two different graphical implementations using SDL and SFML. Both versions offer the same gameplay mechanics but showcase the different capabilities and strengths of each library.
 
 ## Features
-<<<<<<< HEAD
 - Two implementations of the 2048 game using SDL and SFML.
 - Smooth animations for tile movement and merging.
 - Score tracking to keep track of your best performance.
 - Restart option to start a new game anytime.
 - Undo feature to correct your last move (if implemented).
-=======
-
-3 version of the project: terminal, SDL and SFML
-
-- Selection of grid size between 3x3, 4x4, 5x5, 6x6 and 8x8
-- Tile movement in four directions: up, down, left, right.
-- Merging of tiles with the same value when they collide.
-- Detection of valid moves and addition of new tiles after each valid move.
-- Display of the grid in the terminal.
->>>>>>> 8cc74d951da6add93cb9256bdb1a91679e8ad24b
 
 ## Installation
 
@@ -41,7 +30,6 @@ This 2048 game project allows you to experience the popular puzzle game with two
 - CMake for building the project.
 - SDL2 and SFML libraries installed on your system.
 
-<<<<<<< HEAD
 ### Building the Project
 
 1. **Clone the repository:**
@@ -72,40 +60,10 @@ If not, type : pacman -S mingw-w64-ucrt-x86_64-SDL2 mingw-w64-ucrt-x86_64-SDL2_i
 Install everything
 In case of error repeat any point necessary
 
-=======
-```bash
-git clone https://github.com/oussema-fatnassi/CPPSDL.git
-```
-
-
-###### Steps for Winfows installation
-- Open MSYS MINGW64
-- Type : pacman -S mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_image mingw-w64-x86_64-SDL2_ttf
-- Verify that everything is installed
-- Type : cd /ucrt64/lib
-- Type : ls | grep SDL2
-- You should see : 
-libSDL2.a
-libSDL2.dll.a
-libSDL2_image.a
-libSDL2_image.dll.a
-libSDL2_test.a
-libSDL2_ttf.a
-libSDL2_ttf.dll.a
-libSDL2main.a
-- If not, type : pacman -S mingw-w64-ucrt-x86_64-SDL2 mingw-w64-ucrt-x86_64-SDL2_image mingw-w64-ucrt-x86_64-SDL2_ttf
-- Install everything
-
-In case of error repeat any point necessary
-
-
-
->>>>>>> 8cc74d951da6add93cb9256bdb1a91679e8ad24b
 If the following error appears :
 
 Running
 
-<<<<<<< HEAD
 'nmake' '-?'
 
 failed with:
@@ -123,24 +81,5 @@ Type : mingw32-make
 
 
    
-=======
-   'nmake' '-?'
-
-  failed with:
-
-   no such file or directory
-
-- Close and re-open MSYS MINGW64
-- Type echo $MSYSTEM
-It should output : MINGW64
-- Type : pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc
-- Verify that everything is installed
-- Navigate to your project : cd /(link to your project)/build
-If there is a space " " type "\ " instead
-- Type rm -rf * or delete manually everything in the build folder
-- Type : cmake -G "MinGW Makefiles" ..
-- Type : mingw32-make
-
->>>>>>> 8cc74d951da6add93cb9256bdb1a91679e8ad24b
 ## Credits
 - Developed by Oussema Fatnassi, Baptiste Appriou, Ali Abakar Issa
