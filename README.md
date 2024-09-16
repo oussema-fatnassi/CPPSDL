@@ -39,6 +39,7 @@ This 2048 game project allows you to experience the popular puzzle game with two
 
 ## How to Play:
   - Start the game using either the SDL or SFML version.
+  - When The main SDL version is launched use git clone https://github.com/google/googletest.git to integrate the test.
   - Use the arrow keys to slide the tiles in four possible directions: up, down, left, or right.
   - When two tiles with the same number collide, they merge into one with the sum of their values.
   - The goal is to create a tile with the number 2048.
