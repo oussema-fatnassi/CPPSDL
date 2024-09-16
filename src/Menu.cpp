@@ -80,7 +80,6 @@ void Menu::drawGame() {                                                         
             ui.removeGameObject(gameOver);
             ui.removeText(gameOverText);
             gameOverHandled = false;
-            std::cout << "Game restarted, game over UI elements removed." << std::endl;
         }
         ui.clear();
         drawGame();
@@ -141,14 +140,11 @@ void Menu::handleInput(sf::Keyboard::Key key) {                                 
                 ui.addGameObjectEnd(gameOver);
                 ui.addTextEnd(gameOverText);
                 gameOverHandled = true;
-                std::cout << "Game over! UI elements added." << std::endl;
             }
             return;
         }
         gridObject->handleInput(key);
-        cout << "Updating score text" << endl;
         ui.updateScoreText(std::to_string(gridObject->getScore()));
-        cout<< "score" << gridObject->getScore() << endl;
         ui.setGrid(gridObject);
         ui.renderGame();
 
@@ -176,32 +172,27 @@ void Menu::handleInput(sf::Keyboard::Key key) {                                 
                 ui.addGameObjectEnd(gameOver);
                 ui.addTextEnd(gameOverText);
                 gameOverHandled = true;
-                std::cout << "Game over after input! UI elements added." << std::endl;
             }
         }
     }
 }
 
 void Menu::startButtonClicked() {                                                                                            // Handle the start button click event, start the game             
-    std::cout << "Start button clicked" << std::endl;
     isMainMenuActive = false;
     isGameMenuActive = true;
     drawGame();
 }
 
 void Menu::quitButtonClicked() {
-    std::cout << "Quit button clicked" << std::endl;
     exit(0);  // Properly terminate the application
 }
 
 void Menu::leftArrowClicked() {                                                                                             // Handle the left arrow click event, update the grid selection (carousel)
-    std::cout << "Left arrow clicked" << std::endl;
     currentSelection = (currentSelection - 1 + gridOptions.size()) % gridOptions.size();
     update();
 }
 
 void Menu::rightArrowClicked() {                                                                                            // Handle the right arrow click event, update the grid selection (carousel)
-    std::cout << "Right arrow clicked" << std::endl;
     currentSelection = (currentSelection + 1) % gridOptions.size();
     update();
 }

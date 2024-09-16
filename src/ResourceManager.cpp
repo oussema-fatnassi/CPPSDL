@@ -24,7 +24,6 @@ sf::Texture* ResourceManager::getTexture(const std::string& filepath) {         
             return nullptr;
         } else {
             textures.insert(std::make_pair(filepath, texture));                                             // Insert loaded texture
-            std::cout << "Loaded texture: " << filepath << std::endl;
             return &textures[filepath];                                                                     // Return the newly loaded texture
         }
     }

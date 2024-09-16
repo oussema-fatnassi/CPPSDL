@@ -167,24 +167,14 @@ void UI::setGrid(Grid* newGrid) {                                           // S
         tileSize = it->second.tileSize;
         offsetX = it->second.offsetX;
         offsetY = it->second.offsetY;
-
-        cout << "Grid Size: " << gridSize << endl;
-        for (const auto& row : grid) {
-            for (int value : row) {
-                cout << value << " ";
-            }
-            cout << endl;
-        }
     } else {
         cerr << "Unsupported grid size: " << gridSize << endl;
     }
 }
 void UI::updateScoreText(const std::string& score) {                        // Update the score text in the UI
-    std::cout << "updateScoreText called with score: " << score << std::endl;
     for (auto& text : texts) {
         if (text->getID() == 2) {
             text->setText(score);
-            std::cout << "Score: " << score << ", Text: " << text->getText() << std::endl;
             break;
         }
     }
