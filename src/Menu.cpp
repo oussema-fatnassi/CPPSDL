@@ -78,7 +78,6 @@ void Menu::drawGame() {                                                         
             ui.removeGameObject(gameOver);
             ui.removeText(gameOverText);
             gameOverHandled = false;
-            std::cout << "Game restarted, game over UI elements removed." << std::endl;
         }
         ui.clear();
         drawGame();
@@ -131,74 +130,67 @@ void Menu::handleEvent(SDL_Event* event) {                                      
     }
 }
 
-void Menu::handleInput(SDL_Keycode key) {                                                                                   // Handle input for the game screen based on the key pressed                       
-if(isGameMenuActive){
-    if (gridObject->isGameOver() && !gridObject->canMove()) {
-        if (!gameOverHandled) {
-            ui.addGameObjectEnd(gameOver);
-            ui.addTextEnd(gameOverText);
-            gameOverHandled = true;
-            std::cout << "Game over! UI elements added." << std::endl;
+void Menu::handleInput(SDL_Keycode key) {                                     // Handle the input based on the current menu state
+    if (isGameMenuActive) {
+        if (gridObject->isGameOver() && !gridObject->canMove()) {                   // Check if the game is over and add the game over UI elements
+            if (!gameOverHandled) {
+                ui.addGameObjectEnd(gameOver);
+                ui.addTextEnd(gameOverText);
+                gameOverHandled = true;
+            }
+            return;
         }
-        return;
-    }
+        gridObject->handleInput(key);
+        ui.updateScoreText(std::to_string(gridObject->getScore()));
+        ui.setGrid(gridObject);
+        ui.renderGame();
 
-    if (gridObject->isGameWon() && !gameAlreadyWon) {                                                                          // Check if the game is won
-        if (!gameWinHandled) {
-            ui.addGameObjectEnd(gameWin);
-            ui.addTextEnd(gameWinText);
-            ui.addTextEnd(continueText);
-            ui.render();
-            gameWinHandled = true;
+        if (gridObject->isGameWon() && !gameAlreadyWon) {                           // Check if the game is won and add the game win UI elements
+            if (!gameWinHandled) {
+                ui.addGameObject(gameWin);
+                ui.addText(gameWinText);
+                ui.addText(continueText);
+                ui.render();
+                gameWinHandled = true;
+            }
+            return;
         }
-        if (key == SDLK_LEFT || key == SDLK_RIGHT || key == SDLK_UP || key == SDLK_DOWN) {                                     // If the user presses an arrow key, remove the game win UI elements
-            gameAlreadyWon = true;  
+        if (gameWinHandled && (key == SDLK_LEFT || key == SDLK_RIGHT || key == SDLK_UP || key == SDLK_DOWN)) {                                     // If the user presses an arrow key, remove the game win UI elements
             ui.removeGameObject(gameWin);
             ui.removeText(gameWinText);
             ui.removeText(continueText);
             ui.render();
-            return;
+            gameWinHandled = false;
+            gameAlreadyWon = true;
         }
-        return;                                                                                                                // Skip other inputs until the user presses an arrow key
-    }
 
-    gridObject->handleInput(key);                                                                                              // Process input if the game is not over or won
-    ui.updateScoreText(std::to_string(gridObject->getScore()));
-    ui.setGrid(gridObject);
-    ui.renderGame();
-
-    if (gridObject->isGameOver() && !gridObject->canMove()) {                                                                   // Re-check if the game is over after processing input
-        if (!gameOverHandled) {
-            ui.addGameObjectEnd(gameOver);
-            ui.addTextEnd(gameOverText);
-            gameOverHandled = true;
-            std::cout << "Game over after input! UI elements added." << std::endl;
+        if (gridObject->isGameOver() && !gridObject->canMove()) {
+            if (!gameOverHandled) {
+                ui.addGameObjectEnd(gameOver);
+                ui.addTextEnd(gameOverText);
+                gameOverHandled = true;
             }
         }
     }
 }
 
 void Menu::startButtonClicked() {                                                                                           // Handle the start button click event, draw the game screen
-    std::cout << "Start button clicked" << std::endl;
     isMainMenuActive = false;
     isGameMenuActive = true;
     drawGame();
 }
 
 void Menu::quitButtonClicked() {                                                                                            // Handle the quit button click event, quit the game
-    std::cout << "Quit button clicked" << std::endl;
     SDL_Quit();
     exit(0);
 }
 
 void Menu::leftArrowClicked() {                                                                                             // Handle the left arrow click event, update the grid selection (carousel)
-    std::cout << "Left arrow clicked" << std::endl;
     currentSelection = (currentSelection - 1 + gridOptions.size()) % gridOptions.size();
     update();
 }
 
 void Menu::rightArrowClicked() {                                                                                            // Handle the right arrow click event, update the grid selection (carousel)
-    std::cout << "Right arrow clicked" << std::endl;
     currentSelection = (currentSelection + 1) % gridOptions.size();
     update();
 }
